@@ -433,7 +433,7 @@
   }
 
   .fallbackVisual[data-card-count="3"] {
-    --mobile-card-count: 3;
+    --mobile-card-count: 2;
   }
 
   .fallbackGrid span {
