@@ -2,7 +2,7 @@
 
 // 생성형 AI 보안 기술력 섹션의 스크롤 전환을 관리합니다.
 import { motion, useMotionValueEvent, useReducedMotion, useScroll, useTransform } from "framer-motion";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { type CSSProperties, useEffect, useMemo, useRef, useState } from "react";
 import styles from "./TechnicalScrollSection.module.css";
 
 type VisualCard = {
@@ -118,12 +118,8 @@ const technicalSteps: TechnicalStep[] = [
 
 function StepFallbackVisual({
   step,
-  failedImages,
-  onImageError,
 }: {
   step: TechnicalStep;
-  failedImages: Record<string, boolean>;
-  onImageError: (src: string) => void;
 }) {
   return (
     <div
@@ -139,17 +135,12 @@ function StepFallbackVisual({
       <div className={styles.fallbackBody}>
         <div className={styles.fallbackGrid}>
           {step.visualCards.map((card, index) => (
-            <div key={card.imageSrc} className={styles.visualImageCard} data-index={index + 1}>
-              {!failedImages[card.imageSrc] && (
-                <img
-                  src={card.imageSrc}
-                  alt={card.alt}
-                  loading="lazy"
-                  onError={() => {
-                    onImageError(card.imageSrc);
-                  }}
-                />
-              )}
+            <div
+              key={card.imageSrc}
+              className={styles.visualImageCard}
+              data-index={index + 1}
+              style={{ "--visual-image": `url(${card.imageSrc})` } as CSSProperties}
+            >
               <span>{card.label}</span>
             </div>
           ))}
@@ -172,7 +163,6 @@ export function TechnicalScrollSection() {
   const videoRefs = useRef<Array<HTMLVideoElement | null>>([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [failedVideos, setFailedVideos] = useState<Record<string, boolean>>({});
-  const [failedImages, setFailedImages] = useState<Record<string, boolean>>({});
   const shouldReduceMotion = useReducedMotion();
   const reduceMotion = shouldReduceMotion === true;
   const { scrollYProgress } = useScroll({
@@ -206,10 +196,6 @@ export function TechnicalScrollSection() {
   const activeStep = technicalSteps[activeIndex];
   const sectionHeight = useMemo(() => `${technicalSteps.length * 100 + 100}vh`, []);
 
-  const handleImageError = (src: string) => {
-    setFailedImages((prev) => ({ ...prev, [src]: true }));
-  };
-
   return (
     <main className={styles.page}>
       <section ref={sectionRef} className={styles.technicalSection} style={{ minHeight: sectionHeight }}>
@@ -235,11 +221,7 @@ export function TechnicalScrollSection() {
                     }}
                     transition={{ duration: reduceMotion ? 0 : 0.55, ease: "easeOut" }}
                   >
-                    <StepFallbackVisual
-                      step={step}
-                      failedImages={failedImages}
-                      onImageError={handleImageError}
-                    />
+                    <StepFallbackVisual step={step} />
                     <video
                       ref={(node) => {
                         videoRefs.current[index] = node;
@@ -300,7 +282,7 @@ export function TechnicalScrollSection() {
           {technicalSteps.map((step, index) => (
             <article key={step.id} className={styles.mobileStep}>
               <div className={styles.mobileVisual}>
-                <StepFallbackVisual step={step} failedImages={failedImages} onImageError={handleImageError} />
+                <StepFallbackVisual step={step} />
                 <video
                   className={styles.mobileVideo}
                   data-hidden={failedVideos[step.id] ? "true" : "false"}
