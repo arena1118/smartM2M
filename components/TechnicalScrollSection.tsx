@@ -150,7 +150,7 @@ export function TechnicalScrollSection() {
             <motion.article
               key={activeStep.id}
               className={styles.textCard}
-              initial={reduceMotion ? false : { opacity: 0, y: 28 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: reduceMotion ? 0 : 0.5, ease: "easeOut" }}
             >
