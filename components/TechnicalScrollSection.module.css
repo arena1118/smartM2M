@@ -4,7 +4,6 @@
   background: #f7f7f7;
 }
 
-.intro,
 .nextSection {
   display: grid;
   min-height: 72vh;
@@ -12,7 +11,6 @@
   padding: clamp(64px, 8vw, 128px);
 }
 
-.intro p,
 .nextSection p,
 .sectionHeader p,
 .stepLabel {
@@ -24,7 +22,6 @@
   text-transform: uppercase;
 }
 
-.intro h1,
 .nextSection h2 {
   max-width: 780px;
   margin: 16px 0 0;
@@ -118,6 +115,99 @@
   background:
     linear-gradient(135deg, rgba(18, 18, 18, 0.08), rgba(18, 18, 18, 0.02)),
     #ececec;
+}
+
+.visualVideo[data-hidden="true"],
+.mobileVideo[data-hidden="true"] {
+  opacity: 0;
+}
+
+.visualLayer {
+  position: absolute;
+  inset: 0;
+}
+
+.fallbackVisual {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 20px;
+  padding: clamp(18px, 3vw, 34px);
+  background:
+    radial-gradient(circle at 18% 18%, rgba(70, 120, 255, 0.18), transparent 26%),
+    radial-gradient(circle at 82% 78%, rgba(10, 10, 10, 0.12), transparent 28%),
+    linear-gradient(135deg, #f2f5f8 0%, #dfe5ec 100%);
+}
+
+.fallbackVisual::before {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(18, 18, 18, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(18, 18, 18, 0.06) 1px, transparent 1px);
+  background-size: 34px 34px;
+  content: "";
+}
+
+.fallbackHeader,
+.fallbackGrid,
+.fallbackPanel {
+  position: relative;
+  z-index: 1;
+}
+
+.fallbackHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: #454b54;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.fallbackGrid {
+  display: grid;
+  max-width: 54%;
+  margin-top: clamp(40px, 6vw, 72px);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.fallbackGrid span {
+  min-height: clamp(56px, 8vw, 104px);
+  border: 1px solid rgba(18, 18, 18, 0.08);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.07);
+}
+
+.fallbackPanel {
+  position: absolute;
+  right: clamp(18px, 3vw, 34px);
+  bottom: clamp(18px, 3vw, 34px);
+  width: min(48%, 360px);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 22px;
+  padding: clamp(18px, 2.6vw, 28px);
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(16px);
+}
+
+.fallbackPanel strong {
+  display: block;
+  color: #101010;
+  font-size: clamp(20px, 2.1vw, 32px);
+  line-height: 1.2;
+}
+
+.fallbackPanel p {
+  margin: 12px 0 0;
+  color: #616161;
+  font-size: clamp(13px, 1.1vw, 16px);
+  line-height: 1.6;
+  word-break: keep-all;
 }
 
 .textCard {
@@ -236,11 +326,32 @@
     box-shadow: 0 18px 50px rgba(0, 0, 0, 0.08);
   }
 
+  .mobileVisual,
   .mobileVideo {
     width: 100%;
     aspect-ratio: 16 / 10;
     border-radius: 18px;
     background: #ececec;
+  }
+
+  .mobileVisual {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .mobileVideo {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+  }
+
+  .fallbackGrid {
+    max-width: 58%;
+    margin-top: 34px;
+  }
+
+  .fallbackPanel {
+    width: min(58%, 260px);
   }
 
   .mobileStep > div {

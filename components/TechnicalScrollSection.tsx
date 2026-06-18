@@ -49,6 +49,7 @@ export function TechnicalScrollSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const videoRefs = useRef<Array<HTMLVideoElement | null>>([]);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [failedVideos, setFailedVideos] = useState<Record<string, boolean>>({});
   const shouldReduceMotion = useReducedMotion();
   const reduceMotion = shouldReduceMotion === true;
   const { scrollYProgress } = useScroll({
@@ -84,11 +85,6 @@ export function TechnicalScrollSection() {
 
   return (
     <main className={styles.page}>
-      <section className={styles.intro} aria-label="인트로">
-        <p>Scroll Sample</p>
-        <h1>AI 보안 기술 소개 스크롤 인터랙션</h1>
-      </section>
-
       <section ref={sectionRef} className={styles.technicalSection} style={{ minHeight: sectionHeight }}>
         <div className={styles.dottedBackground} aria-hidden="true" />
         <div className={styles.stickyViewport}>
@@ -101,20 +97,9 @@ export function TechnicalScrollSection() {
             <div className={styles.visualColumn}>
               <div className={styles.visualStack}>
                 {technicalSteps.map((step, index) => (
-                  <motion.video
+                  <motion.div
                     key={step.id}
-                    ref={(node) => {
-                      videoRefs.current[index] = node;
-                    }}
-                    className={styles.visualVideo}
-                    style={{ objectFit: step.fit }}
-                    src={step.videoSrc}
-                    autoPlay={!reduceMotion && index === activeIndex}
-                    muted
-                    loop
-                    playsInline
-                    preload={index === 0 ? "auto" : "metadata"}
-                    aria-label={`${step.title} 영상`}
+                    className={styles.visualLayer}
                     initial={false}
                     animate={{
                       opacity: activeIndex === index ? 1 : 0,
@@ -122,7 +107,42 @@ export function TechnicalScrollSection() {
                       scale: activeIndex === index ? 1 : 0.98,
                     }}
                     transition={{ duration: reduceMotion ? 0 : 0.55, ease: "easeOut" }}
-                  />
+                  >
+                    <div className={styles.fallbackVisual} aria-hidden="true">
+                      <div className={styles.fallbackHeader}>
+                        <span>{step.eyebrow}</span>
+                        <span>AI SECURITY</span>
+                      </div>
+                      <div className={styles.fallbackGrid}>
+                        <span />
+                        <span />
+                        <span />
+                        <span />
+                      </div>
+                      <div className={styles.fallbackPanel}>
+                        <strong>{step.title}</strong>
+                        <p>{step.description}</p>
+                      </div>
+                    </div>
+                    <video
+                      ref={(node) => {
+                        videoRefs.current[index] = node;
+                      }}
+                      className={styles.visualVideo}
+                      data-hidden={failedVideos[step.id] ? "true" : "false"}
+                      style={{ objectFit: step.fit }}
+                      src={step.videoSrc}
+                      autoPlay={!reduceMotion && index === activeIndex}
+                      muted
+                      loop
+                      playsInline
+                      preload={index === 0 ? "auto" : "metadata"}
+                      aria-label={`${step.title} 영상`}
+                      onError={() => {
+                        setFailedVideos((prev) => ({ ...prev, [step.id]: true }));
+                      }}
+                    />
+                  </motion.div>
                 ))}
               </div>
             </div>
@@ -156,16 +176,38 @@ export function TechnicalScrollSection() {
         <div className={styles.mobileSteps}>
           {technicalSteps.map((step, index) => (
             <article key={step.id} className={styles.mobileStep}>
-              <video
-                className={styles.mobileVideo}
-                style={{ objectFit: step.fit }}
-                src={step.videoSrc}
-                muted
-                loop
-                playsInline
-                controls={reduceMotion}
-                preload="metadata"
-              />
+              <div className={styles.mobileVisual}>
+                <div className={styles.fallbackVisual} aria-hidden="true">
+                  <div className={styles.fallbackHeader}>
+                    <span>{step.eyebrow}</span>
+                    <span>AI SECURITY</span>
+                  </div>
+                  <div className={styles.fallbackGrid}>
+                    <span />
+                    <span />
+                    <span />
+                    <span />
+                  </div>
+                  <div className={styles.fallbackPanel}>
+                    <strong>{step.title}</strong>
+                    <p>{step.description}</p>
+                  </div>
+                </div>
+                <video
+                  className={styles.mobileVideo}
+                  data-hidden={failedVideos[step.id] ? "true" : "false"}
+                  style={{ objectFit: step.fit }}
+                  src={step.videoSrc}
+                  muted
+                  loop
+                  playsInline
+                  controls={reduceMotion}
+                  preload="metadata"
+                  onError={() => {
+                    setFailedVideos((prev) => ({ ...prev, [step.id]: true }));
+                  }}
+                />
+              </div>
               <div>
                 <p className={styles.stepLabel}>STEP {String(index + 1).padStart(2, "0")}</p>
                 <h3>{step.title}</h3>

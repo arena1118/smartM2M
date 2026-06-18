@@ -5,3 +5,4 @@
 - 2026-06-18: Chose CSS Modules and Framer Motion because the request allowed either CSS Modules/Tailwind and Framer Motion/GSAP.
 - 2026-06-18: Desktop uses one sticky viewport with crossfading video/text steps. Mobile switches to stacked content cards so the left/right layout does not compress awkwardly.
 - 2026-06-18: `npm install` was blocked by PowerShell execution policy through `npm.ps1`, so verification used `npm.cmd install` and `npm.cmd run build`.
+- 2026-06-18: Production page rendered, but public video files returned 404 and the target section was behind an extra intro. Removed the intro and added a visible fallback visual for missing videos.
