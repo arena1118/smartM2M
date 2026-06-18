@@ -5,6 +5,15 @@ import { motion, useMotionValueEvent, useReducedMotion, useScroll, useTransform 
 import { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./TechnicalScrollSection.module.css";
 
+type VisualCard = {
+  label: string;
+};
+
+type DetailBlock = {
+  title: string;
+  body: string;
+};
+
 type TechnicalStep = {
   id: string;
   eyebrow: string;
@@ -13,6 +22,8 @@ type TechnicalStep = {
   tags: string[];
   videoSrc: string;
   fit: "cover" | "contain";
+  visualCards: VisualCard[];
+  details: DetailBlock[];
 };
 
 const technicalSteps: TechnicalStep[] = [
@@ -24,6 +35,13 @@ const technicalSteps: TechnicalStep[] = [
     tags: ["특징1", "특징2", "특징3"],
     videoSrc: "/videos/security-01.mp4",
     fit: "cover",
+    visualCards: [{ label: "Prompt" }, { label: "Model" }, { label: "Policy" }],
+    details: [
+      {
+        title: "취약점 점검",
+        body: "프롬프트, 모델 응답, 정책 우회 가능성을 한 흐름으로 점검합니다.",
+      },
+    ],
   },
   {
     id: "risk",
@@ -33,6 +51,13 @@ const technicalSteps: TechnicalStep[] = [
     tags: ["탐지", "분석", "리포트"],
     videoSrc: "/videos/security-02.mp4",
     fit: "cover",
+    visualCards: [{ label: "Risk" }],
+    details: [
+      {
+        title: "위험 분석",
+        body: "입력과 출력 사이의 이상 징후를 추적해 관리자가 확인할 위험 요소를 정리합니다.",
+      },
+    ],
   },
   {
     id: "report",
@@ -42,8 +67,52 @@ const technicalSteps: TechnicalStep[] = [
     tags: ["대시보드", "리포트", "자동화"],
     videoSrc: "/videos/security-03.mp4",
     fit: "contain",
+    visualCards: [{ label: "Dashboard" }, { label: "Export" }],
+    details: [
+      {
+        title: "시각화 대시보드",
+        body: "취약점 분포와 위험도를 한 화면에서 비교할 수 있게 제공합니다.",
+      },
+      {
+        title: "자동 리포트",
+        body: "점검 이력과 조치 항목을 리포트 형태로 정리해 후속 대응을 돕습니다.",
+      },
+    ],
   },
 ];
+
+function StepFallbackVisual({ step }: { step: TechnicalStep }) {
+  return (
+    <div
+      className={styles.fallbackVisual}
+      data-card-count={step.visualCards.length}
+      data-detail-count={step.details.length}
+      aria-hidden="true"
+    >
+      <div className={styles.fallbackHeader}>
+        <span>{step.eyebrow}</span>
+        <span>AI SECURITY</span>
+      </div>
+      <div className={styles.fallbackBody}>
+        <div className={styles.fallbackGrid}>
+          {step.visualCards.map((card, index) => (
+            <span key={`${step.id}-${card.label}`} data-index={index + 1}>
+              {card.label}
+            </span>
+          ))}
+        </div>
+        <div className={styles.fallbackDetails}>
+          {step.details.map((detail) => (
+            <div key={detail.title} className={styles.fallbackPanel}>
+              <strong>{detail.title}</strong>
+              <p>{detail.body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export function TechnicalScrollSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
@@ -108,22 +177,7 @@ export function TechnicalScrollSection() {
                     }}
                     transition={{ duration: reduceMotion ? 0 : 0.55, ease: "easeOut" }}
                   >
-                    <div className={styles.fallbackVisual} aria-hidden="true">
-                      <div className={styles.fallbackHeader}>
-                        <span>{step.eyebrow}</span>
-                        <span>AI SECURITY</span>
-                      </div>
-                      <div className={styles.fallbackGrid}>
-                        <span />
-                        <span />
-                        <span />
-                        <span />
-                      </div>
-                      <div className={styles.fallbackPanel}>
-                        <strong>{step.title}</strong>
-                        <p>{step.description}</p>
-                      </div>
-                    </div>
+                    <StepFallbackVisual step={step} />
                     <video
                       ref={(node) => {
                         videoRefs.current[index] = node;
@@ -159,7 +213,14 @@ export function TechnicalScrollSection() {
               </div>
               <p className={styles.stepLabel}>{activeStep.eyebrow}</p>
               <h3>{activeStep.title}</h3>
-              <p className={styles.description}>{activeStep.description}</p>
+              <div className={styles.detailList}>
+                {activeStep.details.map((detail) => (
+                  <div key={detail.title} className={styles.detailItem}>
+                    <strong>{detail.title}</strong>
+                    <p>{detail.body}</p>
+                  </div>
+                ))}
+              </div>
               <div className={styles.tags}>
                 {activeStep.tags.map((tag) => (
                   <span key={tag}>{tag}</span>
@@ -177,22 +238,7 @@ export function TechnicalScrollSection() {
           {technicalSteps.map((step, index) => (
             <article key={step.id} className={styles.mobileStep}>
               <div className={styles.mobileVisual}>
-                <div className={styles.fallbackVisual} aria-hidden="true">
-                  <div className={styles.fallbackHeader}>
-                    <span>{step.eyebrow}</span>
-                    <span>AI SECURITY</span>
-                  </div>
-                  <div className={styles.fallbackGrid}>
-                    <span />
-                    <span />
-                    <span />
-                    <span />
-                  </div>
-                  <div className={styles.fallbackPanel}>
-                    <strong>{step.title}</strong>
-                    <p>{step.description}</p>
-                  </div>
-                </div>
+                <StepFallbackVisual step={step} />
                 <video
                   className={styles.mobileVideo}
                   data-hidden={failedVideos[step.id] ? "true" : "false"}
@@ -211,7 +257,14 @@ export function TechnicalScrollSection() {
               <div>
                 <p className={styles.stepLabel}>STEP {String(index + 1).padStart(2, "0")}</p>
                 <h3>{step.title}</h3>
-                <p className={styles.description}>{step.description}</p>
+                <div className={styles.detailList}>
+                  {step.details.map((detail) => (
+                    <div key={detail.title} className={styles.detailItem}>
+                      <strong>{detail.title}</strong>
+                      <p>{detail.body}</p>
+                    </div>
+                  ))}
+                </div>
                 <div className={styles.tags}>
                   {step.tags.map((tag) => (
                     <span key={tag}>{tag}</span>
