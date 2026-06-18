@@ -324,6 +324,7 @@
     padding: 14px;
     background: #ffffff;
     box-shadow: 0 18px 50px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
   }
 
   .mobileVisual,
@@ -346,12 +347,30 @@
   }
 
   .fallbackGrid {
-    max-width: 58%;
-    margin-top: 34px;
+    max-width: 100%;
+    margin-top: 28px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
   }
 
   .fallbackPanel {
-    width: min(58%, 260px);
+    right: 14px;
+    bottom: 14px;
+    left: 14px;
+    width: auto;
+    padding: 16px;
+  }
+
+  .fallbackPanel strong {
+    font-size: 20px;
+  }
+
+  .fallbackPanel p {
+    font-size: 13px;
+  }
+
+  .fallbackHeader {
+    font-size: 11px;
   }
 
   .mobileStep > div {
