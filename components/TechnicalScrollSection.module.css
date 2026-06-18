@@ -191,7 +191,7 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-.fallbackGrid span {
+.visualImageCard {
   position: relative;
   display: grid;
   min-height: clamp(88px, 11vw, 158px);
@@ -207,9 +207,10 @@
   font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.08em;
+  overflow: hidden;
 }
 
-.fallbackGrid span::before {
+.visualImageCard::before {
   position: absolute;
   top: 18px;
   left: 18px;
@@ -222,6 +223,28 @@
   color: #ffffff;
   content: attr(data-index);
   font-size: 13px;
+  z-index: 2;
+}
+
+.visualImageCard::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 42%, rgba(255, 255, 255, 0.9) 100%);
+  content: "";
+  z-index: 1;
+}
+
+.visualImageCard img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.visualImageCard span {
+  position: relative;
+  z-index: 2;
 }
 
 .fallbackDetails {
@@ -441,13 +464,13 @@
     --mobile-card-count: 2;
   }
 
-  .fallbackGrid span {
+  .visualImageCard {
     min-height: 54px;
     padding: 40px 10px 10px;
     font-size: 10px;
   }
 
-  .fallbackGrid span::before {
+  .visualImageCard::before {
     top: 10px;
     left: 10px;
     width: 24px;

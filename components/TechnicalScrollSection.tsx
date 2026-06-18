@@ -7,6 +7,8 @@ import styles from "./TechnicalScrollSection.module.css";
 
 type VisualCard = {
   label: string;
+  imageSrc: string;
+  alt: string;
 };
 
 type DetailBlock = {
@@ -35,7 +37,23 @@ const technicalSteps: TechnicalStep[] = [
     tags: ["특징1", "특징2", "특징3"],
     videoSrc: "/videos/security-01.mp4",
     fit: "cover",
-    visualCards: [{ label: "Prompt" }, { label: "Model" }, { label: "Policy" }],
+    visualCards: [
+      {
+        label: "Prompt",
+        imageSrc: "/images/technical-step-01-01.png",
+        alt: "프롬프트 취약점 점검 화면",
+      },
+      {
+        label: "Model",
+        imageSrc: "/images/technical-step-01-02.png",
+        alt: "모델 응답 점검 화면",
+      },
+      {
+        label: "Policy",
+        imageSrc: "/images/technical-step-01-03.png",
+        alt: "정책 우회 점검 화면",
+      },
+    ],
     details: [
       {
         title: "취약점 점검",
@@ -51,7 +69,13 @@ const technicalSteps: TechnicalStep[] = [
     tags: ["탐지", "분석", "리포트"],
     videoSrc: "/videos/security-02.mp4",
     fit: "cover",
-    visualCards: [{ label: "Risk" }],
+    visualCards: [
+      {
+        label: "Risk",
+        imageSrc: "/images/technical-step-02-01.png",
+        alt: "AI 보안 위험 분석 화면",
+      },
+    ],
     details: [
       {
         title: "위험 분석",
@@ -67,7 +91,18 @@ const technicalSteps: TechnicalStep[] = [
     tags: ["대시보드", "리포트", "자동화"],
     videoSrc: "/videos/security-03.mp4",
     fit: "contain",
-    visualCards: [{ label: "Dashboard" }, { label: "Export" }],
+    visualCards: [
+      {
+        label: "Dashboard",
+        imageSrc: "/images/technical-step-03-01.png",
+        alt: "취약점 진단 대시보드 화면",
+      },
+      {
+        label: "Export",
+        imageSrc: "/images/technical-step-03-02.png",
+        alt: "취약점 진단 리포트 내보내기 화면",
+      },
+    ],
     details: [
       {
         title: "시각화 대시보드",
@@ -81,7 +116,15 @@ const technicalSteps: TechnicalStep[] = [
   },
 ];
 
-function StepFallbackVisual({ step }: { step: TechnicalStep }) {
+function StepFallbackVisual({
+  step,
+  failedImages,
+  onImageError,
+}: {
+  step: TechnicalStep;
+  failedImages: Record<string, boolean>;
+  onImageError: (src: string) => void;
+}) {
   return (
     <div
       className={styles.fallbackVisual}
@@ -96,9 +139,19 @@ function StepFallbackVisual({ step }: { step: TechnicalStep }) {
       <div className={styles.fallbackBody}>
         <div className={styles.fallbackGrid}>
           {step.visualCards.map((card, index) => (
-            <span key={`${step.id}-${card.label}`} data-index={index + 1}>
-              {card.label}
-            </span>
+            <div key={card.imageSrc} className={styles.visualImageCard} data-index={index + 1}>
+              {!failedImages[card.imageSrc] && (
+                <img
+                  src={card.imageSrc}
+                  alt={card.alt}
+                  loading="lazy"
+                  onError={() => {
+                    onImageError(card.imageSrc);
+                  }}
+                />
+              )}
+              <span>{card.label}</span>
+            </div>
           ))}
         </div>
         <div className={styles.fallbackDetails}>
@@ -119,6 +172,7 @@ export function TechnicalScrollSection() {
   const videoRefs = useRef<Array<HTMLVideoElement | null>>([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [failedVideos, setFailedVideos] = useState<Record<string, boolean>>({});
+  const [failedImages, setFailedImages] = useState<Record<string, boolean>>({});
   const shouldReduceMotion = useReducedMotion();
   const reduceMotion = shouldReduceMotion === true;
   const { scrollYProgress } = useScroll({
@@ -152,6 +206,10 @@ export function TechnicalScrollSection() {
   const activeStep = technicalSteps[activeIndex];
   const sectionHeight = useMemo(() => `${technicalSteps.length * 100 + 100}vh`, []);
 
+  const handleImageError = (src: string) => {
+    setFailedImages((prev) => ({ ...prev, [src]: true }));
+  };
+
   return (
     <main className={styles.page}>
       <section ref={sectionRef} className={styles.technicalSection} style={{ minHeight: sectionHeight }}>
@@ -177,7 +235,11 @@ export function TechnicalScrollSection() {
                     }}
                     transition={{ duration: reduceMotion ? 0 : 0.55, ease: "easeOut" }}
                   >
-                    <StepFallbackVisual step={step} />
+                    <StepFallbackVisual
+                      step={step}
+                      failedImages={failedImages}
+                      onImageError={handleImageError}
+                    />
                     <video
                       ref={(node) => {
                         videoRefs.current[index] = node;
@@ -238,7 +300,7 @@ export function TechnicalScrollSection() {
           {technicalSteps.map((step, index) => (
             <article key={step.id} className={styles.mobileStep}>
               <div className={styles.mobileVisual}>
-                <StepFallbackVisual step={step} />
+                <StepFallbackVisual step={step} failedImages={failedImages} onImageError={handleImageError} />
                 <video
                   className={styles.mobileVideo}
                   data-hidden={failedVideos[step.id] ? "true" : "false"}

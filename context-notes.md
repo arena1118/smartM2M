@@ -7,3 +7,4 @@
 - 2026-06-18: `npm install` was blocked by PowerShell execution policy through `npm.ps1`, so verification used `npm.cmd install` and `npm.cmd run build`.
 - 2026-06-18: Production page rendered, but public video files returned 404 and the target section was behind an extra intro. Removed the intro and added a visible fallback visual for missing videos.
 - 2026-06-18: Updated each technical step to support different visual/description compositions: step 1 uses 3 visual cards and 1 detail, step 2 uses 1 visual card and 1 detail, and step 3 uses 2 visual cards and 2 details.
+- 2026-06-18: Clarified that visual cards represent distinct image assets. Each step now declares image paths under `/images/technical-step-XX-YY.png`, with styled fallback cards when files are missing.
