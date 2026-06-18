@@ -25,6 +25,7 @@
 .nextSection h2 {
   max-width: 780px;
   margin: 16px 0 0;
+  color: #101010;
   font-size: clamp(42px, 7vw, 96px);
   line-height: 1;
 }
@@ -38,7 +39,7 @@
 .dottedBackground {
   position: absolute;
   inset: 0;
-  opacity: 0.8;
+  opacity: 0.76;
   background-image: radial-gradient(#b9b9b9 1px, transparent 1px);
   background-size: 40px 40px;
   pointer-events: none;
@@ -62,6 +63,7 @@
 
 .sectionHeader h2 {
   margin: 10px 0 0;
+  color: #101010;
   font-size: clamp(42px, 5vw, 78px);
   line-height: 1;
 }
@@ -94,11 +96,14 @@
 .visualStack::before,
 .visualStack::after {
   position: absolute;
-  inset: 18px -24px -24px 24px;
   z-index: -1;
   border-radius: 30px;
   background: rgba(255, 255, 255, 0.72);
   content: "";
+}
+
+.visualStack::before {
+  inset: 18px -24px -24px 24px;
 }
 
 .visualStack::after {
@@ -106,55 +111,40 @@
   background: rgba(255, 255, 255, 0.5);
 }
 
-.visualLayer,
-.visualVideo {
+.visualLayer {
   position: absolute;
   inset: 0;
 }
 
-.visualVideo {
-  width: 100%;
-  height: 100%;
-  border-radius: 20px;
-  background:
-    linear-gradient(135deg, rgba(18, 18, 18, 0.08), rgba(18, 18, 18, 0.02)),
-    #ececec;
-}
-
-.visualVideo[data-hidden="true"],
-.mobileVideo[data-hidden="true"] {
-  opacity: 0;
-}
-
-.fallbackVisual {
+.sceneVisual {
   position: absolute;
   inset: 0;
   overflow: hidden;
   border-radius: 20px;
   padding: clamp(18px, 3vw, 34px);
   background:
-    radial-gradient(circle at 18% 18%, rgba(70, 120, 255, 0.18), transparent 26%),
-    radial-gradient(circle at 82% 78%, rgba(10, 10, 10, 0.12), transparent 28%),
-    linear-gradient(135deg, #f2f5f8 0%, #dfe5ec 100%);
+    radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.8), transparent 30%),
+    radial-gradient(circle at 82% 78%, rgba(18, 18, 18, 0.1), transparent 28%),
+    linear-gradient(135deg, #f1f1f1 0%, #d8d8d8 100%);
 }
 
-.fallbackVisual::before {
+.sceneVisual::before {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(18, 18, 18, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(18, 18, 18, 0.06) 1px, transparent 1px);
+    linear-gradient(rgba(18, 18, 18, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(18, 18, 18, 0.05) 1px, transparent 1px);
   background-size: 34px 34px;
   content: "";
 }
 
-.fallbackHeader,
-.fallbackBody {
+.visualHeader,
+.sceneVisualBody {
   position: relative;
   z-index: 1;
 }
 
-.fallbackHeader {
+.visualHeader {
   display: flex;
   justify-content: space-between;
   gap: 12px;
@@ -164,103 +154,80 @@
   letter-spacing: 0.08em;
 }
 
-.fallbackBody {
+.sceneVisualBody {
   display: grid;
   height: calc(100% - 28px);
-  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.82fr);
-  gap: clamp(18px, 3vw, 34px);
-  align-items: end;
+  grid-template-columns: minmax(220px, 0.86fr) minmax(300px, 0.9fr);
+  gap: clamp(18px, 3vw, 38px);
+  align-items: center;
   padding-top: clamp(26px, 5vw, 58px);
 }
 
-.fallbackGrid {
-  display: grid;
-  align-self: stretch;
-  gap: 14px;
-}
-
-.fallbackVisual[data-card-count="1"] .fallbackGrid {
-  grid-template-columns: 1fr;
-}
-
-.fallbackVisual[data-card-count="2"] .fallbackGrid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.fallbackVisual[data-card-count="3"] .fallbackGrid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.visualImageCard {
+.sceneImageCard {
   position: relative;
   display: grid;
-  min-height: clamp(88px, 11vw, 158px);
+  min-height: clamp(240px, 27vw, 380px);
   place-items: end start;
   border: 1px solid rgba(18, 18, 18, 0.08);
-  border-radius: 18px;
-  padding: 18px;
+  border-radius: 24px;
+  padding: clamp(18px, 2vw, 28px);
   background:
-    linear-gradient(180deg, transparent 42%, rgba(255, 255, 255, 0.9) 100%),
+    linear-gradient(180deg, transparent 46%, rgba(255, 255, 255, 0.94) 100%),
     var(--visual-image),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.62)),
-    radial-gradient(circle at 24% 24%, rgba(16, 16, 16, 0.12), transparent 30%);
+    linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.66)),
+    radial-gradient(circle at 28% 24%, rgba(16, 16, 16, 0.12), transparent 32%);
   background-position: center;
   background-size: cover;
-  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.07);
+  box-shadow: 0 22px 42px rgba(0, 0, 0, 0.08);
   color: #606672;
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 800;
   letter-spacing: 0.08em;
   overflow: hidden;
 }
 
-.visualImageCard::before {
+.sceneImageCard::before {
   position: absolute;
-  top: 18px;
-  left: 18px;
+  top: clamp(18px, 2vw, 26px);
+  left: clamp(18px, 2vw, 26px);
+  z-index: 2;
   display: grid;
-  width: 36px;
-  height: 36px;
+  width: 54px;
+  height: 54px;
   place-items: center;
-  border-radius: 12px;
+  border-radius: 16px;
   background: #101010;
   color: #ffffff;
   content: attr(data-index);
-  font-size: 13px;
-  z-index: 2;
+  font-size: 16px;
 }
 
-.visualImageCard span {
+.sceneImageCard span {
   position: relative;
   z-index: 2;
 }
 
-.fallbackDetails {
-  display: grid;
-  gap: 12px;
-}
-
-.fallbackPanel {
+.visualTextPanel {
   border: 1px solid rgba(255, 255, 255, 0.72);
-  border-radius: 22px;
-  padding: clamp(18px, 2.6vw, 28px);
-  background: rgba(255, 255, 255, 0.82);
+  border-radius: 26px;
+  padding: clamp(20px, 2.1vw, 30px);
+  background: rgba(255, 255, 255, 0.86);
   box-shadow: 0 22px 60px rgba(0, 0, 0, 0.12);
   backdrop-filter: blur(16px);
 }
 
-.fallbackPanel strong {
+.visualTextPanel strong {
   display: block;
   color: #101010;
-  font-size: clamp(18px, 2vw, 28px);
+  font-size: clamp(21px, 2vw, 30px);
   line-height: 1.2;
 }
 
-.fallbackPanel p {
+.visualTextPanel p {
   margin: 12px 0 0;
   color: #616161;
-  font-size: clamp(13px, 1.1vw, 16px);
-  line-height: 1.6;
+  font-size: clamp(13px, 1vw, 16px);
+  line-height: 1.52;
   word-break: keep-all;
 }
 
@@ -291,9 +258,9 @@
 .textCard h3,
 .mobileStep h3 {
   margin: 14px 0 0;
-  font-size: clamp(34px, 4vw, 58px);
+  color: #101010;
+  font-size: clamp(34px, 3.7vw, 52px);
   line-height: 1.08;
-  letter-spacing: -0.02em;
 }
 
 .detailList {
@@ -363,6 +330,21 @@
   display: none;
 }
 
+@media (max-width: 1100px) {
+  .contentGrid {
+    grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.9fr);
+    gap: clamp(28px, 4vw, 56px);
+  }
+
+  .sceneVisualBody {
+    grid-template-columns: minmax(150px, 0.8fr) minmax(220px, 0.82fr);
+  }
+
+  .sceneImageCard {
+    min-height: clamp(220px, 26vw, 320px);
+  }
+}
+
 @media (max-width: 900px) {
   .technicalSection {
     min-height: auto !important;
@@ -399,102 +381,69 @@
     box-shadow: 0 18px 50px rgba(0, 0, 0, 0.08);
   }
 
-  .mobileVisual,
-  .mobileVideo {
+  .mobileVisual {
+    position: relative;
     width: 100%;
-    aspect-ratio: 1 / 1;
+    min-height: 420px;
+    overflow: hidden;
     border-radius: 18px;
     background: #ececec;
   }
 
-  .mobileVisual {
-    position: relative;
-    overflow: hidden;
+  .mobileStep > div:last-child {
+    padding: 24px 6px 8px;
   }
 
-  .mobileVideo {
-    position: absolute;
-    inset: 0;
-    height: 100%;
+  .sceneVisual {
+    border-radius: 18px;
+    padding: 18px;
   }
 
-  .fallbackBody {
+  .sceneVisualBody {
     height: calc(100% - 24px);
     grid-template-columns: 1fr;
-    gap: 12px;
+    gap: 14px;
+    align-content: end;
     padding-top: 18px;
   }
 
-  .fallbackGrid {
-    gap: 10px;
-  }
-
-  .fallbackVisual[data-card-count="1"] .fallbackGrid,
-  .fallbackVisual[data-card-count="2"] .fallbackGrid,
-  .fallbackVisual[data-card-count="3"] .fallbackGrid {
-    grid-template-columns: repeat(var(--mobile-card-count), minmax(0, 1fr));
-  }
-
-  .fallbackVisual[data-card-count="2"] .fallbackGrid,
-  .fallbackVisual[data-card-count="3"] .fallbackGrid {
-    grid-template-columns: repeat(2, minmax(0, 130px));
-  }
-
-  .fallbackVisual[data-card-count="1"] {
-    --mobile-card-count: 1;
-  }
-
-  .fallbackVisual[data-card-count="2"] {
-    --mobile-card-count: 2;
-  }
-
-  .fallbackVisual[data-card-count="3"] {
-    --mobile-card-count: 2;
-  }
-
-  .visualImageCard {
-    min-height: 54px;
-    padding: 40px 10px 10px;
-    font-size: 10px;
-  }
-
-  .visualImageCard::before {
-    top: 10px;
-    left: 10px;
-    width: 24px;
-    height: 24px;
-    border-radius: 8px;
-    font-size: 11px;
-  }
-
-  .fallbackDetails {
-    gap: 8px;
-  }
-
-  .fallbackPanel {
-    padding: 14px;
-  }
-
-  .fallbackPanel strong {
-    font-size: 18px;
-  }
-
-  .fallbackPanel p {
-    margin-top: 6px;
+  .sceneImageCard {
+    min-height: 190px;
+    border-radius: 18px;
+    padding: 56px 14px 14px;
     font-size: 12px;
+  }
+
+  .sceneImageCard::before {
+    top: 14px;
+    left: 14px;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    font-size: 12px;
+  }
+
+  .visualTextPanel {
+    border-radius: 18px;
+    padding: 16px;
+  }
+
+  .visualTextPanel strong {
+    font-size: 20px;
+  }
+
+  .visualTextPanel p {
+    margin-top: 8px;
+    font-size: 13px;
     line-height: 1.45;
   }
 
-  .fallbackHeader {
+  .visualHeader {
     font-size: 11px;
   }
 
-  .fallbackHeader span:last-child {
+  .visualHeader span:last-child {
     display: none;
-  }
-
-  .mobileStep > div:last-child {
-    padding: 24px 6px 8px;
   }
 
   .textCard h3,
@@ -508,8 +457,24 @@
   }
 }
 
+@media (max-width: 520px) {
+  .mobileVisual {
+    min-height: 390px;
+  }
+
+  .sceneImageCard {
+    min-height: 168px;
+  }
+
+  .tags span {
+    min-height: 38px;
+    padding: 0 14px;
+    font-size: 13px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .visualVideo {
+  .visualLayer {
     transition: none;
   }
 }

@@ -2,156 +2,108 @@
 
 // 생성형 AI 보안 기술력 섹션의 스크롤 전환을 관리합니다.
 import { motion, useMotionValueEvent, useReducedMotion, useScroll, useTransform } from "framer-motion";
-import { type CSSProperties, useEffect, useMemo, useRef, useState } from "react";
+import { type CSSProperties, useMemo, useRef, useState } from "react";
 import styles from "./TechnicalScrollSection.module.css";
 
-type VisualCard = {
-  label: string;
-  imageSrc: string;
-  alt: string;
-};
-
-type DetailBlock = {
-  title: string;
-  body: string;
-};
-
-type TechnicalStep = {
+type TechnicalScene = {
   id: string;
-  eyebrow: string;
+  step: "STEP 01" | "STEP 02" | "STEP 03";
+  sceneLabel: string;
+  imageLabel: string;
+  imageSrc: string;
   title: string;
-  description: string;
+  detailTitle: string;
+  detailBody: string;
   tags: string[];
-  videoSrc: string;
-  fit: "cover" | "contain";
-  visualCards: VisualCard[];
-  details: DetailBlock[];
 };
 
-const technicalSteps: TechnicalStep[] = [
+const technicalScenes: TechnicalScene[] = [
   {
-    id: "audit",
-    eyebrow: "STEP 01",
+    id: "step-01-01",
+    step: "STEP 01",
+    sceneLabel: "1-1",
+    imageLabel: "Prompt",
+    imageSrc: "/images/technical-step-01-01.png",
     title: "생성형 AI 취약점 점검",
-    description: "보안 취약점을 사전에 점검하고 진단하는 솔루션",
-    tags: ["특징1", "특징2", "특징3"],
-    videoSrc: "/videos/security-01.mp4",
-    fit: "cover",
-    visualCards: [
-      {
-        label: "Prompt",
-        imageSrc: "/images/technical-step-01-01.png",
-        alt: "프롬프트 취약점 점검 화면",
-      },
-      {
-        label: "Model",
-        imageSrc: "/images/technical-step-01-02.png",
-        alt: "모델 응답 점검 화면",
-      },
-      {
-        label: "Policy",
-        imageSrc: "/images/technical-step-01-03.png",
-        alt: "정책 우회 점검 화면",
-      },
-    ],
-    details: [
-      {
-        title: "취약점 점검",
-        body: "프롬프트, 모델 응답, 정책 우회 가능성을 한 흐름으로 점검합니다.",
-      },
-    ],
+    detailTitle: "프롬프트 취약점 점검",
+    detailBody: "프롬프트 입력 단계에서 정책 우회, 민감정보 유도, 금칙어 회피 가능성을 점검합니다.",
+    tags: ["프롬프트", "취약점", "점검"],
   },
   {
-    id: "risk",
-    eyebrow: "STEP 02",
+    id: "step-01-02",
+    step: "STEP 01",
+    sceneLabel: "1-2",
+    imageLabel: "Model",
+    imageSrc: "/images/technical-step-01-02.png",
+    title: "생성형 AI 취약점 점검",
+    detailTitle: "모델 응답 검증",
+    detailBody: "모델 응답이 보안 정책을 벗어나거나 위험한 정보를 노출하는지 응답 흐름을 검증합니다.",
+    tags: ["응답", "검증", "모델"],
+  },
+  {
+    id: "step-01-03",
+    step: "STEP 01",
+    sceneLabel: "1-3",
+    imageLabel: "Policy",
+    imageSrc: "/images/technical-step-01-03.png",
+    title: "생성형 AI 취약점 점검",
+    detailTitle: "정책 우회 점검",
+    detailBody: "반복 질문, 역할 전환, 간접 지시 같은 우회 패턴으로 보안 정책이 유지되는지 확인합니다.",
+    tags: ["정책", "우회", "방어"],
+  },
+  {
+    id: "step-02-01",
+    step: "STEP 02",
+    sceneLabel: "2",
+    imageLabel: "Risk",
+    imageSrc: "/images/technical-step-02-01.png",
     title: "AI 보안 위험 분석",
-    description: "입력 데이터와 응답 흐름을 분석하여 위험 요소를 탐지",
+    detailTitle: "AI 보안 위험 분석",
+    detailBody: "입력 데이터와 응답 흐름을 분석하여 위험 요소를 탐지하고 관리자가 확인할 우선순위를 정리합니다.",
     tags: ["탐지", "분석", "리포트"],
-    videoSrc: "/videos/security-02.mp4",
-    fit: "cover",
-    visualCards: [
-      {
-        label: "Risk",
-        imageSrc: "/images/technical-step-02-01.png",
-        alt: "AI 보안 위험 분석 화면",
-      },
-    ],
-    details: [
-      {
-        title: "위험 분석",
-        body: "입력과 출력 사이의 이상 징후를 추적해 관리자가 확인할 위험 요소를 정리합니다.",
-      },
-    ],
   },
   {
-    id: "report",
-    eyebrow: "STEP 03",
+    id: "step-03-01",
+    step: "STEP 03",
+    sceneLabel: "3-1",
+    imageLabel: "Dashboard",
+    imageSrc: "/images/technical-step-03-01.png",
     title: "취약점 진단 리포트",
-    description: "점검 결과를 시각화하고 관리자가 바로 확인할 수 있도록 제공",
-    tags: ["대시보드", "리포트", "자동화"],
-    videoSrc: "/videos/security-03.mp4",
-    fit: "contain",
-    visualCards: [
-      {
-        label: "Dashboard",
-        imageSrc: "/images/technical-step-03-01.png",
-        alt: "취약점 진단 대시보드 화면",
-      },
-      {
-        label: "Export",
-        imageSrc: "/images/technical-step-03-02.png",
-        alt: "취약점 진단 리포트 내보내기 화면",
-      },
-    ],
-    details: [
-      {
-        title: "시각화 대시보드",
-        body: "취약점 분포와 위험도를 한 화면에서 비교할 수 있게 제공합니다.",
-      },
-      {
-        title: "자동 리포트",
-        body: "점검 이력과 조치 항목을 리포트 형태로 정리해 후속 대응을 돕습니다.",
-      },
-    ],
+    detailTitle: "시각화 대시보드",
+    detailBody: "취약점 분포, 위험도, 점검 상태를 시각화하여 관리자가 한 화면에서 흐름을 파악하게 합니다.",
+    tags: ["대시보드", "시각화", "상태"],
+  },
+  {
+    id: "step-03-02",
+    step: "STEP 03",
+    sceneLabel: "3-2",
+    imageLabel: "Report",
+    imageSrc: "/images/technical-step-03-02.png",
+    title: "취약점 진단 리포트",
+    detailTitle: "자동 리포트",
+    detailBody: "점검 결과와 조치 항목을 리포트로 정리해 담당자가 바로 후속 대응을 진행할 수 있게 제공합니다.",
+    tags: ["리포트", "자동화", "관리"],
   },
 ];
 
-function StepFallbackVisual({
-  step,
-}: {
-  step: TechnicalStep;
-}) {
+function SceneVisual({ scene }: { scene: TechnicalScene }) {
   return (
-    <div
-      className={styles.fallbackVisual}
-      data-card-count={step.visualCards.length}
-      data-detail-count={step.details.length}
-      aria-hidden="true"
-    >
-      <div className={styles.fallbackHeader}>
-        <span>{step.eyebrow}</span>
+    <div className={styles.sceneVisual} aria-hidden="true">
+      <div className={styles.visualHeader}>
+        <span>{scene.step}</span>
         <span>AI SECURITY</span>
       </div>
-      <div className={styles.fallbackBody}>
-        <div className={styles.fallbackGrid}>
-          {step.visualCards.map((card, index) => (
-            <div
-              key={card.imageSrc}
-              className={styles.visualImageCard}
-              data-index={index + 1}
-              style={{ "--visual-image": `url(${card.imageSrc})` } as CSSProperties}
-            >
-              <span>{card.label}</span>
-            </div>
-          ))}
+      <div className={styles.sceneVisualBody}>
+        <div
+          className={styles.sceneImageCard}
+          data-index={scene.sceneLabel}
+          style={{ "--visual-image": `url(${scene.imageSrc})` } as CSSProperties}
+        >
+          <span>{scene.imageLabel}</span>
         </div>
-        <div className={styles.fallbackDetails}>
-          {step.details.map((detail) => (
-            <div key={detail.title} className={styles.fallbackPanel}>
-              <strong>{detail.title}</strong>
-              <p>{detail.body}</p>
-            </div>
-          ))}
+        <div className={styles.visualTextPanel}>
+          <strong>{scene.detailTitle}</strong>
+          <p>{scene.detailBody}</p>
         </div>
       </div>
     </div>
@@ -160,9 +112,7 @@ function StepFallbackVisual({
 
 export function TechnicalScrollSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
-  const videoRefs = useRef<Array<HTMLVideoElement | null>>([]);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [failedVideos, setFailedVideos] = useState<Record<string, boolean>>({});
   const shouldReduceMotion = useReducedMotion();
   const reduceMotion = shouldReduceMotion === true;
   const { scrollYProgress } = useScroll({
@@ -170,31 +120,18 @@ export function TechnicalScrollSection() {
     offset: ["start start", "end end"],
   });
 
-  const progressWidth = useTransform(scrollYProgress, [0, 1], ["33%", "100%"]);
+  const progressWidth = useTransform(scrollYProgress, [0, 1], ["16.6%", "100%"]);
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     const nextIndex = Math.min(
-      technicalSteps.length - 1,
-      Math.max(0, Math.floor(latest * technicalSteps.length)),
+      technicalScenes.length - 1,
+      Math.max(0, Math.floor(latest * technicalScenes.length)),
     );
     setActiveIndex(nextIndex);
   });
 
-  useEffect(() => {
-    videoRefs.current.forEach((video, index) => {
-      if (!video) return;
-
-      if (reduceMotion || index !== activeIndex) {
-        video.pause();
-        return;
-      }
-
-      void video.play().catch(() => undefined);
-    });
-  }, [activeIndex, reduceMotion]);
-
-  const activeStep = technicalSteps[activeIndex];
-  const sectionHeight = useMemo(() => `${technicalSteps.length * 100 + 100}vh`, []);
+  const activeScene = technicalScenes[activeIndex];
+  const sectionHeight = useMemo(() => `${technicalScenes.length * 100 + 100}vh`, []);
 
   return (
     <main className={styles.page}>
@@ -209,9 +146,9 @@ export function TechnicalScrollSection() {
           <div className={styles.contentGrid}>
             <div className={styles.visualColumn}>
               <div className={styles.visualStack}>
-                {technicalSteps.map((step, index) => (
+                {technicalScenes.map((scene, index) => (
                   <motion.div
-                    key={step.id}
+                    key={scene.id}
                     className={styles.visualLayer}
                     initial={false}
                     animate={{
@@ -221,52 +158,34 @@ export function TechnicalScrollSection() {
                     }}
                     transition={{ duration: reduceMotion ? 0 : 0.55, ease: "easeOut" }}
                   >
-                    <StepFallbackVisual step={step} />
-                    <video
-                      ref={(node) => {
-                        videoRefs.current[index] = node;
-                      }}
-                      className={styles.visualVideo}
-                      data-hidden={failedVideos[step.id] ? "true" : "false"}
-                      style={{ objectFit: step.fit }}
-                      src={step.videoSrc}
-                      autoPlay={!reduceMotion && index === activeIndex}
-                      muted
-                      loop
-                      playsInline
-                      preload={index === 0 ? "auto" : "metadata"}
-                      aria-label={`${step.title} 영상`}
-                      onError={() => {
-                        setFailedVideos((prev) => ({ ...prev, [step.id]: true }));
-                      }}
-                    />
+                    <SceneVisual scene={scene} />
                   </motion.div>
                 ))}
               </div>
             </div>
 
             <motion.article
-              key={activeStep.id}
+              key={activeScene.id}
               className={styles.textCard}
               initial={false}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: reduceMotion ? 0 : 0.5, ease: "easeOut" }}
+              transition={{ duration: reduceMotion ? 0 : 0.45, ease: "easeOut" }}
             >
               <div className={styles.iconWrap} aria-hidden="true">
                 <span />
               </div>
-              <p className={styles.stepLabel}>{activeStep.eyebrow}</p>
-              <h3>{activeStep.title}</h3>
+              <p className={styles.stepLabel}>
+                {activeScene.step} / {activeScene.sceneLabel}
+              </p>
+              <h3>{activeScene.title}</h3>
               <div className={styles.detailList}>
-                {activeStep.details.map((detail) => (
-                  <div key={detail.title} className={styles.detailItem}>
-                    <strong>{detail.title}</strong>
-                    <p>{detail.body}</p>
-                  </div>
-                ))}
+                <div className={styles.detailItem}>
+                  <strong>{activeScene.detailTitle}</strong>
+                  <p>{activeScene.detailBody}</p>
+                </div>
               </div>
               <div className={styles.tags}>
-                {activeStep.tags.map((tag) => (
+                {activeScene.tags.map((tag) => (
                   <span key={tag}>{tag}</span>
                 ))}
               </div>
@@ -279,38 +198,24 @@ export function TechnicalScrollSection() {
         </div>
 
         <div className={styles.mobileSteps}>
-          {technicalSteps.map((step, index) => (
-            <article key={step.id} className={styles.mobileStep}>
+          {technicalScenes.map((scene) => (
+            <article key={scene.id} className={styles.mobileStep}>
               <div className={styles.mobileVisual}>
-                <StepFallbackVisual step={step} />
-                <video
-                  className={styles.mobileVideo}
-                  data-hidden={failedVideos[step.id] ? "true" : "false"}
-                  style={{ objectFit: step.fit }}
-                  src={step.videoSrc}
-                  muted
-                  loop
-                  playsInline
-                  controls={reduceMotion}
-                  preload="metadata"
-                  onError={() => {
-                    setFailedVideos((prev) => ({ ...prev, [step.id]: true }));
-                  }}
-                />
+                <SceneVisual scene={scene} />
               </div>
               <div>
-                <p className={styles.stepLabel}>STEP {String(index + 1).padStart(2, "0")}</p>
-                <h3>{step.title}</h3>
+                <p className={styles.stepLabel}>
+                  {scene.step} / {scene.sceneLabel}
+                </p>
+                <h3>{scene.title}</h3>
                 <div className={styles.detailList}>
-                  {step.details.map((detail) => (
-                    <div key={detail.title} className={styles.detailItem}>
-                      <strong>{detail.title}</strong>
-                      <p>{detail.body}</p>
-                    </div>
-                  ))}
+                  <div className={styles.detailItem}>
+                    <strong>{scene.detailTitle}</strong>
+                    <p>{scene.detailBody}</p>
+                  </div>
                 </div>
                 <div className={styles.tags}>
-                  {step.tags.map((tag) => (
+                  {scene.tags.map((tag) => (
                     <span key={tag}>{tag}</span>
                   ))}
                 </div>
