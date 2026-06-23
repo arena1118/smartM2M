@@ -16,3 +16,6 @@
 - [x] Apply the attached per-character text reveal effect to the hero headline.
 - [x] Restore scroll-triggered fade-in for the full-page sections.
 - [x] Verify the updated interaction build.
+- [x] Strengthen scroll fade-in interaction.
+- [x] Add delayed red 5px cursor follower.
+- [x] Add technical section sticky scroll interaction with six image slots and three fixed text groups.

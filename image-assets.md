@@ -15,6 +15,12 @@
 | `public/assets/smartm2m/footer-reference.png` | 1920x676 | 푸터 전체 | 푸터 정보와 top 버튼 기준 |
 | `public/assets/smartm2m/hero-object.png` | 560x470 | 히어로 오브젝트 후보 | 추후 히어로를 DOM화할 때 교체할 3D 오브젝트 |
 | `public/assets/smartm2m/technical-screen.png` | 1270x825 | 기술력 화면 후보 | 추후 기술력 섹션을 DOM화할 때 교체할 대시보드 이미지 |
+| `public/assets/smartm2m/technical-image-11.png` | 1270x825 | 기술력 스크롤 이미지 11 | 텍스트 1에 연결되는 첫 번째 이미지 |
+| `public/assets/smartm2m/technical-image-12.png` | 1270x825 | 기술력 스크롤 이미지 12 | 텍스트 1에 연결되는 빈 이미지 슬롯 |
+| `public/assets/smartm2m/technical-image-13.png` | 1270x825 | 기술력 스크롤 이미지 13 | 텍스트 1에 연결되는 빈 이미지 슬롯 |
+| `public/assets/smartm2m/technical-image-2.png` | 1270x825 | 기술력 스크롤 이미지 2 | 텍스트 2에 연결되는 이미지 |
+| `public/assets/smartm2m/technical-image-31.png` | 1270x825 | 기술력 스크롤 이미지 31 | 텍스트 3에 연결되는 첫 번째 이미지 |
+| `public/assets/smartm2m/technical-image-32.png` | 1270x825 | 기술력 스크롤 이미지 32 | 텍스트 3에 연결되는 빈 이미지 슬롯 |
 | `public/assets/smartm2m/result-visual.png` | 880x1350 | 핵심성과 비주얼 후보 | 추후 핵심성과 섹션을 DOM화할 때 교체할 대형 비주얼 |
 | `public/assets/smartm2m/news-thumb-01.png` | 200x283 | 뉴스 썸네일 후보 | 뉴스 카드 1 이미지 |
 | `public/assets/smartm2m/news-thumb-02.png` | 200x283 | 뉴스 썸네일 후보 | 뉴스 카드 2 이미지 |
