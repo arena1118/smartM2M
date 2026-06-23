@@ -55,8 +55,6 @@ function CursorFollower() {
       return;
     }
 
-    document.documentElement.classList.add(styles.cursorEnabled);
-
     let targetX = window.innerWidth / 2;
     let targetY = window.innerHeight / 2;
     let currentX = targetX;
@@ -83,7 +81,6 @@ function CursorFollower() {
     frame = window.requestAnimationFrame(render);
 
     return () => {
-      document.documentElement.classList.remove(styles.cursorEnabled);
       window.removeEventListener("pointermove", handlePointerMove);
       window.cancelAnimationFrame(frame);
     };
@@ -150,12 +147,13 @@ function TechnicalSceneCard({
   index: number;
   progress: ReturnType<typeof useScroll>["scrollYProgress"];
 }) {
-  const start = index / technicalScenes.length;
-  const mid = (index + 0.52) / technicalScenes.length;
-  const end = (index + 1) / technicalScenes.length;
-  const y = useTransform(progress, [start, mid, end], [-210, 0, 210]);
-  const opacity = useTransform(progress, [start, mid, end], [0, 1, 0]);
-  const scale = useTransform(progress, [start, mid, end], [0.94, 1, 0.96]);
+  const segment = 1 / technicalScenes.length;
+  const start = index * segment;
+  const end = (index + 1) * segment;
+  const fade = segment * 0.16;
+  const y = useTransform(progress, [start, start + fade, end - fade, end], [-170, 0, 0, 170]);
+  const opacity = useTransform(progress, [start, start + fade, end - fade, end], [0, 1, 1, 0]);
+  const scale = useTransform(progress, [start, start + fade, end - fade, end], [0.985, 1, 1, 0.985]);
 
   return (
     <motion.article className={styles.technicalVisualCard} style={{ y, opacity, scale }}>

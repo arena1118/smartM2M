@@ -19,3 +19,6 @@
 - [x] Strengthen scroll fade-in interaction.
 - [x] Add delayed red 5px cursor follower.
 - [x] Add technical section sticky scroll interaction with six image slots and three fixed text groups.
+- [x] Restore the native mouse pointer and resize follower dot to 10px with 50% opacity.
+- [x] Slow down technical scene transitions with long scroll hold intervals.
+- [x] Adjust hero and technical typography closer to the Figma weight and size.
