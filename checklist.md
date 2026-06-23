@@ -13,3 +13,6 @@
 - [x] Switch the main page to Figma-first pixel matching.
 - [x] Create replaceable SmartM2M image asset slots.
 - [x] Verify at least 99% visual similarity against the Figma screenshot.
+- [x] Apply the attached per-character text reveal effect to the hero headline.
+- [x] Restore scroll-triggered fade-in for the full-page sections.
+- [x] Verify the updated interaction build.

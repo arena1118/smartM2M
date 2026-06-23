@@ -1,4 +1,4 @@
-/* Figma 기준 메인 화면을 픽셀 단위로 맞추기 위한 스타일입니다. */
+/* Figma 기준 메인 화면에 텍스트 reveal과 섹션 fade-in을 얹는 스타일입니다. */
 .page {
   width: 100%;
   min-height: 100vh;
@@ -22,81 +22,103 @@
 .heroReference {
   position: absolute;
   inset: 0;
-  background-image: url("/assets/smartm2m/hero-reference.png");
+  background-image: url("/assets/smartm2m/hero-reference-clean.png");
   background-position: top center;
   background-repeat: no-repeat;
   background-size: 100% 100%;
 }
 
-.heroTyping {
+.heroReference::after {
   position: absolute;
-  top: calc(151 / 1288 * 100%);
-  left: 0;
-  z-index: 2;
-  width: 100%;
-  text-align: center;
-  pointer-events: none;
+  inset: 0;
+  background-image: url("/assets/smartm2m/hero-reference.png");
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  content: "";
+  opacity: 0;
+  animation: restoreHeroReference 0.28s ease forwards;
+  animation-delay: 4.15s;
 }
 
-.heroTyping p {
-  margin: 0 0 calc(24 / 1920 * 100vw);
-  color: rgba(160, 160, 160, 0.5);
+.heroTextCover {
+  position: absolute;
+  top: calc(149 / 1288 * 100%);
+  left: 50%;
+  z-index: 2;
+  width: min(calc(980 / 1920 * 100vw), 980px);
+  min-height: calc(255 / 1920 * 100vw);
+  padding-top: calc(3 / 1920 * 100vw);
+  text-align: center;
+  transform: translateX(-50%);
+  pointer-events: none;
+  animation: hideRevealLayer 0.24s ease forwards;
+  animation-delay: 4.18s;
+}
+
+.heroTextCover p {
+  margin: 0 0 calc(22 / 1920 * 100vw);
+  color: rgba(160, 160, 160, 0.52);
   font-size: clamp(10px, calc(14 / 1920 * 100vw), 14px);
   font-weight: 600;
   letter-spacing: -0.02em;
 }
 
-.heroTyping h1 {
-  display: grid;
-  gap: calc(8 / 1920 * 100vw);
+.revealHeadline {
   margin: 0;
-  color: #222222;
+  color: #c0bfbd;
   font-size: clamp(28px, calc(58 / 1920 * 100vw), 58px);
-  font-weight: 800;
+  font-weight: 900;
   letter-spacing: -0.06em;
   line-height: 1.17;
 }
 
-.typingLine {
-  position: relative;
-  display: block;
-  width: max-content;
-  margin: 0 auto;
-  white-space: nowrap;
+.revealLine {
+  display: inline;
 }
 
-.typingGhost {
-  color: rgba(34, 34, 34, 0.16);
-}
-
-.typingText {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: block;
-  overflow: hidden;
-  color: #222222;
-  white-space: nowrap;
-}
-
-.typingText::after {
-  display: inline-block;
-  width: 2px;
-  height: 0.88em;
-  margin-left: 4px;
-  background: #e51f2a;
-  content: "";
-  transform: translateY(0.1em);
-  animation: caretBlink 0.78s steps(2, start) 4;
+.revealChar {
+  display: inline;
+  color: #c0bfbd;
+  animation: revealCharColor 0.16s ease forwards;
+  animation-delay: var(--char-delay);
 }
 
 .referenceSection {
   background-image: var(--section-image);
 }
 
-@keyframes caretBlink {
-  50% {
+.sectionRevealed {
+  animation: sectionFadeIn 0.82s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes revealCharColor {
+  to {
+    color: #111111;
+  }
+}
+
+@keyframes restoreHeroReference {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes hideRevealLayer {
+  to {
     opacity: 0;
+  }
+}
+
+@keyframes sectionFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(34px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -106,25 +128,32 @@
     width: 1920px;
     margin: 0 auto;
   }
+
+  .heroTextCover {
+    min-height: 255px;
+  }
 }
 
 @media (max-width: 900px) {
-  .heroTyping {
+  .heroTextCover {
     top: 12%;
-    padding: 0 22px;
+    width: min(92vw, 760px);
+    min-height: 180px;
   }
 
-  .heroTyping h1 {
+  .revealHeadline {
     font-size: clamp(25px, 7vw, 44px);
-  }
-
-  .typingLine {
-    max-width: 100%;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .typingText::after {
+  .revealChar {
+    color: #111111;
+    animation: none;
+  }
+
+  .heroReference::after,
+  .heroTextCover {
     animation: none;
   }
 }

@@ -1,7 +1,8 @@
 "use client";
 
-// Figma 기준 화면과 최대한 동일하게 보이는 메인 퍼블리싱 화면을 구성합니다.
+// Figma 기준 화면 위에 검수 가능한 메인 인터랙션을 얹습니다.
 import { motion, useReducedMotion } from "framer-motion";
+import { useEffect } from "react";
 import styles from "./MainPage.module.css";
 
 const heroLines = ["항만, AI, 블록체인 그리고", "사이버보안 분야의", "기술 선도에 앞장서고 있습니다."];
@@ -14,22 +15,27 @@ const sections = [
   { id: "footer", label: "푸터", image: "/assets/smartm2m/footer-reference.png", height: 676 },
 ];
 
-function TypingLine({ children, delay }: { children: string; delay: number }) {
-  const reduceMotion = useReducedMotion();
-  const width = `${children.length}ch`;
+function RevealHeadline() {
+  let charIndex = 0;
 
   return (
-    <span className={styles.typingLine}>
-      <span className={styles.typingGhost}>{children}</span>
-      <motion.span
-        className={styles.typingText}
-        initial={reduceMotion ? false : { width: 0 }}
-        animate={{ width }}
-        transition={{ duration: reduceMotion ? 0 : 1.08, delay, ease: [0.4, 0, 0.2, 1] }}
-      >
-        {children}
-      </motion.span>
-    </span>
+    <h1 className={styles.revealHeadline} aria-label={heroLines.join(" ")}>
+      {heroLines.map((line, lineIndex) => (
+        <span className={styles.revealLine} key={line}>
+          {Array.from(line).map((char) => {
+            const delay = `${0.35 + charIndex * 0.055}s`;
+            charIndex += 1;
+
+            return (
+              <span className={styles.revealChar} style={{ "--char-delay": delay } as React.CSSProperties} key={`${line}-${charIndex}`}>
+                {char}
+              </span>
+            );
+          })}
+          {lineIndex < heroLines.length - 1 ? <br /> : null}
+        </span>
+      ))}
+    </h1>
   );
 }
 
@@ -57,24 +63,41 @@ function FigmaSection({
 export function MainPage() {
   const reduceMotion = useReducedMotion();
 
+  useEffect(() => {
+    if (reduceMotion) {
+      return;
+    }
+
+    const targets = Array.from(document.querySelectorAll<HTMLElement>(`.${styles.referenceSection}`));
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add(styles.sectionRevealed);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { rootMargin: "0px 0px -12% 0px", threshold: 0.12 },
+    );
+
+    targets.forEach((target) => observer.observe(target));
+
+    return () => observer.disconnect();
+  }, [reduceMotion]);
+
   return (
     <main className={styles.page}>
       <section className={styles.hero} aria-label="메인 히어로">
         <div className={styles.heroReference} aria-hidden="true" />
         <motion.div
-          className={styles.heroTyping}
+          className={styles.heroTextCover}
           initial={reduceMotion ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: reduceMotion ? 0 : 0.2, delay: 0.2 }}
+          transition={{ duration: reduceMotion ? 0 : 0.25 }}
         >
           <p>Smart Solutions for a Secure Tomorrow, Empowering Customers to Achieve More</p>
-          <h1 aria-label={heroLines.join(" ")}>
-            {heroLines.map((line, index) => (
-              <TypingLine key={line} delay={0.35 + index * 0.86}>
-                {line}
-              </TypingLine>
-            ))}
-          </h1>
+          <RevealHeadline />
         </motion.div>
       </section>
 
