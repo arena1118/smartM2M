@@ -1,133 +1,206 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
+import {
+  motion,
+  useMotionTemplate,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "framer-motion";
 import { useRef } from "react";
 import styles from "./ResultSection.module.css";
 
+// ─── 성과 카드 데이터 (피그마 디자인 기준) ─────────────────────────────────
 const achievements = [
   {
-    number: "01",
-    title: "항만 스마트 물류\n시스템",
-    subtitle: "Port Smart Logistics",
-    description: "국내외 항만 물류 자동화 및 스마트 관제 솔루션을 구축하여 물류 효율과 안전성을 동시에 혁신합니다.",
+    year: "2020",
+    title: "AI 팩토리\n전문기업 선정",
+    highlight: true,
   },
   {
-    number: "02",
-    title: "AI 기반 보안\n위협 탐지",
-    subtitle: "AI Security Threat Detection",
-    description: "생성형 AI와 머신러닝을 결합한 실시간 위협 탐지로 사이버 공격에 선제적으로 대응합니다.",
+    year: "2025",
+    title: "온디바이스 AI 및 Virtual Commissioning 기반\n제조혁신 플랫폼 개발 및 실증",
+    highlight: false,
   },
   {
-    number: "03",
-    title: "블록체인 데이터\n신뢰 플랫폼",
-    subtitle: "Blockchain Data Trust Platform",
-    description: "블록체인 기반 데이터 무결성 검증으로 신뢰할 수 있는 디지털 거래 환경을 제공합니다.",
+    year: "2025",
+    title: "선박 사이버 침해사고 분석 기술 및\n탐지·대응 기술 개발",
+    highlight: false,
   },
   {
-    number: "04",
-    title: "사이버보안\n관제 솔루션",
-    subtitle: "Cybersecurity Management",
-    description: "24시간 365일 보안관제 체계와 취약점 진단 리포트로 안전한 IT 인프라를 실현합니다.",
+    year: "2025",
+    title: "조선소·협력사 디지털 생산협업\n클라우드 서버 구축 및 플랫폼 개발",
+    highlight: false,
+  },
+  {
+    year: "2024",
+    title: "객체식별 AI 모델\n신뢰성 검증 기술 실증",
+    highlight: false,
   },
 ];
 
+// ─── 개별 카드 ───────────────────────────────────────────────────────────────
 function AchievementCard({
   item,
   index,
   progress,
-  total,
+  cardPhaseStart,
 }: {
   item: (typeof achievements)[number];
   index: number;
   progress: ReturnType<typeof useScroll>["scrollYProgress"];
-  total: number;
+  cardPhaseStart: number; // 카드 단계가 시작되는 progress 값
 }) {
-  const segment = 1 / total;
-  const start = index * segment;
-  const end = (index + 1) * segment;
-  const buffer = segment * 0.18;
+  const total = achievements.length;
+  const cardRange = 1 - cardPhaseStart;
+  const segment = cardRange / total;
+  const start = cardPhaseStart + index * segment;
+  const end = cardPhaseStart + (index + 1) * segment;
+  const fadeIn = segment * 0.2;
+  const fadeOut = segment * 0.2;
 
   const isFirst = index === 0;
 
   const y = useTransform(
     progress,
     isFirst
-      ? [0, end - buffer, end]
-      : [Math.max(0, start - segment * 0.6), start, end - buffer, end],
-    isFirst ? ["0%", "0%", "-110%"] : ["100%", "0%", "0%", "-110%"]
+      ? [cardPhaseStart, end - fadeOut, end]
+      : [start - fadeIn, start, end - fadeOut, end],
+    isFirst
+      ? ["0%", "0%", "-120%"]
+      : ["120%", "0%", "0%", "-120%"]
   );
+
   const opacity = useTransform(
     progress,
     isFirst
-      ? [0, end - buffer, end]
-      : [Math.max(0, start - segment * 0.6), start, end - buffer, end],
+      ? [cardPhaseStart, end - fadeOut, end]
+      : [start - fadeIn, start, end - fadeOut, end],
     isFirst ? [1, 1, 0] : [0, 1, 1, 0]
-  );
-  const scale = useTransform(
-    progress,
-    isFirst
-      ? [0, end - buffer, end]
-      : [Math.max(0, start - segment), start, end - buffer, end],
-    isFirst ? [1, 1, 0.96] : [0.94, 1, 1, 0.96]
   );
 
   return (
-    <motion.article className={styles.card} data-number={item.number} style={{ y, opacity, scale }}>
-      <span className={styles.cardNumber}>achievement {item.number}</span>
-      <div className={styles.cardContent}>
-        <h3 className={styles.cardTitle}>{item.title}</h3>
-        <p className={styles.cardSubtitle}>{item.subtitle}</p>
-        <p className={styles.cardDescription}>{item.description}</p>
-      </div>
-      <div className={styles.cardArrow} aria-hidden="true">→</div>
+    <motion.article
+      className={`${styles.card} ${item.highlight ? styles.cardHighlight : ""}`}
+      style={{ y, opacity }}
+    >
+      <span className={styles.cardYear}>{item.year}</span>
+      <p className={styles.cardTitle}>{item.title}</p>
     </motion.article>
   );
 }
 
+// ─── 메인 컴포넌트 ────────────────────────────────────────────────────────────
 export function ResultSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
+  const reduceMotion = useReducedMotion();
+
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end end"],
   });
 
-  return (
-    <section ref={sectionRef} id="result" className={styles.section} aria-label="핵심성과">
-      <div className={styles.sticky}>
-        {/* 좌측 고정 텍스트 */}
-        <div className={styles.left}>
-          <p className={styles.eyebrow}>ACHIEVEMENT</p>
-          <h2 className={styles.headline}>
-            기술의 높이와<br />현장의 깊이로,<br />
-            체감 가능한<br />혁신을 만들어갑니다.
-          </h2>
-          <p className={styles.body}>
-            스마트M2M은 고객 비즈니스에 대한 깊은 이해를 기반으로
-            데이터 준비부터 AI 에이전트 최적화에 이르기까지,
-            비즈니스 특성에 최적화된 환경을 정교하게 설계합니다.
-          </p>
-          <p className={styles.body}>
-            다양한 산업에서 축적된 기술력과 실행 경험을 바탕으로
-            비즈니스 전반에 걸쳐 의미 있는 변화를 만들어내고,
-            지속 가능한 성장을 실현합니다.
-          </p>
-        </div>
+  // 박스 확장 단계: 0 ~ 0.4
+  const BOX_EXPAND_END = 0.4;
 
-        {/* 우측 카드 스크롤 */}
-        <div className={styles.right}>
+  // clipPath 인셋값 (top, right, bottom, left — %)
+  // 시작: 화면 중앙에 작은 박스 (좌우 42%, 상하 38% 클립 → 약 16%×24% 크기)
+  // 끝: 전체 화면 (0%)
+  const clipTop = useTransform(scrollYProgress, [0, BOX_EXPAND_END], [36, 0]);
+  const clipRight = useTransform(scrollYProgress, [0, BOX_EXPAND_END], [42, 0]);
+  const clipBottom = useTransform(scrollYProgress, [0, BOX_EXPAND_END], [36, 0]);
+  const clipLeft = useTransform(scrollYProgress, [0, BOX_EXPAND_END], [42, 0]);
+  const clipRadius = useTransform(scrollYProgress, [0, BOX_EXPAND_END], [16, 0]);
+
+  // "inset(top right bottom left round radius)"
+  const clipPath = useMotionTemplate`inset(${clipTop}% ${clipRight}% ${clipBottom}% ${clipLeft}% round ${clipRadius}px)`;
+
+  // 텍스트 패널: 박스가 50% 확장된 이후 서서히 등장
+  const leftOpacity = useTransform(scrollYProgress, [0.15, BOX_EXPAND_END], [0, 1]);
+  const leftY = useTransform(scrollYProgress, [0.15, BOX_EXPAND_END], [32, 0]);
+
+  // 카드 트랙: 박스 확장 완료 후 등장
+  const cardsOpacity = useTransform(
+    scrollYProgress,
+    [BOX_EXPAND_END, BOX_EXPAND_END + 0.05],
+    [0, 1]
+  );
+
+  if (reduceMotion) {
+    return (
+      <section id="result" className={styles.section} aria-label="핵심성과">
+        <div className={styles.staticLayout}>
+          <LeftText />
           <div className={styles.cardsTrack}>
-            {achievements.map((item, index) => (
-              <AchievementCard
-                key={item.number}
-                item={item}
-                index={index}
-                progress={scrollYProgress}
-                total={achievements.length}
-              />
+            {achievements.map((item, i) => (
+              <article
+                key={i}
+                className={`${styles.card} ${item.highlight ? styles.cardHighlight : ""}`}
+              >
+                <span className={styles.cardYear}>{item.year}</span>
+                <p className={styles.cardTitle}>{item.title}</p>
+              </article>
             ))}
           </div>
         </div>
+      </section>
+    );
+  }
+
+  return (
+    <section ref={sectionRef} id="result" className={styles.section} aria-label="핵심성과">
+      <div className={styles.sticky}>
+        {/* ── 확장되는 어두운 박스 ── */}
+        <motion.div className={styles.expandBox} style={{ clipPath }}>
+          {/* 배경 영상 (영상 파일 준비 후 src 연결) */}
+          <video
+            className={styles.bgVideo}
+            autoPlay
+            muted
+            loop
+            playsInline
+            poster="/assets/smartm2m/result-visual.png"
+            /* src="/assets/smartm2m/result-bg.mp4" */
+          />
+
+          {/* 좌측 텍스트 */}
+          <motion.div
+            className={styles.leftPanel}
+            style={{ opacity: leftOpacity, y: leftY }}
+          >
+            <LeftText />
+          </motion.div>
+
+          {/* 우측 카드 슬라이드 */}
+          <motion.div className={styles.rightPanel} style={{ opacity: cardsOpacity }}>
+            <div className={styles.cardsTrack}>
+              {achievements.map((item, index) => (
+                <AchievementCard
+                  key={index}
+                  item={item}
+                  index={index}
+                  progress={scrollYProgress}
+                  cardPhaseStart={BOX_EXPAND_END}
+                />
+              ))}
+            </div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
+  );
+}
+
+function LeftText() {
+  return (
+    <>
+      <p className={styles.eyebrow}>RESULT</p>
+      <h2 className={styles.headline}>핵심성과</h2>
+      <p className={styles.body}>
+        소프트웨어 중심의 디지털 전환을 넘어,<br />
+        이제는 AI 전환(AIX)이<br />
+        새로운 혁신의 중심으로 부상하고 있습니다.
+      </p>
+    </>
   );
 }

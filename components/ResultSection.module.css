@@ -1,75 +1,106 @@
-/* 핵심성과 섹션 — i-bricks 스타일 sticky scroll + 카드 인터랙션 */
+/* 핵심성과 섹션 — 박스 확장 + 카드 슬라이드 인터랙션 */
 
+/* ── 섹션 스크롤 컨테이너 ── */
 .section {
   position: relative;
-  /* 카드 수(4) × 100vh + 전후 여유 */
-  min-height: calc(4 * 100vh + 160vh);
-  background: #1650ff;
+  /* 확장 단계(40%) + 카드 5장(각 12%) = 총 100% 기준으로 충분한 스크롤 공간 */
+  min-height: calc(5 * 100vh + 200vh);
+  background: #0a0a0f;
 }
 
+/* ── 스티키 뷰포트 ── */
 .sticky {
   position: sticky;
   top: 0;
-  display: grid;
-  grid-template-columns: minmax(320px, 0.9fr) minmax(0, 1.1fr);
-  max-height: 1200px;
+  width: 100%;
   height: 100vh;
+  max-height: 1200px;
   overflow: hidden;
-  padding: 0 clamp(32px, 4vw, 80px);
-  gap: clamp(40px, 4vw, 80px);
+}
+
+/* ── 확장되는 다크 박스 ── */
+.expandBox {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: minmax(280px, 0.7fr) 1fr;
+  overflow: hidden;
+  background: #0a0a0f;
+  will-change: clip-path;
+}
+
+/* ── 배경 영상 / 이미지 ── */
+.bgVideo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: left center;
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+/* 영상이 없을 때 배경 이미지 폴백 */
+.expandBox::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("/assets/smartm2m/result-visual.png");
+  background-size: cover;
+  background-position: center center;
+  z-index: 0;
 }
 
 /* ── 좌측 텍스트 패널 ── */
-.left {
+.leftPanel {
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: clamp(60px, 6vh, 120px) 0;
+  padding: clamp(60px, 6vh, 120px) clamp(32px, 4vw, 72px);
 }
 
 .eyebrow {
-  margin: 0 0 20px;
-  color: rgba(255, 255, 255, 0.5);
+  margin: 0 0 16px;
+  color: rgba(255, 255, 255, 0.45);
   font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.1em;
 }
 
 .headline {
-  margin: 0 0 clamp(28px, 3vh, 48px);
+  margin: 0 0 clamp(20px, 2.5vh, 36px);
   color: #ffffff;
-  font-size: clamp(28px, 2.8vw, 46px);
+  font-size: clamp(36px, 4vw, 64px);
   font-weight: 800;
   letter-spacing: -0.04em;
-  line-height: 1.2;
-  word-break: keep-all;
+  line-height: 1.1;
 }
 
 .body {
-  max-width: 400px;
-  margin: 0 0 16px;
-  color: rgba(255, 255, 255, 0.65);
+  margin: 0;
+  color: rgba(255, 255, 255, 0.55);
   font-size: clamp(13px, 1vw, 15px);
-  line-height: 1.75;
+  line-height: 1.8;
   word-break: keep-all;
 }
 
-.body:last-child {
-  margin-bottom: 0;
-}
-
-/* ── 우측 카드 트랙 ── */
-.right {
+/* ── 우측 카드 패널 ── */
+.rightPanel {
   position: relative;
+  z-index: 2;
   display: flex;
   align-items: center;
   overflow: hidden;
+  padding: clamp(40px, 5vh, 80px) clamp(24px, 3vw, 56px);
 }
 
 .cardsTrack {
   position: relative;
   width: 100%;
-  height: min(720px, 78vh);
+  height: min(600px, 70vh);
 }
 
 /* ── 카드 ── */
@@ -79,137 +110,82 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: clamp(28px, 3vw, 44px);
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.14);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  overflow: hidden;
+  padding: clamp(24px, 3vw, 40px);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   will-change: transform, opacity;
 }
 
-/* 대형 장식 숫자 */
-.card::before {
-  content: attr(data-number);
-  position: absolute;
-  right: -20px;
-  bottom: -30px;
-  font-size: clamp(180px, 20vw, 280px);
-  font-weight: 900;
-  color: rgba(255, 255, 255, 0.07);
-  line-height: 1;
-  pointer-events: none;
-  user-select: none;
+/* 강조 카드 (AI 팩토리 선정 등) */
+.cardHighlight {
+  background: linear-gradient(135deg, #c0392b 0%, #8b1a1a 100%);
+  border-color: rgba(255, 255, 255, 0.15);
 }
 
-.cardNumber {
-  align-self: flex-end;
+.cardYear {
+  display: block;
   color: rgba(255, 255, 255, 0.45);
   font-size: 12px;
   font-weight: 700;
-  font-style: italic;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
 }
 
-.cardContent {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding-bottom: clamp(16px, 2.5vh, 32px);
+.cardHighlight .cardYear {
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .cardTitle {
-  margin: 0 0 10px;
+  margin: 0;
   color: #ffffff;
-  font-size: clamp(26px, 2.8vw, 44px);
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  line-height: 1.2;
+  font-size: clamp(22px, 2.4vw, 36px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.3;
   white-space: pre-line;
   word-break: keep-all;
 }
 
-.cardSubtitle {
-  margin: 0 0 16px;
-  color: rgba(255, 255, 255, 0.55);
-  font-size: clamp(12px, 0.9vw, 14px);
-  font-weight: 600;
-  letter-spacing: 0.02em;
-}
-
-.cardDescription {
-  max-width: 400px;
-  margin: 0;
-  color: rgba(255, 255, 255, 0.68);
-  font-size: clamp(13px, 0.9vw, 15px);
-  line-height: 1.7;
-  word-break: keep-all;
-}
-
-.cardArrow {
-  align-self: flex-start;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  border: 1.5px solid rgba(255, 255, 255, 0.45);
-  color: #ffffff;
-  font-size: 17px;
-  cursor: pointer;
-  transition: background 0.2s ease, border-color 0.2s ease;
-}
-
-.cardArrow:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.8);
+/* ── reduced-motion 폴백 ── */
+.staticLayout {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.7fr) 1fr;
+  min-height: 100vh;
+  max-height: 1200px;
+  background: #0a0a0f;
+  padding: 80px clamp(32px, 4vw, 72px);
+  gap: 40px;
+  background-image: url("/assets/smartm2m/result-visual.png");
+  background-size: cover;
+  background-position: center center;
 }
 
 /* ── 반응형 ── */
 @media (max-width: 900px) {
-  .section {
-    min-height: calc(4 * 80vh + 100vh);
-  }
-
-  .sticky {
+  .expandBox {
     grid-template-columns: 1fr;
     grid-template-rows: auto 1fr;
-    height: auto;
-    max-height: none;
-    padding: 60px 24px 32px;
-    gap: 32px;
   }
 
-  .left {
-    padding: 0;
+  .leftPanel {
+    padding: 48px 24px 24px;
+    justify-content: flex-start;
   }
 
-  .right {
-    height: 60vw;
-    min-height: 320px;
+  .rightPanel {
+    padding: 0 24px 48px;
   }
 
   .cardsTrack {
-    height: 100%;
+    height: 55vw;
+    min-height: 260px;
   }
 
   .headline {
-    font-size: clamp(24px, 6vw, 36px);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .card {
-    position: relative;
-    opacity: 1 !important;
-    transform: none !important;
+    font-size: clamp(28px, 7vw, 44px);
   }
 
-  .cardsTrack {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    height: auto;
+  .staticLayout {
+    grid-template-columns: 1fr;
   }
 }
