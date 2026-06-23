@@ -151,9 +151,11 @@ function TechnicalSceneCard({
   const start = index * segment;
   const end = (index + 1) * segment;
   const fade = segment * 0.16;
-  const y = useTransform(progress, [start, start + fade, end - fade, end], [-170, 0, 0, 170]);
-  const opacity = useTransform(progress, [start, start + fade, end - fade, end], [0, 1, 1, 0]);
-  const scale = useTransform(progress, [start, start + fade, end - fade, end], [0.985, 1, 1, 0.985]);
+  const enterY = index === 0 ? 0 : -150;
+  const enterOpacity = index === 0 ? 1 : 0;
+  const y = useTransform(progress, [start, start + fade, end - fade, end], [enterY, 0, 0, 150]);
+  const opacity = useTransform(progress, [start, start + fade, end - fade, end], [enterOpacity, 1, 1, 0]);
+  const scale = useTransform(progress, [start, start + fade, end - fade, end], [1, 1, 1, 0.99]);
 
   return (
     <motion.article className={styles.technicalVisualCard} style={{ y, opacity, scale }}>
@@ -165,6 +167,8 @@ function TechnicalSceneCard({
 
 function TechnicalInteractionSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
+  const activeSceneRef = useRef(0);
+  const snapLockRef = useRef(false);
   const [activeGroup, setActiveGroup] = useState(0);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -173,8 +177,60 @@ function TechnicalInteractionSection() {
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     const sceneIndex = Math.min(technicalScenes.length - 1, Math.max(0, Math.floor(latest * technicalScenes.length)));
+    activeSceneRef.current = sceneIndex;
     setActiveGroup(technicalScenes[sceneIndex].group);
   });
+
+  useEffect(() => {
+    const section = sectionRef.current;
+
+    if (!section) {
+      return;
+    }
+
+    const getSceneScrollTop = (index: number) => {
+      const rect = section.getBoundingClientRect();
+      const sectionTop = rect.top + window.scrollY;
+      const maxScrollable = Math.max(1, section.offsetHeight - window.innerHeight);
+      const step = maxScrollable / Math.max(1, technicalScenes.length - 1);
+
+      return sectionTop + step * index;
+    };
+
+    const handleWheel = (event: WheelEvent) => {
+      const rect = section.getBoundingClientRect();
+      const isInsideTechnical = rect.top <= 2 && rect.bottom >= window.innerHeight - 2;
+
+      if (!isInsideTechnical || snapLockRef.current || Math.abs(event.deltaY) < 18) {
+        return;
+      }
+
+      const direction = event.deltaY > 0 ? 1 : -1;
+      const currentScene = activeSceneRef.current;
+      const nextScene = Math.min(technicalScenes.length - 1, Math.max(0, currentScene + direction));
+
+      if (nextScene === currentScene) {
+        return;
+      }
+
+      event.preventDefault();
+      snapLockRef.current = true;
+      window.scrollTo({
+        top: getSceneScrollTop(nextScene),
+        behavior: "smooth",
+      });
+
+      window.setTimeout(() => {
+        snapLockRef.current = false;
+      }, 720);
+    };
+
+    window.addEventListener("wheel", handleWheel, { passive: false });
+
+    return () => {
+      window.removeEventListener("wheel", handleWheel);
+    };
+  }, []);
 
   const activeText = technicalTexts[activeGroup];
 
@@ -183,6 +239,7 @@ function TechnicalInteractionSection() {
       <div className={styles.technicalSticky}>
         <div className={styles.technicalBackground} aria-hidden="true" />
         <header className={styles.technicalTitle}>
+          <div className={styles.technicalTitleIcon} aria-hidden="true" />
           <p>TECHNICAL</p>
           <h2>기술력</h2>
         </header>
@@ -195,7 +252,7 @@ function TechnicalInteractionSection() {
           <motion.article
             key={activeText.title}
             className={styles.technicalText}
-            initial={{ opacity: 0, y: 28 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.34, ease: "easeOut" }}
           >
@@ -204,6 +261,15 @@ function TechnicalInteractionSection() {
             <h3>{activeText.title}</h3>
             <span>{activeText.body}</span>
           </motion.article>
+        </div>
+        <div className={styles.technicalScrollCue} aria-hidden="true">
+          <span className={styles.technicalScrollLine} />
+          <img
+            className={styles.technicalMouseIcon}
+            src="/assets/smartm2m/technical-scroll-mouse.svg"
+            alt=""
+          />
+          <span className={styles.technicalScrollText}>Scroll</span>
         </div>
       </div>
     </section>

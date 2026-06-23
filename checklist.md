@@ -22,3 +22,13 @@
 - [x] Restore the native mouse pointer and resize follower dot to 10px with 50% opacity.
 - [x] Slow down technical scene transitions with long scroll hold intervals.
 - [x] Adjust hero and technical typography closer to the Figma weight and size.
+- [x] Restore only the technical section visual style toward the Figma reference.
+- [x] Capture the local technical section for review before deployment.
+- [x] Add the technical title icon box and bottom scroll/mouse cue.
+- [x] Shorten the technical sticky scroll timing so each wheel step advances the cards.
+- [x] Move the technical scroll cue back to the Figma-like independent bottom area.
+- [x] Add full-page-like wheel snapping for each technical image scene.
+- [x] Assetize the technical scroll mouse icon for replacement.
+- [x] Match the technical scroll cue line and text styling to the Figma reference.
+- [x] Reduce the technical scroll cue size against the Figma reference.
+- [x] Add vertical motion to the technical mouse icon.
