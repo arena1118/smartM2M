@@ -33,6 +33,7 @@
 .technicalSection {
   position: relative;
   overflow: clip;
+  padding-left: 50px;
   background: #f7f7f7;
 }
 

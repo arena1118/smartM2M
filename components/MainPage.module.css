@@ -1,0 +1,468 @@
+/* 메인 페이지의 레이아웃과 인터랙션 스타일을 정의합니다. */
+.page {
+  min-height: 100vh;
+  overflow-x: clip;
+  color: #111111;
+  background: #f7f7f7;
+}
+
+.gnb {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 50px;
+  z-index: 20;
+  display: flex;
+  height: 85px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 clamp(24px, 4vw, 70px);
+  background: rgba(247, 247, 247, 0.72);
+  backdrop-filter: blur(18px);
+}
+
+.gnb strong {
+  color: #e51f2a;
+  font-size: 20px;
+  letter-spacing: -0.02em;
+}
+
+.gnb nav {
+  display: flex;
+  gap: clamp(18px, 3vw, 54px);
+}
+
+.gnb a {
+  color: #292929;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.leftRail {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 21;
+  display: grid;
+  width: 50px;
+  place-items: center;
+  border-right: 1px solid rgba(0, 0, 0, 0.06);
+  color: #b6b6b6;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  writing-mode: vertical-rl;
+}
+
+.hero {
+  position: relative;
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  padding: 132px clamp(22px, 6vw, 120px) 80px 72px;
+  text-align: center;
+}
+
+.hero::before {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 18% 8%, rgba(255, 255, 255, 0.95), transparent 34%),
+    radial-gradient(circle at 78% 34%, rgba(229, 31, 42, 0.06), transparent 28%),
+    linear-gradient(130deg, rgba(255, 255, 255, 0.74), rgba(247, 247, 247, 0));
+  content: "";
+}
+
+.heroEyebrow,
+.heroTitle,
+.heroButton,
+.heroObject {
+  position: relative;
+  z-index: 1;
+}
+
+.heroEyebrow {
+  margin: 0 0 18px;
+  color: #b5b5b5;
+  font-size: clamp(12px, 1vw, 15px);
+  font-weight: 700;
+}
+
+.heroTitle {
+  display: grid;
+  gap: 6px;
+  min-height: clamp(150px, 16vw, 220px);
+  margin: 0;
+  color: #111111;
+  font-size: clamp(38px, 5.2vw, 76px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.12;
+}
+
+.typingLine {
+  position: relative;
+  display: block;
+  width: max-content;
+  max-width: min(100%, 1160px);
+  margin: 0 auto;
+  white-space: nowrap;
+}
+
+.ghostText {
+  color: rgba(17, 17, 17, 0.16);
+}
+
+.typedText {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  overflow: hidden;
+  color: #171717;
+  white-space: nowrap;
+}
+
+.typedText::after {
+  display: inline-block;
+  width: 2px;
+  height: 0.9em;
+  margin-left: 5px;
+  background: #e51f2a;
+  content: "";
+  transform: translateY(0.12em);
+  animation: caretBlink 0.8s steps(2, start) 4;
+}
+
+.heroButton {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 26px;
+  border-radius: 999px;
+  padding: 0 26px;
+  background: #111111;
+  box-shadow: 0 14px 32px rgba(229, 31, 42, 0.24);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.heroButton::after {
+  margin-left: 12px;
+  color: #e51f2a;
+  content: ">";
+}
+
+.heroObject {
+  width: min(46vw, 620px);
+  min-width: 280px;
+  aspect-ratio: 1.4 / 1;
+  margin-top: 56px;
+}
+
+.ring,
+.lightbulb {
+  position: absolute;
+  border-radius: 999px;
+}
+
+.ring {
+  inset: 16% 8%;
+  border: 34px solid rgba(210, 214, 216, 0.44);
+  box-shadow:
+    inset 0 20px 42px rgba(255, 255, 255, 0.74),
+    0 36px 50px rgba(0, 0, 0, 0.06);
+  transform: rotate(-18deg);
+}
+
+.lightbulb {
+  top: 20%;
+  left: 35%;
+  width: 31%;
+  aspect-ratio: 0.72 / 1;
+  background:
+    radial-gradient(circle at 42% 28%, rgba(255, 255, 255, 0.96), transparent 20%),
+    linear-gradient(160deg, rgba(255, 255, 255, 0.94), rgba(198, 206, 208, 0.64));
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.1);
+}
+
+.lightbulb::after {
+  position: absolute;
+  right: 24%;
+  bottom: -18%;
+  left: 24%;
+  height: 24%;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #cdd1d2, #f7f7f7);
+  content: "";
+}
+
+.sectionTitle {
+  width: min(100%, 1770px);
+  margin: 0 auto clamp(34px, 4vw, 72px);
+}
+
+.sectionTitle p {
+  margin: 0;
+  color: #e51f2a;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.sectionTitle h2 {
+  margin: 8px 0 0;
+  font-size: clamp(42px, 4.8vw, 76px);
+  line-height: 1;
+}
+
+.results,
+.history,
+.news {
+  padding: clamp(86px, 10vw, 170px) clamp(22px, 5vw, 100px) clamp(92px, 10vw, 170px) 72px;
+}
+
+.resultGrid {
+  display: grid;
+  width: min(100%, 1770px);
+  margin: 0 auto;
+  grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+  gap: 34px;
+}
+
+.resultVisual {
+  display: flex;
+  min-height: 620px;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 12px;
+  padding: clamp(28px, 4vw, 58px);
+  background:
+    radial-gradient(circle at 56% 70%, rgba(229, 31, 42, 0.72), transparent 18%),
+    radial-gradient(circle at 58% 70%, rgba(68, 95, 255, 0.55), transparent 28%),
+    linear-gradient(135deg, #10141c, #05070a);
+  color: #ffffff;
+  overflow: hidden;
+}
+
+.resultVisual span {
+  color: rgba(255, 255, 255, 0.54);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.resultVisual strong {
+  max-width: 560px;
+  font-size: clamp(32px, 4vw, 64px);
+  letter-spacing: -0.04em;
+  line-height: 1.08;
+}
+
+.resultCards {
+  display: grid;
+  gap: 24px;
+}
+
+.resultCard,
+.resultCardRed {
+  min-height: 190px;
+  padding: 34px;
+}
+
+.resultCard {
+  background: #ffffff;
+}
+
+.resultCardRed {
+  background: #e83035;
+  color: #ffffff;
+}
+
+.resultCard span,
+.resultCardRed span,
+.newsCard span,
+.newsCardHot span {
+  color: #999999;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.resultCardRed span,
+.newsCardHot span {
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.resultCard h3,
+.resultCardRed h3 {
+  margin: 18px 0 0;
+  font-size: clamp(24px, 2vw, 34px);
+  line-height: 1.2;
+}
+
+.history {
+  background:
+    radial-gradient(#d8d8d8 1px, transparent 1px),
+    #f4f4f4;
+  background-size: 40px 40px;
+}
+
+.historyPanel {
+  display: grid;
+  width: min(100%, 1770px);
+  margin: 0 auto;
+  grid-template-columns: 170px minmax(0, 1fr) auto;
+  gap: 32px;
+  align-items: start;
+  padding: 38px 30px;
+  background: rgba(255, 255, 255, 0.74);
+}
+
+.historyPanel strong {
+  font-size: 26px;
+}
+
+.historyPanel ul {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.historyPanel li::before {
+  margin-right: 10px;
+  color: #e51f2a;
+  content: "+";
+}
+
+.historyPanel button {
+  border: 0;
+  background: transparent;
+  color: #e51f2a;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.newsTrack {
+  display: grid;
+  width: min(100%, 1770px);
+  margin: 0 auto;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.newsCard,
+.newsCardHot {
+  display: flex;
+  min-height: 260px;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 28px;
+}
+
+.newsCard {
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.34)),
+    linear-gradient(135deg, #d8dde1, #7d858e);
+  color: #ffffff;
+}
+
+.newsCardHot {
+  background: #ef3a36;
+  color: #ffffff;
+}
+
+.newsCard h3,
+.newsCardHot h3 {
+  margin: 0;
+  font-size: clamp(22px, 2vw, 30px);
+  line-height: 1.28;
+}
+
+.footer {
+  display: flex;
+  min-height: 280px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 clamp(22px, 5vw, 100px) 0 72px;
+  color: #c5c5c5;
+  background: #ffffff;
+}
+
+.footer strong {
+  font-size: 30px;
+}
+
+.footer a {
+  display: grid;
+  width: 54px;
+  height: 54px;
+  place-items: center;
+  border: 1px solid #eeeeee;
+  color: #9c9c9c;
+  text-decoration: none;
+}
+
+@keyframes caretBlink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (max-width: 900px) {
+  .gnb {
+    left: 0;
+    height: 68px;
+  }
+
+  .gnb nav {
+    display: none;
+  }
+
+  .leftRail {
+    display: none;
+  }
+
+  .hero,
+  .results,
+  .history,
+  .news,
+  .footer {
+    padding-right: 22px;
+    padding-left: 22px;
+  }
+
+  .heroTitle {
+    min-height: 132px;
+    font-size: clamp(32px, 8vw, 56px);
+  }
+
+  .typingLine {
+    white-space: normal;
+  }
+
+  .typedText {
+    white-space: nowrap;
+  }
+
+  .resultGrid,
+  .newsTrack,
+  .historyPanel {
+    grid-template-columns: 1fr;
+  }
+
+  .resultVisual {
+    min-height: 430px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .typedText::after {
+    animation: none;
+  }
+}

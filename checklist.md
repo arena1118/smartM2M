@@ -6,3 +6,7 @@
 - [x] Verify install/build commands.
 - [x] Convert grouped step visuals into sequential image-text scenes.
 - [x] Verify the updated sequential scroll build.
+- [x] Add the adjusted main page hero with one-time typing overlay animation.
+- [x] Add scroll-triggered fade-in animation to main sections.
+- [x] Keep the technical section scroll interaction style in the main page flow.
+- [x] Verify the animated main page build.
