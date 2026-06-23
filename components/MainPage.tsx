@@ -10,11 +10,11 @@ import {
 } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import styles from "./MainPage.module.css";
+import { ResultSection } from "./ResultSection";
 
 const heroLines = ["항만, AI, 블록체인 그리고", "사이버보안 분야의", "기술 선도에 앞장서고 있습니다."];
 
 const pageSections = [
-  { id: "result", label: "핵심성과", image: "/assets/smartm2m/result-reference.png", height: 1550 },
   { id: "history", label: "연혁", image: "/assets/smartm2m/history-reference.png", height: 771 },
   { id: "news", label: "소식", image: "/assets/smartm2m/news-reference.png", height: 816 },
   { id: "footer", label: "푸터", image: "/assets/smartm2m/footer-reference.png", height: 676 },
@@ -259,6 +259,8 @@ export function MainPage() {
       </section>
 
       <TechnicalInteractionSection />
+
+      <ResultSection />
 
       {pageSections.map((section) => (
         <FigmaSection key={section.id} {...section} />

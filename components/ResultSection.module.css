@@ -1,0 +1,215 @@
+/* 핵심성과 섹션 — i-bricks 스타일 sticky scroll + 카드 인터랙션 */
+
+.section {
+  position: relative;
+  /* 카드 수(4) × 100vh + 전후 여유 */
+  min-height: calc(4 * 100vh + 160vh);
+  background: #1650ff;
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+  display: grid;
+  grid-template-columns: minmax(320px, 0.9fr) minmax(0, 1.1fr);
+  max-height: 1200px;
+  height: 100vh;
+  overflow: hidden;
+  padding: 0 clamp(32px, 4vw, 80px);
+  gap: clamp(40px, 4vw, 80px);
+}
+
+/* ── 좌측 텍스트 패널 ── */
+.left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(60px, 6vh, 120px) 0;
+}
+
+.eyebrow {
+  margin: 0 0 20px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+.headline {
+  margin: 0 0 clamp(28px, 3vh, 48px);
+  color: #ffffff;
+  font-size: clamp(28px, 2.8vw, 46px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.2;
+  word-break: keep-all;
+}
+
+.body {
+  max-width: 400px;
+  margin: 0 0 16px;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: clamp(13px, 1vw, 15px);
+  line-height: 1.75;
+  word-break: keep-all;
+}
+
+.body:last-child {
+  margin-bottom: 0;
+}
+
+/* ── 우측 카드 트랙 ── */
+.right {
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.cardsTrack {
+  position: relative;
+  width: 100%;
+  height: min(720px, 78vh);
+}
+
+/* ── 카드 ── */
+.card {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(28px, 3vw, 44px);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  overflow: hidden;
+  will-change: transform, opacity;
+}
+
+/* 대형 장식 숫자 */
+.card::before {
+  content: attr(data-number);
+  position: absolute;
+  right: -20px;
+  bottom: -30px;
+  font-size: clamp(180px, 20vw, 280px);
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.07);
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+.cardNumber {
+  align-self: flex-end;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 12px;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 0.04em;
+}
+
+.cardContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-bottom: clamp(16px, 2.5vh, 32px);
+}
+
+.cardTitle {
+  margin: 0 0 10px;
+  color: #ffffff;
+  font-size: clamp(26px, 2.8vw, 44px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.2;
+  white-space: pre-line;
+  word-break: keep-all;
+}
+
+.cardSubtitle {
+  margin: 0 0 16px;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: clamp(12px, 0.9vw, 14px);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.cardDescription {
+  max-width: 400px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: clamp(13px, 0.9vw, 15px);
+  line-height: 1.7;
+  word-break: keep-all;
+}
+
+.cardArrow {
+  align-self: flex-start;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.45);
+  color: #ffffff;
+  font-size: 17px;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.cardArrow:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.8);
+}
+
+/* ── 반응형 ── */
+@media (max-width: 900px) {
+  .section {
+    min-height: calc(4 * 80vh + 100vh);
+  }
+
+  .sticky {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    height: auto;
+    max-height: none;
+    padding: 60px 24px 32px;
+    gap: 32px;
+  }
+
+  .left {
+    padding: 0;
+  }
+
+  .right {
+    height: 60vw;
+    min-height: 320px;
+  }
+
+  .cardsTrack {
+    height: 100%;
+  }
+
+  .headline {
+    font-size: clamp(24px, 6vw, 36px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    position: relative;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .cardsTrack {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: auto;
+  }
+}
