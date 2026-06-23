@@ -10,3 +10,6 @@
 - [x] Add scroll-triggered fade-in animation to main sections.
 - [x] Keep the technical section scroll interaction style in the main page flow.
 - [x] Verify the animated main page build.
+- [x] Switch the main page to Figma-first pixel matching.
+- [x] Create replaceable SmartM2M image asset slots.
+- [x] Verify at least 99% visual similarity against the Figma screenshot.
