@@ -358,7 +358,6 @@ export function MainPage() {
             playsInline
             preload="metadata"
           />
-          <img className={styles.heroObject} src="/assets/smartm2m/hero-object.png" alt="" />
         </div>
         <motion.div
           className={styles.heroTextCover}

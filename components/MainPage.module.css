@@ -232,16 +232,6 @@
   pointer-events: none;
 }
 
-.heroObject {
-  position: absolute;
-  top: calc(73 / 710 * 100%);
-  left: calc(590 / 1770 * 100%);
-  z-index: 2;
-  width: calc(680 / 1770 * 100%);
-  opacity: 0.96;
-  mix-blend-mode: multiply;
-}
-
 .heroTextCover {
   position: absolute;
   top: calc(149 / 1288 * 100%);
