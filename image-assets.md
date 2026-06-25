@@ -10,7 +10,7 @@
 | `public/assets/smartm2m/hero-reference-clean.png` | 1920x1288 | 히어로 reveal 시작 상태 | 히어로 타이틀 텍스트가 제거된 reveal 전용 배경 |
 | `public/assets/smartm2m/technical-reference.png` | 1920x1372 | 기술력 섹션 전체 | 기술력 배경과 화면/텍스트 기준 |
 | `public/assets/smartm2m/result-reference.png` | 1920x1550 | 핵심성과 섹션 전체 | 성과 카드, 로고, 배경 기준 |
-| `public/assets/smartm2m/history-reference.png` | 1920x771 | 연혁 섹션 전체 | 연혁 아코디언 기준 |
+| `public/assets/smartm2m/history-reference.png` | 1920x2082 | 연혁 섹션 전체 | Figma 기준 전체 연혁 리스트 |
 | `public/assets/smartm2m/news-reference.png` | 1920x816 | 소식 섹션 전체 | 뉴스 카드와 슬라이드 컨트롤 기준 |
 | `public/assets/smartm2m/footer-reference.png` | 1920x676 | 푸터 전체 | 푸터 정보와 top 버튼 기준 |
 | `public/assets/smartm2m/hero-object.png` | 560x470 | 히어로 오브젝트 후보 | 추후 히어로를 DOM화할 때 교체할 3D 오브젝트 |

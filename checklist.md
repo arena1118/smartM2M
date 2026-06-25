@@ -32,3 +32,8 @@
 - [x] Match the technical scroll cue line and text styling to the Figma reference.
 - [x] Reduce the technical scroll cue size against the Figma reference.
 - [x] Add vertical motion to the technical mouse icon.
+- [x] Compare the current local page against Figma node 1441:5486.
+- [x] Apply the Figma node 1431:19835 core-results start view.
+- [x] Verify the updated page with build and local visual capture.
+- [x] Compare the history section against the current Figma reference.
+- [x] Update the history section asset or placement to match Figma.

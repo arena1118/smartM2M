@@ -15,7 +15,7 @@ import { ResultSection } from "./ResultSection";
 const heroLines = ["항만, AI, 블록체인 그리고", "사이버보안 분야의", "기술 선도에 앞장서고 있습니다."];
 
 const pageSections = [
-  { id: "history", label: "연혁", image: "/assets/smartm2m/history-reference.png", height: 771 },
+  { id: "history", label: "연혁", image: "/assets/smartm2m/history-reference.png", height: 2082 },
   { id: "news", label: "소식", image: "/assets/smartm2m/news-reference.png", height: 816 },
   { id: "footer", label: "푸터", image: "/assets/smartm2m/footer-reference.png", height: 676 },
 ];
