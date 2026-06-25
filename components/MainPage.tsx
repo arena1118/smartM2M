@@ -14,6 +14,8 @@ import { ResultSection } from "./ResultSection";
 
 const heroLines = ["항만, AI, 블록체인 그리고", "사이버보안 분야의", "기술 선도에 앞장서고 있습니다."];
 
+const heroNavItems = ["회사소개", "항만물류 IT", "항만 블록체인", "AI 자율제조", "사이버보안", "소식", "인재채용", "지식자산"];
+
 const pageSections = [
   { id: "history", label: "연혁", image: "/assets/smartm2m/history-reference.png", height: 2082 },
   { id: "news", label: "소식", image: "/assets/smartm2m/news-reference.png", height: 816 },
@@ -312,17 +314,52 @@ export function MainPage() {
     <main className={styles.page}>
       <CursorFollower />
       <section className={styles.hero} aria-label="메인 히어로">
-        <div className={styles.heroReference} aria-hidden="true" />
-        <video
-          className={styles.heroVideo}
-          src="/assets/smartm2m/hero-video.mp4"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          aria-hidden="true"
-        />
+        <div className={styles.heroBackdrop} aria-hidden="true" />
+        <header className={styles.heroHeader}>
+          <a className={styles.heroLogo} href="/" aria-label="SmartM2M 홈">
+            <span className={styles.heroLogoMark} aria-hidden="true">
+              <span />
+              <span />
+              <span />
+            </span>
+            <span className={styles.heroLogoText}>
+              Smart<span>M2M</span>
+            </span>
+          </a>
+          <nav className={styles.heroNav} aria-label="주요 메뉴">
+            {heroNavItems.map((item) => (
+              <a href="/" key={item}>
+                {item}
+              </a>
+            ))}
+          </nav>
+          <div className={styles.heroContact}>
+            <a href="/">Contact Us</a>
+            <span className={styles.heroMenuIcon} aria-hidden="true">
+              <span />
+              <span />
+              <span />
+              <span />
+            </span>
+          </div>
+        </header>
+        <aside className={styles.heroRail} aria-hidden="true">
+          <span>More</span>
+          <span>Smart Solutions for a Secure Tomorrow, Empowering Customers to Achieve More</span>
+          <span>Back to the top</span>
+        </aside>
+        <div className={styles.heroMediaFrame} aria-hidden="true">
+          <video
+            className={styles.heroVideo}
+            src="/assets/smartm2m/hero-video.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+          />
+          <img className={styles.heroObject} src="/assets/smartm2m/hero-object.png" alt="" />
+        </div>
         <motion.div
           className={styles.heroTextCover}
           initial={reduceMotion ? false : { opacity: 0 }}
@@ -331,6 +368,10 @@ export function MainPage() {
         >
           <p>Smart Solutions for a Secure Tomorrow, Empowering Customers to Achieve More</p>
           <RevealHeadline />
+          <a className={styles.heroButton} href="/">
+            홍보영상 보러가기
+            <span aria-hidden="true">›</span>
+          </a>
         </motion.div>
       </section>
 

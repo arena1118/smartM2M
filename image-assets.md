@@ -14,7 +14,7 @@
 | `public/assets/smartm2m/history-reference.png` | 1920x2082 | 연혁 섹션 전체 | Figma 기준 전체 연혁 리스트 |
 | `public/assets/smartm2m/news-reference.png` | 1920x816 | 소식 섹션 전체 | 뉴스 카드와 슬라이드 컨트롤 기준 |
 | `public/assets/smartm2m/footer-reference.png` | 1920x676 | 푸터 전체 | 푸터 정보와 top 버튼 기준 |
-| `public/assets/smartm2m/hero-object.png` | 560x470 | 히어로 오브젝트 후보 | 추후 히어로를 DOM화할 때 교체할 3D 오브젝트 |
+| `public/assets/smartm2m/hero-object.png` | 680x650 | 히어로 오브젝트 | 히어로 퍼블리싱 레이어에 배치되는 3D 오브젝트 |
 | `public/assets/smartm2m/technical-screen.png` | 1270x825 | 기술력 화면 후보 | 추후 기술력 섹션을 DOM화할 때 교체할 대시보드 이미지 |
 | `public/assets/smartm2m/technical-image-11.png` | 1270x825 | 기술력 스크롤 이미지 11 | 텍스트 1에 연결되는 첫 번째 이미지 |
 | `public/assets/smartm2m/technical-image-12.png` | 1270x825 | 기술력 스크롤 이미지 12 | 텍스트 1에 연결되는 빈 이미지 슬롯 |

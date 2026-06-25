@@ -41,3 +41,8 @@
 - [x] Add a replaceable hero video layer with darken blend mode.
 - [x] Verify hero typography color and weight against Figma.
 - [x] Build, push to GitHub, and deploy to Vercel.
+- [x] Rebuild the hero section as separated publishing layers instead of a full screenshot.
+- [x] Keep the hero typing text visible after the reveal finishes.
+- [x] Match the hero video frame to the Figma-sized visual area with darken blend mode.
+- [x] Verify the rebuilt hero at the relaxed 97% similarity target.
+- [x] Push the completed publishing pass and deploy it to Vercel.
