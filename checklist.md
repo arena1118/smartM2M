@@ -37,3 +37,7 @@
 - [x] Verify the updated page with build and local visual capture.
 - [x] Compare the history section against the current Figma reference.
 - [x] Update the history section asset or placement to match Figma.
+- [x] Compare only the hero section against the latest Figma reference.
+- [x] Add a replaceable hero video layer with darken blend mode.
+- [x] Verify hero typography color and weight against Figma.
+- [x] Build, push to GitHub, and deploy to Vercel.

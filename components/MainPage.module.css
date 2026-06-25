@@ -36,6 +36,7 @@
 .heroReference {
   position: absolute;
   inset: 0;
+  z-index: 0;
   background-image: url("/assets/smartm2m/hero-reference-clean.png");
   background-position: top center;
   background-repeat: no-repeat;
@@ -53,6 +54,17 @@
   opacity: 0;
   animation: restoreHeroReference 0.28s ease forwards;
   animation-delay: 4.15s;
+}
+
+.heroVideo {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  mix-blend-mode: darken;
+  pointer-events: none;
 }
 
 .heroTextCover {
@@ -296,7 +308,7 @@
 
 @keyframes revealCharColor {
   to {
-    color: #111111;
+    color: #222222;
   }
 }
 
@@ -404,7 +416,7 @@
   }
 
   .revealChar {
-    color: #111111;
+    color: #222222;
     animation: none;
   }
 

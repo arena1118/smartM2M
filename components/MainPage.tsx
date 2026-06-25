@@ -313,6 +313,16 @@ export function MainPage() {
       <CursorFollower />
       <section className={styles.hero} aria-label="메인 히어로">
         <div className={styles.heroReference} aria-hidden="true" />
+        <video
+          className={styles.heroVideo}
+          src="/assets/smartm2m/hero-video.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          aria-hidden="true"
+        />
         <motion.div
           className={styles.heroTextCover}
           initial={reduceMotion ? false : { opacity: 0 }}
