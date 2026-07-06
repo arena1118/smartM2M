@@ -51,3 +51,7 @@
 - [x] Change the hero navigation from centered to left-aligned Figma spacing.
 - [x] Recheck hero title font weight against the supplied current/Figma crops.
 - [x] Change the hero title typing effect to dark text overlaying a persistent faint title layer.
+- [x] Replace the history reference image with a structured accordion section.
+- [x] Show only red-dot history items while collapsed.
+- [x] Reveal black-dot history items with a soft section-level animation when expanded.
+- [x] Keep history expansion scoped so only one range is open at a time.

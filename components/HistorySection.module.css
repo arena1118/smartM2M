@@ -1,0 +1,229 @@
+/* 연혁 섹션의 접힘과 펼침 레이아웃을 정의합니다. */
+.section {
+  position: relative;
+  overflow: hidden;
+  padding: 96px 0 118px;
+  padding-left: 50px;
+  background:
+    radial-gradient(circle at 50% 0, rgba(255, 255, 255, 0.76), rgba(247, 247, 247, 0) 36%),
+    #f7f7f7;
+}
+
+.section::before {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(0, 0, 0, 0.08) 1px, transparent 1px);
+  background-position: 0 0;
+  background-size: 18px 18px;
+  content: "";
+  opacity: 0.52;
+  pointer-events: none;
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+  width: min(calc(100% - 100px), 1770px);
+  margin: 0 auto;
+}
+
+.eyebrow {
+  margin: 0;
+  color: #a7a7a7;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.inner h2 {
+  margin: 8px 0 46px;
+  color: #111111;
+  font-size: clamp(42px, 3.3vw, 62px);
+  font-weight: 700;
+  letter-spacing: -0.055em;
+  line-height: 1;
+}
+
+.groups {
+  border-top: 1px solid rgba(0, 0, 0, 0.14);
+}
+
+.group {
+  position: relative;
+  display: grid;
+  min-height: 210px;
+  grid-template-columns: 270px minmax(0, 1fr) 148px;
+  gap: 28px;
+  padding: 34px 30px 34px 30px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  background: rgba(255, 255, 255, 0);
+  transition:
+    background-color 0.34s ease,
+    box-shadow 0.34s ease,
+    min-height 0.34s ease;
+}
+
+.group.open {
+  background: rgba(255, 255, 255, 0.58);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.range {
+  color: #444444;
+  font-size: clamp(26px, 1.9vw, 36px);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.15;
+}
+
+.timeline {
+  display: grid;
+  gap: 34px;
+}
+
+.yearRow {
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr);
+  gap: 34px;
+}
+
+.year {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  color: #333333;
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.35;
+}
+
+.year::after {
+  display: block;
+  width: 64px;
+  height: 1px;
+  margin-top: 15px;
+  background: rgba(0, 0, 0, 0.14);
+  content: "";
+}
+
+.yearRow ul {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.yearRow li {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 13px;
+  padding-left: 18px;
+  color: #707070;
+  font-size: clamp(16px, 1.05vw, 20px);
+  font-weight: 400;
+  letter-spacing: -0.028em;
+  line-height: 1.42;
+  word-break: keep-all;
+  transition:
+    max-height 0.36s ease,
+    margin 0.36s ease,
+    opacity 0.28s ease,
+    transform 0.36s ease,
+    color 0.28s ease;
+}
+
+.yearRow li::before {
+  position: absolute;
+  top: 0.66em;
+  left: 0;
+  width: 4px;
+  height: 4px;
+  background: #222222;
+  content: "";
+  transform: translateY(-50%);
+  transition: background-color 0.24s ease;
+}
+
+.featured {
+  max-height: 84px;
+  color: #222222;
+}
+
+.featured::before {
+  background: #ed1b23;
+}
+
+.detail {
+  max-height: 0;
+  margin-bottom: 0;
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+.detailVisible {
+  max-height: 84px;
+  margin-bottom: 13px;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  align-self: start;
+  gap: 9px;
+  border: 0;
+  background: transparent;
+  color: #555555;
+  cursor: pointer;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  transition: color 0.24s ease, transform 0.24s ease;
+}
+
+.toggle:hover {
+  color: #111111;
+  transform: translateX(2px);
+}
+
+.toggle span {
+  color: #ed1b23;
+  font-size: 26px;
+  font-weight: 300;
+  line-height: 1;
+  transition: transform 0.28s ease;
+}
+
+.group.open .toggle span {
+  transform: rotate(180deg);
+}
+
+@media (max-width: 900px) {
+  .section {
+    padding: 70px 22px 86px;
+  }
+
+  .inner {
+    width: 100%;
+  }
+
+  .group {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    padding: 28px 0;
+  }
+
+  .yearRow {
+    grid-template-columns: 88px minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  .toggle {
+    justify-content: flex-start;
+  }
+}
