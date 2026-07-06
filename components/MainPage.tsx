@@ -94,27 +94,40 @@ function CursorFollower() {
 function RevealHeadline() {
   let charIndex = 0;
 
+  const renderLines = () =>
+    heroLines.map((line, lineIndex) => (
+      <span className={styles.revealLine} key={line}>
+        {line}
+        {lineIndex < heroLines.length - 1 ? <br /> : null}
+      </span>
+    ));
+
   return (
     <h1 className={styles.revealHeadline} aria-label={heroLines.join(" ")}>
-      {heroLines.map((line, lineIndex) => (
-        <span className={styles.revealLine} key={line}>
-          {Array.from(line).map((char) => {
-            const delay = `${0.35 + charIndex * 0.055}s`;
-            charIndex += 1;
+      <span className={styles.revealBase} aria-hidden="true">
+        {renderLines()}
+      </span>
+      <span className={styles.revealTyping} aria-hidden="true">
+        {heroLines.map((line, lineIndex) => (
+          <span className={styles.revealLine} key={line}>
+            {Array.from(line).map((char) => {
+              const delay = `${0.35 + charIndex * 0.055}s`;
+              charIndex += 1;
 
-            return (
-              <span
-                className={styles.revealChar}
-                style={{ "--char-delay": delay } as React.CSSProperties}
-                key={`${line}-${charIndex}`}
-              >
-                {char}
-              </span>
-            );
-          })}
-          {lineIndex < heroLines.length - 1 ? <br /> : null}
-        </span>
-      ))}
+              return (
+                <span
+                  className={styles.revealChar}
+                  style={{ "--char-delay": delay } as React.CSSProperties}
+                  key={`${line}-${charIndex}`}
+                >
+                  {char}
+                </span>
+              );
+            })}
+            {lineIndex < heroLines.length - 1 ? <br /> : null}
+          </span>
+        ))}
+      </span>
     </h1>
   );
 }

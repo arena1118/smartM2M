@@ -49,3 +49,5 @@
 - [x] Align the hero title font size with the Figma node 1431:19835 reference.
 - [x] Match the hero left rail width and x position to the Figma reference.
 - [x] Change the hero navigation from centered to left-aligned Figma spacing.
+- [x] Recheck hero title font weight against the supplied current/Figma crops.
+- [x] Change the hero title typing effect to dark text overlaying a persistent faint title layer.

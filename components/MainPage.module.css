@@ -255,12 +255,29 @@
 }
 
 .revealHeadline {
+  position: relative;
   margin: 0;
-  color: #c0bfbd;
   font-size: clamp(30px, calc(52 / 1920 * 100vw), 52px);
   font-weight: 700;
   letter-spacing: -0.055em;
   line-height: 1.18;
+  white-space: nowrap;
+}
+
+.revealBase,
+.revealTyping {
+  display: block;
+}
+
+.revealBase {
+  color: #c5c5c5;
+}
+
+.revealTyping {
+  position: absolute;
+  inset: 0;
+  color: #222222;
+  pointer-events: none;
 }
 
 .revealLine {
@@ -269,7 +286,7 @@
 
 .revealChar {
   display: inline;
-  color: #c0bfbd;
+  opacity: 0;
   animation: revealCharColor 0.16s ease forwards;
   animation-delay: var(--char-delay);
 }
@@ -500,7 +517,7 @@
 
 @keyframes revealCharColor {
   to {
-    color: #222222;
+    opacity: 1;
   }
 }
 
@@ -596,7 +613,7 @@
   }
 
   .revealChar {
-    color: #222222;
+    opacity: 1;
     animation: none;
   }
 
