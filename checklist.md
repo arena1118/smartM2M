@@ -46,3 +46,6 @@
 - [x] Match the hero video frame to the Figma-sized visual area with darken blend mode.
 - [x] Verify the rebuilt hero at the relaxed 97% similarity target.
 - [x] Push the completed publishing pass and deploy it to Vercel.
+- [x] Align the hero title font size with the Figma node 1431:19835 reference.
+- [x] Match the hero left rail width and x position to the Figma reference.
+- [x] Change the hero navigation from centered to left-aligned Figma spacing.
