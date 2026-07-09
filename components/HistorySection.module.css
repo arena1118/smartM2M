@@ -117,8 +117,10 @@
 
 .yearRow li {
   position: relative;
+  display: grid;
+  grid-template-rows: 0fr;
   overflow: hidden;
-  margin-bottom: 13px;
+  margin-bottom: 0;
   padding-left: 18px;
   color: #707070;
   font-size: clamp(16px, 1.05vw, 20px);
@@ -126,12 +128,17 @@
   letter-spacing: -0.028em;
   line-height: 1.42;
   word-break: keep-all;
+  opacity: 0;
   transition:
-    max-height 0.36s ease,
-    margin 0.36s ease,
-    opacity 0.28s ease,
-    transform 0.36s ease,
+    grid-template-rows 0.42s ease,
+    margin-bottom 0.42s ease,
+    opacity 0.3s ease,
     color 0.28s ease;
+}
+
+.yearRow li > span {
+  overflow: hidden;
+  min-height: 0;
 }
 
 .yearRow li::before {
@@ -140,33 +147,27 @@
   left: 0;
   width: 4px;
   height: 4px;
-  background: #222222;
+  background: #b8b8b8;
   content: "";
   transform: translateY(-50%);
   transition: background-color 0.24s ease;
 }
 
-.featured {
-  max-height: 84px;
+.yearRow li.featured {
+  grid-template-rows: 1fr;
+  margin-bottom: 13px;
   color: #222222;
+  opacity: 1;
 }
 
-.featured::before {
+.yearRow li.featured::before {
   background: #ed1b23;
 }
 
-.detail {
-  max-height: 0;
-  margin-bottom: 0;
-  opacity: 0;
-  transform: translateY(-8px);
-}
-
-.detailVisible {
-  max-height: 84px;
+.yearRow li.detailVisible {
+  grid-template-rows: 1fr;
   margin-bottom: 13px;
   opacity: 1;
-  transform: translateY(0);
 }
 
 .toggle {

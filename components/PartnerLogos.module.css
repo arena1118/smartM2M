@@ -1,0 +1,84 @@
+/* 파트너 로고 배너의 가로 무한 슬라이딩 레이아웃을 정의합니다. */
+.section {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  width: 100%;
+  padding: 40px 0;
+  overflow: hidden;
+  background: #f7f7f7;
+}
+
+.row {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 60px, #000 calc(100% - 60px), transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 60px, #000 calc(100% - 60px), transparent 100%);
+}
+
+.track {
+  display: flex;
+  width: max-content;
+}
+
+.trackRight {
+  animation: partnerScrollRight 60s linear infinite;
+}
+
+.trackLeft {
+  animation: partnerScrollLeft 60s linear infinite;
+}
+
+.list {
+  display: flex;
+  align-items: center;
+  gap: 100px;
+  margin: 0;
+  padding: 0 50px;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  opacity: 0.8;
+}
+
+.item img {
+  display: block;
+  height: 30px;
+  width: auto;
+  max-width: none;
+}
+
+@keyframes partnerScrollRight {
+  from {
+    transform: translateX(-50%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes partnerScrollLeft {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trackRight,
+  .trackLeft {
+    animation: none;
+  }
+}

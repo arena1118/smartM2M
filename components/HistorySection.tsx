@@ -16,14 +16,12 @@ type HistoryYear = {
 
 type HistoryGroup = {
   range: string;
-  defaultAction?: string;
   years: HistoryYear[];
 };
 
 const historyGroups: HistoryGroup[] = [
   {
     range: "2025~2024",
-    defaultAction: "주요항목만 보기",
     years: [
       {
         year: "2025",
@@ -148,11 +146,13 @@ export function HistorySection() {
                         {year.items.map((item, itemIndex) => {
                           const itemClassName = item.featured
                             ? styles.featured
-                            : `${styles.detail} ${isOpen ? styles.detailVisible : ""}`;
+                            : isOpen
+                              ? styles.detailVisible
+                              : undefined;
 
                           return (
                             <li className={itemClassName} key={`${year.year}-${itemIndex}`}>
-                              {item.text}
+                              <span>{item.text}</span>
                             </li>
                           );
                         })}
@@ -167,7 +167,7 @@ export function HistorySection() {
                   onClick={() => setOpenRange(isOpen ? null : group.range)}
                 >
                   <span aria-hidden="true">{isOpen ? "−" : "+"}</span>
-                  {isOpen ? group.defaultAction ?? "접기" : "전체보기"}
+                  {isOpen ? "주요항목만 보기" : "전체보기"}
                 </button>
               </article>
             );

@@ -333,6 +333,21 @@
   background-image: var(--section-image);
 }
 
+.referenceSectionCropped {
+  overflow: hidden;
+  background-image: none;
+}
+
+.referenceSectionCropLayer {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  background-image: var(--section-image);
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
 .technicalSection {
   position: relative;
   min-height: 600vh;

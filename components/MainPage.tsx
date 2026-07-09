@@ -12,13 +12,14 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./MainPage.module.css";
 import { HistorySection } from "./HistorySection";
 import { ResultSection } from "./ResultSection";
+import { PartnerLogos } from "./PartnerLogos";
 
 const heroLines = ["항만, AI, 블록체인 그리고", "사이버보안 분야의", "기술 선도에 앞장서고 있습니다."];
 
 const heroNavItems = ["회사소개", "항만물류 IT", "항만 블록체인", "AI 자율제조", "사이버보안", "소식", "인재채용", "지식자산"];
 
 const pageSections = [
-  { id: "news", label: "소식", image: "/assets/smartm2m/news-reference.png", height: 816 },
+  { id: "news", label: "소식", image: "/assets/smartm2m/news-reference.png", height: 816, cropTop: 72 },
   { id: "footer", label: "푸터", image: "/assets/smartm2m/footer-reference.png", height: 676 },
 ];
 
@@ -137,12 +138,40 @@ function FigmaSection({
   label,
   image,
   height,
+  cropTop,
 }: {
   id: string;
   label: string;
   image: string;
   height: number;
+  cropTop?: number;
 }) {
+  if (cropTop) {
+    const visibleHeight = height - cropTop;
+    const layerHeightPercent = (height / visibleHeight) * 100;
+    const layerTopPercent = -(cropTop / visibleHeight) * 100;
+
+    return (
+      <section
+        id={id}
+        className={`${styles.referenceSection} ${styles.referenceSectionCropped} ${styles.fadeSection}`}
+        style={{ aspectRatio: `1920 / ${visibleHeight}` } as React.CSSProperties}
+        aria-label={label}
+      >
+        <div
+          className={styles.referenceSectionCropLayer}
+          style={
+            {
+              height: `${layerHeightPercent}%`,
+              top: `${layerTopPercent}%`,
+              "--section-image": `url(${image})`,
+            } as React.CSSProperties
+          }
+        />
+      </section>
+    );
+  }
+
   return (
     <section
       id={id}
@@ -390,6 +419,8 @@ export function MainPage() {
       <TechnicalInteractionSection />
 
       <ResultSection />
+
+      <PartnerLogos />
 
       <HistorySection />
 
