@@ -151,15 +151,7 @@ export function ResultSection() {
       className={`${styles.section} ${revealed ? styles.revealed : ""}`}
       aria-label="핵심성과"
     >
-      <video
-        className={styles.backgroundVideo}
-        src="/assets/smartm2m/result-video.mp4"
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="metadata"
-      />
+      <div className={styles.backgroundImage} aria-hidden="true" />
       <div className={styles.backgroundOverlay} aria-hidden="true" />
       <div className={styles.inner}>
         <div className={styles.intro}>

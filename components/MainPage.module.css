@@ -350,14 +350,14 @@
 
 .technicalSection {
   position: relative;
-  min-height: 600vh;
+  min-height: 1463px;
   background: #f7f7f7;
 }
 
 .technicalSticky {
-  position: sticky;
+  position: relative;
   top: 0;
-  min-height: 100vh;
+  min-height: 1463px;
   overflow: hidden;
   padding-left: 50px;
 }

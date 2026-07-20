@@ -55,3 +55,42 @@
 - [x] Show only red-dot history items while collapsed.
 - [x] Reveal black-dot history items with a soft section-level animation when expanded.
 - [x] Keep history expansion scoped so only one range is open at a time.
+
+## Next Work Plan
+
+### Part 1. Figma static publishing
+
+- [x] Confirm the latest Figma source URL, target node, or approved desktop reference capture.
+- [x] Compare the current GitHub code against the confirmed Figma reference section by section.
+- [x] Publish the desktop 1920px layout from hero to footer before adding new interaction work.
+- [x] Match section order, spacing, typography scale, colors, imagery, buttons, cards, and visual hierarchy to the Figma reference.
+- [x] Clearly separate temporary full-section image references from sections already converted to DOM publishing.
+- [x] Run `npm.cmd run build` after static publishing adjustments.
+- [x] Capture the local desktop page and prepare it for user review beside the Figma reference.
+- [ ] Complete Part 1 only when the static desktop page is approved as close enough to Figma to start interaction work.
+
+### Part 2. Desktop interaction pass
+
+- [ ] Add or refine the hero text reveal interaction without changing the approved desktop layout.
+- [ ] Add or refine the desktop cursor follower while preserving the native pointer.
+- [ ] Add or refine scroll-triggered fade-in effects for major sections.
+- [ ] Add or refine the technical section sticky scroll sequence in the intended scene order.
+- [ ] Add or refine repeated motion for result cards and partner logo rows without making the motion visually noisy.
+- [ ] Preserve `prefers-reduced-motion` behavior for motion-sensitive users.
+- [ ] Recheck that interaction work did not noticeably shift the approved Figma-aligned layout.
+- [ ] Run `npm.cmd run build` after interaction adjustments.
+- [ ] Verify the desktop page in the browser with real scrolling and motion.
+- [ ] Complete Part 2 only when desktop interactions work as intended and the design remains approved.
+
+### Part 3. Responsive and final delivery
+
+- [ ] Convert the approved desktop page into responsive layouts for desktop, tablet, and mobile.
+- [ ] Verify at least the 1920px, 1440px, 1024px, 768px, and 390px viewport widths.
+- [ ] Ensure text does not overflow buttons, cards, navigation, or section containers.
+- [ ] Ensure mobile navigation, hero, technical section, result cards, partner logos, and history accordion remain usable.
+- [ ] Simplify desktop-only interactions on mobile when needed instead of forcing the same sticky or wide-screen behavior.
+- [ ] Ensure images and videos crop around their important visual subjects on all checked viewport widths.
+- [ ] Preserve basic accessibility for labels, button states, alt text, and reduced-motion behavior.
+- [ ] Run `npm.cmd run build` as the final verification.
+- [ ] Create a meaningful commit after the final verified work unit.
+- [ ] Complete Part 3 only when the page is usable across the target viewport widths and ready for deployment.
