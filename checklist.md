@@ -58,6 +58,80 @@
 
 ## Next Work Plan
 
+### Figma gap review before continuing Part 1
+
+- [ ] Re-baseline Part 1 against the latest Figma frame `1431:19835` at 1920x7786.
+- [ ] Keep the review captures in `G:\내 드라이브\project\smartM2M\figma-gap-review`.
+- [ ] Use `figma-1920-latest.png` as the visual source of truth for desktop static publishing.
+- [ ] Use `vercel-1920-current.png` only as the current deployed-state comparison.
+- [ ] Treat the previous Part 1 pass as incomplete until the differences below are resolved and reviewed.
+
+#### Global layout differences
+
+- [ ] Recheck total page height against Figma 7786px.
+- [ ] Recheck section y positions against Figma: hero 0, technical 1285, result area after technical, history 3987, news 6245, footer 7061.
+- [ ] Remove unintended scroll/fade states from the static review capture so all sections appear in their intended Figma-visible state.
+- [ ] Verify that the left vertical rail remains aligned and visually continuous across the full page.
+- [ ] Confirm each section's background treatment before detailed component work, especially dotted backgrounds, white gradients, dark result area, and footer background.
+
+#### Hero differences
+
+- [ ] Confirm the hero title default static state matches Figma, with dark headline text visible rather than a faded reveal frame.
+- [ ] Recheck the hero object size, y position, and crop against the Figma screenshot.
+- [ ] Recheck CTA pill position, width, color, and arrow placement.
+- [ ] Recheck header logo size, navigation spacing, right contact/menu area, and left rail labels.
+- [ ] Completion condition: the first 1285px of the deployed page should visually match the Figma hero without relying on an animation timing moment.
+
+#### Technical section differences
+
+- [ ] Restore the technical dashboard image visibility. The current deployed capture shows the main visual area almost blank compared with Figma.
+- [ ] Match the technical dotted background density, origin, and section width.
+- [ ] Match the technical title block position, icon, eyebrow, and `기술력` heading size.
+- [ ] Match the dashboard frame size, shadow stack, x position, and y position.
+- [ ] Match the right text block style with red icon, red highlighted title background, body text, and three tab buttons.
+- [ ] Match the scroll cue position and size while keeping it static for Part 1.
+- [ ] Completion condition: the technical section must look like the Figma static frame before reintroducing sticky scene transitions in Part 2.
+
+#### Result and partner-logo differences
+
+- [ ] Restore the result section as a dark section rather than the current washed-out gray blurred state.
+- [ ] Match the result section top y position, height, rounded bottom corners, and dark background crop.
+- [ ] Match the left title copy, body copy, and large ring visual placement.
+- [ ] Match the result card column positions, card size, spacing, and visible card crop.
+- [ ] Move the partner logo rows to the Figma position and spacing below the result section.
+- [ ] Completion condition: result and partner logos should read as one continuous Figma block, not as a blurred transition state.
+
+#### History differences
+
+- [ ] Compare the current accordion DOM state against the Figma default visible state.
+- [ ] Ensure the first history group opens by default if Figma shows the 2025~2024 details expanded.
+- [ ] Match history container width, left year column, item line heights, dot colors, divider lines, and right `전체보기` button position.
+- [ ] Match the white translucent group background and section padding.
+- [ ] Completion condition: the deployed default history state should match the Figma default history state before adding interaction polish.
+
+#### News differences
+
+- [ ] Replace placeholder news thumbnails with the exact Figma news assets or updated exported crops.
+- [ ] Match the news section title position, `SMARTM2M NEWS` eyebrow, `소식` heading, and `더보기` link.
+- [ ] Match news card size, crop, horizontal offset, gap, and order.
+- [ ] Fix the visible duplicate/right-edge overflow so the static frame matches the Figma composition.
+- [ ] Match the progress bar width, active segment width, and arrow buttons.
+- [ ] Completion condition: the news section should match Figma as a static carousel frame before adding carousel controls in Part 2.
+
+#### Footer differences
+
+- [ ] Recheck footer height against the latest Figma footer instance of 603px.
+- [ ] Match logo opacity, horizontal divider, company columns, copy sizes, spacing, and top button position.
+- [ ] Confirm footer is visible within the 7786px Figma frame without extra blank space.
+- [ ] Completion condition: footer must align with the Figma bottom frame and not appear as a stale cropped reference.
+
+#### Part 1 revised completion gate
+
+- [ ] Run `npm.cmd run build`.
+- [ ] Capture a fresh 1920x7786 deployed or local screenshot after fixes.
+- [ ] Place the fixed screenshot beside the Figma reference in `G:\내 드라이브\project\smartM2M\figma-gap-review`.
+- [ ] Complete Part 1 only when the user approves the desktop static match and says to proceed to interaction work.
+
 ### Part 1. Figma static publishing
 
 - [x] Confirm the latest Figma source URL, target node, or approved desktop reference capture.
