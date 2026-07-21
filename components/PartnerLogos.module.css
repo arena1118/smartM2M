@@ -1,84 +1,61 @@
-/* 파트너 로고 배너의 가로 무한 슬라이딩 레이아웃을 정의합니다. */
+/* 파트너 로고 행의 정적 위치와 간격을 정의합니다. */
 .section {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 26px;
-  width: 100%;
-  padding: 40px 0;
+  gap: 30px;
   overflow: hidden;
+  padding: 46px 0 58px;
   background: #f7f7f7;
 }
 
 .row {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 60px, #000 calc(100% - 60px), transparent 100%);
-  mask-image: linear-gradient(90deg, transparent 0, #000 60px, #000 calc(100% - 60px), transparent 100%);
-}
-
-.track {
   display: flex;
   width: max-content;
-}
-
-.trackRight {
-  animation: partnerScrollRight 60s linear infinite;
-}
-
-.trackLeft {
-  animation: partnerScrollLeft 60s linear infinite;
-}
-
-.list {
-  display: flex;
+  min-width: 100%;
   align-items: center;
-  gap: 100px;
+  justify-content: center;
+  gap: 92px;
   margin: 0;
-  padding: 0 50px;
+  padding: 0 88px;
   list-style: none;
+}
+
+.offset {
+  transform: translateX(-42px);
 }
 
 .item {
   display: flex;
-  flex: none;
+  flex: 0 0 auto;
+  height: 28px;
   align-items: center;
   justify-content: center;
-  height: 30px;
-  opacity: 0.8;
+  opacity: 0.72;
 }
 
 .item img {
   display: block;
-  height: 30px;
   width: auto;
-  max-width: none;
+  max-width: 154px;
+  height: 26px;
+  object-fit: contain;
+  filter: grayscale(1);
 }
 
-@keyframes partnerScrollRight {
-  from {
-    transform: translateX(-50%);
+@media (max-width: 900px) {
+  .section {
+    gap: 22px;
+    padding: 34px 0 42px;
   }
 
-  to {
-    transform: translateX(0);
-  }
-}
-
-@keyframes partnerScrollLeft {
-  from {
-    transform: translateX(0);
+  .row {
+    justify-content: flex-start;
+    gap: 44px;
+    padding: 0 22px;
   }
 
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .trackRight,
-  .trackLeft {
-    animation: none;
+  .offset {
+    transform: none;
   }
 }

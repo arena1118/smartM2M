@@ -1,0 +1,123 @@
+/* 푸터 DOM 퍼블리싱 레이아웃과 타이포그래피를 정의합니다. */
+.footer {
+  position: relative;
+  min-height: 603px;
+  padding: 82px 50px 54px;
+  background: #f2f2f2;
+  color: #5c5c5c;
+}
+
+.inner {
+  width: min(100%, 1770px);
+  margin: 0 auto;
+}
+
+.topLine {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 48px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.logo {
+  color: #a8a8a8;
+  font-size: 42px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  text-decoration: none;
+}
+
+.logo span {
+  color: #8e8e8e;
+}
+
+.topButton {
+  display: inline-flex;
+  width: 74px;
+  height: 74px;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  border-radius: 999px;
+  color: #777777;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.topButton span {
+  font-size: 16px;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: minmax(380px, 1fr) 240px 240px;
+  gap: 88px;
+  padding-top: 66px;
+}
+
+.company h2,
+.navGroup h3 {
+  margin: 0 0 24px;
+  color: #333333;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.company p {
+  margin: 0 0 20px;
+  color: #777777;
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.78;
+}
+
+.navGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.navGroup a {
+  margin-bottom: 13px;
+  color: #777777;
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+
+.copy {
+  margin: 64px 0 0;
+  color: #9b9b9b;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+@media (max-width: 900px) {
+  .footer {
+    min-height: auto;
+    padding: 60px 22px 42px;
+  }
+
+  .topLine,
+  .content {
+    display: block;
+  }
+
+  .topButton {
+    margin-top: 28px;
+  }
+
+  .content {
+    padding-top: 42px;
+  }
+
+  .navGroup {
+    margin-top: 34px;
+  }
+}

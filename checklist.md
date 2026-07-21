@@ -58,6 +58,17 @@
 
 ## Next Work Plan
 
+### Current design correction request
+
+- [x] Reduce font sizes and weights in the affected sections closer to the Figma desktop reference.
+- [x] Replace the rendered technical interaction with a static design-only publishing section.
+- [x] Rebuild the result section as a static dark design block and remove the overlapped/blurred motion state.
+- [x] Reposition the partner logos and correct their image size and spacing.
+- [x] Rebuild the news section publishing to match the Figma card layout and spacing.
+- [x] Replace the full-image footer render with DOM publishing, except for replaceable visual/logo assets.
+- [x] Run `npm.cmd run build`.
+- [x] Capture the updated desktop screen for review.
+
 ### Figma gap review before continuing Part 1
 
 - [ ] Re-baseline Part 1 against the latest Figma frame `1431:19835` at 1920x7786.

@@ -1,0 +1,263 @@
+/* 기술력 섹션의 정적 피그마형 퍼블리싱 스타일을 정의합니다. */
+.section {
+  position: relative;
+  overflow: hidden;
+  min-height: 1463px;
+  padding: 0 0 118px 50px;
+  background:
+    radial-gradient(circle at 74% 22%, rgba(255, 255, 255, 0.86), rgba(247, 247, 247, 0) 34%),
+    #f7f7f7;
+}
+
+.section::before {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(0, 0, 0, 0.09) 1px, transparent 1px);
+  background-position: 0 0;
+  background-size: 18px 18px;
+  content: "";
+  opacity: 0.44;
+  pointer-events: none;
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+  width: min(calc(100% - 50px), 1770px);
+  min-height: 1463px;
+  margin-left: 0;
+  padding-top: 90px;
+}
+
+.heading {
+  position: relative;
+  z-index: 3;
+  width: 300px;
+  margin-left: 50px;
+}
+
+.iconBox {
+  display: grid;
+  width: 60px;
+  height: 60px;
+  place-items: center;
+  border: 1px solid rgba(0, 0, 0, 0.16);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.66);
+}
+
+.iconBox span {
+  display: block;
+  width: 24px;
+  height: 24px;
+  border: 5px solid #ed1b23;
+  border-radius: 999px;
+}
+
+.heading p {
+  margin: 18px 0 0;
+  color: #a4a4a4;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+.heading h2 {
+  margin: 8px 0 0;
+  color: #111111;
+  font-size: 54px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.04;
+}
+
+.visualWrap {
+  position: absolute;
+  top: 272px;
+  left: 0;
+  width: 1270px;
+  height: 825px;
+}
+
+.shadowLayer {
+  position: absolute;
+  inset: 34px 0 auto 44px;
+  width: 1204px;
+  height: 765px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.68);
+  box-shadow: 28px 42px 80px rgba(0, 0, 0, 0.12);
+}
+
+.dashboard {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 1270px;
+  height: 825px;
+  object-fit: contain;
+  filter: drop-shadow(20px 34px 40px rgba(0, 0, 0, 0.08));
+}
+
+.copy {
+  position: absolute;
+  top: 518px;
+  right: 0;
+  z-index: 2;
+  width: 434px;
+  padding-right: 8px;
+}
+
+.copyIcon {
+  display: block;
+  width: 34px;
+  height: 34px;
+  border: 7px solid #ed1b23;
+  border-radius: 999px;
+}
+
+.copy h3 {
+  display: inline;
+  margin: 28px 0 0;
+  background: linear-gradient(180deg, transparent 54%, rgba(237, 27, 35, 0.16) 54%);
+  color: #ed1b23;
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.46;
+  word-break: keep-all;
+}
+
+.copy p {
+  margin: 22px 0 0;
+  color: #666666;
+  font-size: 17px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.76;
+  word-break: keep-all;
+}
+
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-top: 34px;
+}
+
+.tabs button {
+  min-width: 112px;
+  height: 44px;
+  border: 1px solid #d8d8d8;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+  color: #6b6b6b;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.tabs .activeTab {
+  border-color: #111111;
+  background: #111111;
+  color: #ffffff;
+}
+
+.scrollCue {
+  position: absolute;
+  bottom: 150px;
+  left: 50%;
+  display: flex;
+  width: 110px;
+  transform: translateX(-50%);
+  flex-direction: column;
+  align-items: center;
+  color: #c4c4c4;
+}
+
+.scrollLine {
+  width: 1px;
+  height: 96px;
+  background: rgba(120, 120, 120, 0.28);
+}
+
+.mouse {
+  position: absolute;
+  top: 38px;
+  width: 28px;
+  height: 42px;
+  border: 2px solid rgba(170, 170, 170, 0.9);
+  border-radius: 999px;
+  background: rgba(247, 247, 247, 0.8);
+}
+
+.mouse::before {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  width: 4px;
+  height: 8px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: #b0b0b0;
+  content: "";
+}
+
+.scrollText {
+  margin-top: 18px;
+  font-size: 18px;
+  font-weight: 300;
+  letter-spacing: 0;
+}
+
+@media (max-width: 1100px) {
+  .section {
+    min-height: auto;
+    padding: 80px 22px 120px;
+  }
+
+  .inner {
+    width: 100%;
+    min-height: auto;
+    padding-top: 0;
+  }
+
+  .heading {
+    margin-left: 0;
+  }
+
+  .visualWrap,
+  .copy,
+  .scrollCue {
+    position: relative;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    left: auto;
+    width: 100%;
+    height: auto;
+    transform: none;
+  }
+
+  .visualWrap {
+    margin-top: 42px;
+  }
+
+  .dashboard {
+    width: 100%;
+    height: auto;
+  }
+
+  .shadowLayer {
+    inset: 24px 0 auto 22px;
+    width: calc(100% - 44px);
+    height: calc(100% - 48px);
+  }
+
+  .copy {
+    margin-top: 44px;
+  }
+
+  .scrollCue {
+    margin: 72px auto 0;
+  }
+}

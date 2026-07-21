@@ -1,6 +1,4 @@
-"use client";
-
-// 최신 소식 카드 슬라이더의 정적 퍼블리싱 구조를 제공합니다.
+// 최신 소식 섹션을 피그마 기준의 정적 카드 배열로 퍼블리싱합니다.
 import styles from "./NewsSection.module.css";
 
 type NewsCard = {
@@ -54,7 +52,7 @@ export function NewsSection() {
           </div>
           <a className={styles.moreLink} href="/">
             더보기
-            <span aria-hidden="true">→</span>
+            <span aria-hidden="true">↗</span>
           </a>
         </header>
 
@@ -64,16 +62,12 @@ export function NewsSection() {
               {card.image ? (
                 <img src={card.image} alt="" />
               ) : (
-                <div className={styles.textCard}>
-                  <time>{card.date.replaceAll(".", "-")}</time>
+                <div className={styles.featuredBody}>
+                  <time>{card.date}</time>
                   <h3>{card.title}</h3>
                   <span aria-hidden="true">↗</span>
                 </div>
               )}
-              <div className={styles.caption}>
-                <h3>{card.title}</h3>
-                <time>{card.date}</time>
-              </div>
             </article>
           ))}
         </div>
@@ -83,8 +77,8 @@ export function NewsSection() {
             <span />
           </span>
           <div className={styles.arrows}>
-            <button type="button" tabIndex={-1}>←</button>
-            <button type="button" tabIndex={-1}>→</button>
+            <button type="button" tabIndex={-1}>‹</button>
+            <button type="button" tabIndex={-1}>›</button>
           </div>
         </div>
       </div>
