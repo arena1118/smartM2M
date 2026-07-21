@@ -1,85 +1,105 @@
-// 최신 소식 섹션을 피그마 기준의 정적 카드 배열로 퍼블리싱합니다.
+// 최신 소식 섹션을 Figma 기준의 정적 카드 배열로 퍼블리싱합니다.
 import styles from "./NewsSection.module.css";
 
 type NewsCard = {
-  title: string;
-  date: string;
+  name: string;
   image?: string;
-  featured?: boolean;
+  dark?: boolean;
+  crop?: {
+    width: number;
+    height: number;
+    left: number;
+    top: number;
+    opacity?: number;
+  };
 };
 
 const newsCards: NewsCard[] = [
   {
-    title: "부산항 환적정보, 블록체인 기술로 실시간 공유한다",
-    date: "2024.12.06",
-    image: "/assets/smartm2m/news-thumb-04.png",
+    name: "6",
+    image: "/assets/smartm2m/figma/news-figma-30.png",
+    dark: true,
+    crop: { width: 798, height: 478, left: -89, top: -2, opacity: 0.3 },
   },
   {
-    title: "블록체인·AI 기술로 물류 혁신, 북극항로 개척에도 앞장",
-    date: "2025.09.15",
-    image: "/assets/smartm2m/news-thumb-01.png",
+    name: "1",
+    image: "/assets/smartm2m/figma/news-figma-24.png",
+    crop: { width: 681, height: 511, left: -155, top: -40 },
   },
   {
-    title: "부산항 ‘포트아이’ 안착…플랫폼 고도화도 착착",
-    date: "2025.09.08",
-    image: "/assets/smartm2m/news-thumb-02.png",
+    name: "2",
+    image: "/assets/smartm2m/figma/news-figma-28.png",
+    crop: { width: 806, height: 471, left: -167, top: -50 },
   },
   {
-    title: "김호원 스마트엠투엠 대표 “제조업 탄소 감축, 블록체인이 해답”",
-    date: "2025.04.16",
-    image: "/assets/smartm2m/news-thumb-03.png",
+    name: "3",
+    image: "/assets/smartm2m/figma/news-figma-29.png",
+    crop: { width: 691, height: 478, left: -111, top: -2 },
   },
   {
-    title: "블록체인 기반 환적 모니터링 시스템(Port-i) 구축 및 상용화",
-    date: "2024.10.28",
-    featured: true,
+    name: "4",
   },
   {
-    title: "블록체인·AI 기술로 물류 혁신, 북극항로 개척에도 앞장",
-    date: "2025.09.15",
-    image: "/assets/smartm2m/news-thumb-01.png",
+    name: "5",
+    image: "/assets/smartm2m/figma/news-figma-24.png",
+    dark: true,
+    crop: { width: 681, height: 511, left: -155, top: -40, opacity: 0.3 },
   },
 ];
 
 export function NewsSection() {
   return (
     <section id="news" className={styles.section} aria-label="소식">
-      <div className={styles.inner}>
-        <header className={styles.header}>
-          <div>
-            <p>SMARTM2M NEWS</p>
-            <h2>소식</h2>
-          </div>
-          <a className={styles.moreLink} href="/">
-            더보기
-            <span aria-hidden="true">↗</span>
-          </a>
-        </header>
-
-        <div className={styles.board}>
-          {newsCards.map((card, index) => (
-            <article className={`${styles.card} ${card.featured ? styles.featured : ""}`} key={`${card.title}-${index}`}>
-              {card.image ? (
-                <img src={card.image} alt="" />
-              ) : (
-                <div className={styles.featuredBody}>
-                  <time>{card.date}</time>
-                  <h3>{card.title}</h3>
-                  <span aria-hidden="true">↗</span>
-                </div>
-              )}
-            </article>
-          ))}
+      <header className={styles.header}>
+        <div className={styles.title}>
+          <p>
+            SMARTM2M <span>NEWS</span>
+          </p>
+          <h2>소식</h2>
         </div>
+        <a className={styles.moreLink} href="/">
+          더보기
+          <img src="/assets/smartm2m/figma/news-more-arrow.svg" alt="" />
+        </a>
+      </header>
 
-        <div className={styles.controls} aria-hidden="true">
-          <span className={styles.progress}>
-            <span />
-          </span>
-          <div className={styles.arrows}>
-            <button type="button" tabIndex={-1}>‹</button>
-            <button type="button" tabIndex={-1}>›</button>
-          </div>
+      <div className={styles.board}>
+        {newsCards.map((card) => (
+          <article className={styles.cardShell} aria-label={`소식 카드 ${card.name}`} key={card.name}>
+            {card.image && card.crop ? (
+              <div className={`${styles.imageCard} ${card.dark ? styles.darkCard : ""}`}>
+                <img
+                  src={card.image}
+                  alt=""
+                  style={
+                    {
+                      width: `${card.crop.width}px`,
+                      height: `${card.crop.height}px`,
+                      left: `${card.crop.left}px`,
+                      top: `${card.crop.top}px`,
+                      opacity: card.crop.opacity ?? 1,
+                    } as React.CSSProperties
+                  }
+                />
+              </div>
+            ) : (
+              <div className={styles.featuredCard}>
+                <time>2024-10-28</time>
+                <h3>블록체인 기반 환적 모니터링 시스템(Port-i) 구축 및 상용화</h3>
+                <img src="/assets/smartm2m/figma/news-card-arrow.svg" alt="" />
+              </div>
+            )}
+          </article>
+        ))}
+      </div>
+
+      <div className={styles.controls} aria-hidden="true">
+        <span className={styles.progress}>
+          <span />
+        </span>
+        <div className={styles.arrows}>
+          <img src="/assets/smartm2m/figma/news-before.svg" alt="" />
+          <img src="/assets/smartm2m/figma/news-after.svg" alt="" />
         </div>
       </div>
     </section>

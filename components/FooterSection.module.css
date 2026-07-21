@@ -1,123 +1,242 @@
-/* 푸터 DOM 퍼블리싱 레이아웃과 타이포그래피를 정의합니다. */
+/* Figma 푸터의 로고, 주소 그리드, 메뉴 컬럼을 DOM으로 정의합니다. */
 .footer {
   position: relative;
-  min-height: 603px;
-  padding: 82px 50px 54px;
-  background: #f2f2f2;
-  color: #5c5c5c;
-}
-
-.inner {
-  width: min(100%, 1770px);
-  margin: 0 auto;
-}
-
-.topLine {
   display: flex;
+  width: 100%;
+  min-height: 603px;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  padding-bottom: 48px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-}
-
-.logo {
-  color: #a8a8a8;
-  font-size: 42px;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  text-decoration: none;
-}
-
-.logo span {
-  color: #8e8e8e;
-}
-
-.topButton {
-  display: inline-flex;
-  width: 74px;
-  height: 74px;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  border: 1px solid rgba(0, 0, 0, 0.14);
-  border-radius: 999px;
-  color: #777777;
-  font-size: 13px;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.topButton span {
-  font-size: 16px;
+  padding: 80px 0 80px 50px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #ffffff 50%);
+  color: #919191;
 }
 
 .content {
-  display: grid;
-  grid-template-columns: minmax(380px, 1fr) 240px 240px;
-  gap: 88px;
-  padding-top: 66px;
-}
-
-.company h2,
-.navGroup h3 {
-  margin: 0 0 24px;
-  color: #333333;
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-}
-
-.company p {
-  margin: 0 0 20px;
-  color: #777777;
-  font-size: 15px;
-  font-weight: 400;
-  letter-spacing: -0.02em;
-  line-height: 1.78;
-}
-
-.navGroup {
   display: flex;
+  width: 100%;
   flex-direction: column;
+  gap: 70px;
+  align-items: flex-start;
+  padding: 0 50px;
 }
 
-.navGroup a {
-  margin-bottom: 13px;
-  color: #777777;
-  font-size: 15px;
-  font-weight: 400;
-  letter-spacing: -0.02em;
+.top {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 40px;
+}
+
+.logo {
+  display: flex;
+  width: 281px;
+  height: 38px;
+  align-items: center;
+  gap: 12px;
+  color: #c7c7c7;
   text-decoration: none;
 }
 
-.copy {
-  margin: 64px 0 0;
-  color: #9b9b9b;
-  font-size: 13px;
+.logoMark {
+  display: grid;
+  width: 50px;
+  height: 30px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4px;
+}
+
+.logoMark span {
+  background: #c7c7c7;
+  transform: skewX(-25deg);
+}
+
+.logoText {
+  color: #c7c7c7;
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -1.1px;
+  line-height: 1;
+}
+
+.line {
+  flex: 1 0 0;
+  height: 1px;
+  min-width: 0;
+  background: #d3d3d3;
+}
+
+.topButton {
+  display: flex;
+  width: 80px;
+  height: 80px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e9e9e9;
+  background: #ffffff;
+}
+
+.topButton img {
+  width: 30px;
+  height: 30px;
+  transform: scaleY(-1);
+}
+
+.body {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 50px;
+}
+
+.mainRow {
+  display: flex;
+  width: min(100%, 1770px);
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.company {
+  display: flex;
+  flex: 1 0 0;
+  min-width: 0;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.company h2,
+.quickMenu h3 {
+  margin: 0;
+  color: #7a7a7a;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  line-height: normal;
+  text-transform: uppercase;
+}
+
+.addressGrid {
+  display: grid;
+  width: 100%;
+  grid-template-columns: max-content max-content;
+  column-gap: 50px;
+  row-gap: 15px;
+  margin: 0;
+  color: #919191;
+  font-size: 17px;
   font-weight: 400;
-  letter-spacing: 0.02em;
+  letter-spacing: -0.17px;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.addressItem {
+  display: contents;
+}
+
+.addressItem dt,
+.addressItem dd {
+  margin: 0;
+  font-weight: 400;
+}
+
+.quickMenus {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 100px;
+  align-items: flex-start;
+}
+
+.quickMenu {
+  display: flex;
+  width: 200px;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.quickMenu h3 {
+  margin-bottom: 40px;
+}
+
+.quickMenu a {
+  margin-bottom: 15px;
+  color: #919191;
+  font-size: 17px;
+  font-weight: 400;
+  letter-spacing: -0.17px;
+  line-height: normal;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.bottom {
+  display: flex;
+  width: min(100%, 1770px);
+  flex-direction: column;
+  gap: 15px;
+  color: #919191;
+  font-size: 17px;
+  font-weight: 400;
+  letter-spacing: -0.17px;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.bottom p {
+  display: flex;
+  gap: 50px;
+  margin: 0;
+}
+
+.bottom p:last-child {
+  display: block;
+  font-size: 16px;
+  letter-spacing: -0.16px;
+}
+
+@media (max-width: 1200px) {
+  .mainRow,
+  .quickMenus {
+    flex-direction: column;
+    gap: 48px;
+  }
+
+  .addressGrid {
+    grid-template-columns: max-content minmax(0, 1fr);
+    white-space: normal;
+  }
+
+  .bottom,
+  .bottom p {
+    white-space: normal;
+    flex-wrap: wrap;
+  }
 }
 
 @media (max-width: 900px) {
   .footer {
     min-height: auto;
-    padding: 60px 22px 42px;
+    padding: 60px 0 60px 22px;
   }
 
-  .topLine,
   .content {
-    display: block;
+    gap: 48px;
+    padding: 0 22px 0 0;
+  }
+
+  .top {
+    gap: 20px;
+  }
+
+  .logo {
+    width: auto;
+  }
+
+  .logoText {
+    font-size: 30px;
   }
 
   .topButton {
-    margin-top: 28px;
-  }
-
-  .content {
-    padding-top: 42px;
-  }
-
-  .navGroup {
-    margin-top: 34px;
+    width: 64px;
+    height: 64px;
   }
 }

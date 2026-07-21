@@ -69,6 +69,15 @@
 - [x] Run `npm.cmd run build`.
 - [x] Capture the updated desktop screen for review.
 
+### News and footer 98% publishing correction
+
+- [x] Pull Figma context for news node `1431:24893` and footer node `1431:24953`.
+- [x] Download only individual Figma image/icon assets needed for news and footer, not full-section screenshots.
+- [x] Match the news title, more button, card order, image crops, featured card, progress bar, and arrow controls.
+- [x] Match the footer logo/line/TOP button, company address grid, solutions/services columns, contact row, and copyright.
+- [x] Run `npm.cmd run build`.
+- [x] Capture local review images for news/footer and compare visually against Figma.
+
 ### Figma gap review before continuing Part 1
 
 - [ ] Re-baseline Part 1 against the latest Figma frame `1431:19835` at 1920x7786.
