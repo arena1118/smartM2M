@@ -87,6 +87,14 @@
 - [x] Run `npm.cmd run build`.
 - [x] Commit the verified history data update.
 
+### History accordion deployment verification
+
+- [x] Reproduce the deployed accordion behavior across all four groups.
+- [x] Identify the stale summarized production data as the missing-detail cause.
+- [x] Verify open and close behavior for every group with the full data.
+- [x] Deploy commit `6782e89` to Vercel production.
+- [x] Confirm the production alias serves the updated history behavior.
+
 ### Figma gap review before continuing Part 1
 
 - [ ] Re-baseline Part 1 against the latest Figma frame `1431:19835` at 1920x7786.
