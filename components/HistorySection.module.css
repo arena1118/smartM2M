@@ -117,8 +117,7 @@
 
 .yearRow li {
   position: relative;
-  display: grid;
-  grid-template-rows: 0fr;
+  display: none;
   overflow: hidden;
   margin-bottom: 0;
   padding-left: 18px;
@@ -130,7 +129,6 @@
   word-break: keep-all;
   opacity: 0;
   transition:
-    grid-template-rows 0.42s ease,
     margin-bottom 0.42s ease,
     opacity 0.3s ease,
     color 0.28s ease;
@@ -154,7 +152,7 @@
 }
 
 .yearRow li.featured {
-  grid-template-rows: 1fr;
+  display: block;
   margin-bottom: 13px;
   color: #222222;
   opacity: 1;
@@ -165,9 +163,22 @@
 }
 
 .yearRow li.detailVisible {
-  grid-template-rows: 1fr;
+  display: block;
   margin-bottom: 13px;
   opacity: 1;
+  animation: historyDetailIn 0.32s ease both;
+}
+
+@keyframes historyDetailIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .toggle {
