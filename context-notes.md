@@ -1,5 +1,8 @@
 # Context Notes
 
+- 2026-07-23: The history source of truth is `https://www.smartm2m.co.kr/sub72/`. Its four `.ss_menu` groups map to the four history ranges, and only `dd` entries containing a `strong` element are featured red-dot items. All other entries remain regular black-dot details revealed by the existing accordion.
+- 2026-07-23: Replaced the summarized history data with 166 source entries across 14 years. Exactly 23 `strong` entries use `featured: true`; the existing one-open-group accordion behavior remains unchanged.
+
 - 2026-06-18: `C:\project\smartM2M` was empty and not a Git repository, so this is implemented as a minimal standalone Next.js sample.
 - 2026-06-18: Figma node `1441:5486` was too large for full code extraction; `technical_bg` showed a light dotted technical background. The sample mirrors that with a subtle dotted grid over `#F7F7F7`.
 - 2026-06-18: Chose CSS Modules and Framer Motion because the request allowed either CSS Modules/Tailwind and Framer Motion/GSAP.

@@ -147,7 +147,7 @@
   left: 0;
   width: 4px;
   height: 4px;
-  background: #b8b8b8;
+  background: #222222;
   content: "";
   transform: translateY(-50%);
   transition: background-color 0.24s ease;

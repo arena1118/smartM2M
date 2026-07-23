@@ -78,6 +78,15 @@
 - [x] Run `npm.cmd run build`.
 - [x] Capture local review images for news/footer and compare visually against Figma.
 
+### History source data replacement
+
+- [x] Inspect all four history tabs on the source page.
+- [x] Confirm that `strong` marks the red-dot featured items.
+- [x] Replace the history data with every source-page year and item.
+- [x] Render non-`strong` entries with black dots when expanded.
+- [x] Run `npm.cmd run build`.
+- [x] Commit the verified history data update.
+
 ### Figma gap review before continuing Part 1
 
 - [ ] Re-baseline Part 1 against the latest Figma frame `1431:19835` at 1920x7786.
