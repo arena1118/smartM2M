@@ -95,6 +95,14 @@
 - [x] Deploy commit `6782e89` to Vercel production.
 - [x] Confirm the production alias serves the updated history behavior.
 
+### Sticky history collapse control
+
+- [x] Keep the expanded group's collapse control visible while scrolling.
+- [x] Stop the sticky control at the end of its history group.
+- [x] Adjust the sticky offset for desktop and mobile headers.
+- [x] Run `npm.cmd run build`.
+- [ ] Verify and deploy the production interaction.
+
 ### Figma gap review before continuing Part 1
 
 - [ ] Re-baseline Part 1 against the latest Figma frame `1431:19835` at 1920x7786.

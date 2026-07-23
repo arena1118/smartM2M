@@ -4,6 +4,7 @@
 - 2026-07-23: Replaced the summarized history data with 166 source entries across 14 years. Exactly 23 `strong` entries use `featured: true`; the existing one-open-group accordion behavior remains unchanged.
 - 2026-07-23: Production still pointed to the July 21 summarized build. Its later history groups contain only featured rows, so their buttons toggle but reveal no additional content. The current source already contains regular detail rows in every group; production deployment is required for the visible fix.
 - 2026-07-23: Deployed the full history data to Vercel production as `smartm2m-lh2tc3pld`. Browser verification on the production alias confirmed all four groups open and close, revealing 35, 97, 26, and 8 total items respectively before returning to featured-only rows.
+- 2026-07-23: The expanded history groups can be very tall, especially 2020–2023. The collapse control should use group-scoped sticky positioning so it remains reachable while scrolling but does not escape into adjacent sections.
 
 - 2026-06-18: `C:\project\smartM2M` was empty and not a Git repository, so this is implemented as a minimal standalone Next.js sample.
 - 2026-06-18: Figma node `1441:5486` was too large for full code extraction; `technical_bg` showed a light dotted technical background. The sample mirrors that with a subtle dotted grid over `#F7F7F7`.

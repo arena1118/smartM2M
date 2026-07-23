@@ -1,7 +1,7 @@
 /* 연혁 섹션의 접힘과 펼침 레이아웃을 정의합니다. */
 .section {
   position: relative;
-  overflow: hidden;
+  overflow: clip;
   padding: 96px 0 118px;
   padding-left: 50px;
   background:
@@ -204,6 +204,17 @@
   transform: rotate(180deg);
 }
 
+.group.open .toggle {
+  position: sticky;
+  z-index: 3;
+  top: 96px;
+  padding: 8px 10px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(8px);
+}
+
 @media (max-width: 900px) {
   .section {
     padding: 70px 22px 86px;
@@ -214,9 +225,20 @@
   }
 
   .group {
-    grid-template-columns: 1fr;
+    grid-template-areas:
+      "range toggle"
+      "timeline timeline";
+    grid-template-columns: minmax(0, 1fr) auto;
     gap: 22px;
     padding: 28px 0;
+  }
+
+  .range {
+    grid-area: range;
+  }
+
+  .timeline {
+    grid-area: timeline;
   }
 
   .yearRow {
@@ -225,6 +247,11 @@
   }
 
   .toggle {
+    grid-area: toggle;
     justify-content: flex-start;
+  }
+
+  .group.open .toggle {
+    top: 72px;
   }
 }
