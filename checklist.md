@@ -101,7 +101,7 @@
 - [x] Stop the sticky control at the end of its history group.
 - [x] Adjust the sticky offset for desktop and mobile headers.
 - [x] Run `npm.cmd run build`.
-- [ ] Verify and deploy the production interaction.
+- [x] Verify and deploy the production interaction.
 
 ### Figma gap review before continuing Part 1
 
