@@ -216,10 +216,10 @@
 
 ### 2026-08-03 Figma reconnect audit and responsive interaction pass
 
-- [ ] Read the latest Figma frame and section nodes with the reconnected MCP account.
-- [ ] Capture the current Vercel page at desktop, tablet, and mobile widths.
-- [ ] Compare section geometry, typography, assets, and default interaction states.
-- [ ] Implement the highest-impact responsive layout corrections.
-- [ ] Implement the highest-impact interaction corrections without changing the desktop reference hierarchy.
-- [ ] Verify desktop, tablet, and mobile interaction states.
-- [ ] Run `npm.cmd run build` and record remaining Figma gaps.
+- [x] Read the latest Figma frame and section nodes with the reconnected MCP account.
+- [x] Capture the current Vercel page at desktop, tablet, and mobile widths.
+- [x] Compare section geometry, typography, assets, and default interaction states.
+- [x] Implement the highest-impact responsive layout corrections.
+- [x] Implement the highest-impact interaction corrections without changing the desktop reference hierarchy.
+- [x] Verify desktop, tablet, and mobile interaction states.
+- [x] Run `npm.cmd run build` and record remaining Figma gaps.
