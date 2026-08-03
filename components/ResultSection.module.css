@@ -208,3 +208,78 @@
     height: 360px;
   }
 }
+
+@media (max-width: 600px) {
+  .section {
+    padding: 0 12px;
+  }
+
+  .panel {
+    gap: 12px;
+    padding-bottom: 42px;
+    border-radius: 0 0 14px 14px;
+  }
+
+  .intro {
+    min-height: 344px;
+    padding: 56px 22px 0;
+  }
+
+  .intro h2 {
+    font-size: 42px;
+  }
+
+  .description {
+    max-width: 280px;
+    margin-top: 18px;
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  .ring {
+    top: 214px;
+    left: 18px;
+    width: min(72vw, 280px);
+  }
+
+  .ring::before {
+    inset: 38px;
+  }
+
+  .cards {
+    gap: 18px;
+    padding: 0 22px;
+  }
+
+  .column,
+  .lowered {
+    gap: 18px;
+  }
+
+  .card {
+    height: 250px;
+    padding: 28px 24px;
+    border-radius: 10px;
+  }
+
+  .card h3 {
+    margin-top: 22px;
+    font-size: 23px;
+  }
+
+  .cardMark {
+    right: 20px;
+    bottom: 20px;
+    width: 88px;
+    height: 88px;
+    border-radius: 22px;
+  }
+
+  .cardMark::before {
+    inset: 20px;
+  }
+
+  .cardMark::after {
+    inset: 36px;
+  }
+}

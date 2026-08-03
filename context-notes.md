@@ -7,6 +7,7 @@
 - 2026-07-23: The expanded history groups can be very tall, especially 2020–2023. The collapse control should use group-scoped sticky positioning so it remains reachable while scrolling but does not escape into adjacent sections.
 - 2026-07-23: Production inspection showed the previous `0fr` to `1fr` row transition resolving to `0px` even when `detailVisible` matched. Replaced it with explicit hidden/block states and a short entry animation so expanded details reliably participate in layout.
 - 2026-07-23: Final production verification opened all 97 items in the 2020–2023 group, measured the expanded group at about 4,181px, and confirmed the collapse control remained sticky at 96px after two Page Down scrolls. Closing returned the group to its eight featured entries.
+- 2026-08-03: Figma MCP was reconnected as `smartm2m@smartm2m.co.kr` with Full seat access. Resume work by comparing Figma frame `1431:19835` (`1920x7744`) against the Vercel production alias before implementing today's responsive and interaction pass.
 
 - 2026-06-18: `C:\project\smartM2M` was empty and not a Git repository, so this is implemented as a minimal standalone Next.js sample.
 - 2026-06-18: Figma node `1441:5486` was too large for full code extraction; `technical_bg` showed a light dotted technical background. The sample mirrors that with a subtle dotted grid over `#F7F7F7`.

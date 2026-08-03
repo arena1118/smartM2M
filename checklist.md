@@ -213,3 +213,13 @@
 - [ ] Run `npm.cmd run build` as the final verification.
 - [ ] Create a meaningful commit after the final verified work unit.
 - [ ] Complete Part 3 only when the page is usable across the target viewport widths and ready for deployment.
+
+### 2026-08-03 Figma reconnect audit and responsive interaction pass
+
+- [ ] Read the latest Figma frame and section nodes with the reconnected MCP account.
+- [ ] Capture the current Vercel page at desktop, tablet, and mobile widths.
+- [ ] Compare section geometry, typography, assets, and default interaction states.
+- [ ] Implement the highest-impact responsive layout corrections.
+- [ ] Implement the highest-impact interaction corrections without changing the desktop reference hierarchy.
+- [ ] Verify desktop, tablet, and mobile interaction states.
+- [ ] Run `npm.cmd run build` and record remaining Figma gaps.

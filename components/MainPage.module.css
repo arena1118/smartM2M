@@ -147,6 +147,21 @@
   align-content: space-between;
 }
 
+.heroMenuButton {
+  display: inline-grid;
+  width: 28px;
+  height: 28px;
+  padding: 4px;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.mobileMenu {
+  display: none;
+}
+
 .heroMenuIcon span {
   display: block;
   border-radius: 50%;
@@ -588,6 +603,105 @@
     top: 12%;
     width: min(92vw, 760px);
     min-height: 180px;
+  }
+
+  .heroHeader {
+    top: 16px;
+    left: 20px;
+    right: 20px;
+  }
+
+  .heroLogo {
+    font-size: 24px;
+  }
+
+  .heroNav {
+    display: none;
+  }
+
+  .heroContact {
+    gap: 0;
+  }
+
+  .heroContact a {
+    display: none;
+  }
+
+  .mobileMenu {
+    position: absolute;
+    top: 64px;
+    right: 20px;
+    left: 20px;
+    z-index: 5;
+    display: grid;
+    gap: 0;
+    padding: 12px 18px;
+    border: 1px solid rgba(34, 34, 34, 0.08);
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-8px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .mobileMenuOpen {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  .mobileMenu a {
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(34, 34, 34, 0.08);
+    color: #222222;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .mobileMenu a:last-child {
+    border-bottom: 0;
+  }
+
+  .heroRail {
+    top: 86px;
+    bottom: 24px;
+    width: 24px;
+    font-size: 10px;
+  }
+
+  .heroRail::before {
+    left: 23px;
+  }
+
+  .heroTextCover {
+    top: 16%;
+    left: 52%;
+    width: calc(100% - 72px);
+  }
+
+  .heroTextCover p {
+    font-size: 10px;
+    line-height: 1.35;
+  }
+
+  .revealHeadline {
+    white-space: normal;
+  }
+
+  .heroButton {
+    min-width: 0;
+    width: min(260px, 86vw);
+    height: 54px;
+    margin-top: 34px;
+    padding: 0 22px;
+    font-size: 16px;
+  }
+
+  .heroButton span {
+    margin-left: 16px;
+    font-size: 34px;
   }
 
   .revealHeadline {

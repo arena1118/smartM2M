@@ -13,7 +13,7 @@ const serviceLinks = ["회사소개", "소식", "인재채용"];
 
 export function FooterSection() {
   return (
-    <footer className={styles.footer} aria-label="푸터">
+    <footer id="footer" className={styles.footer} aria-label="푸터">
       <div className={styles.content}>
         <div className={styles.top}>
           <a className={styles.logo} href="/" aria-label="SmartM2M 홈">

@@ -1,4 +1,5 @@
 // 최신 소식 섹션을 Figma 기준의 정적 카드 배열로 퍼블리싱합니다.
+import { useState } from "react";
 import styles from "./NewsSection.module.css";
 
 type NewsCard = {
@@ -48,6 +49,12 @@ const newsCards: NewsCard[] = [
 ];
 
 export function NewsSection() {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const move = (direction: number) => {
+    setActiveIndex((current) => (current + direction + newsCards.length) % newsCards.length);
+  };
+
   return (
     <section id="news" className={styles.section} aria-label="소식">
       <header className={styles.header}>
@@ -57,13 +64,13 @@ export function NewsSection() {
           </p>
           <h2>소식</h2>
         </div>
-        <a className={styles.moreLink} href="/">
+        <a className={styles.moreLink} href="#news">
           더보기
           <img src="/assets/smartm2m/figma/news-more-arrow.svg" alt="" />
         </a>
       </header>
 
-      <div className={styles.board}>
+      <div className={styles.board} style={{ transform: `translateX(-${activeIndex * 350}px)` }}>
         {newsCards.map((card) => (
           <article className={styles.cardShell} aria-label={`소식 카드 ${card.name}`} key={card.name}>
             {card.image && card.crop ? (
@@ -93,13 +100,17 @@ export function NewsSection() {
         ))}
       </div>
 
-      <div className={styles.controls} aria-hidden="true">
+      <div className={styles.controls}>
         <span className={styles.progress}>
-          <span />
+          <span style={{ width: `${165 + activeIndex * 20}px` }} />
         </span>
         <div className={styles.arrows}>
-          <img src="/assets/smartm2m/figma/news-before.svg" alt="" />
-          <img src="/assets/smartm2m/figma/news-after.svg" alt="" />
+          <button type="button" aria-label="이전 소식" onClick={() => move(-1)}>
+            <img src="/assets/smartm2m/figma/news-before.svg" alt="" />
+          </button>
+          <button type="button" aria-label="다음 소식" onClick={() => move(1)}>
+            <img src="/assets/smartm2m/figma/news-after.svg" alt="" />
+          </button>
         </div>
       </div>
     </section>

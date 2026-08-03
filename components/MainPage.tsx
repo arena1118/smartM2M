@@ -2,7 +2,7 @@
 
 // Figma 기준 화면 위에 커서, 리빌, 스크롤 인터랙션을 얹습니다.
 import { motion, useReducedMotion } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./MainPage.module.css";
 import { HistorySection } from "./HistorySection";
 import { ResultSection } from "./ResultSection";
@@ -14,6 +14,7 @@ import { FooterSection } from "./FooterSection";
 const heroLines = ["항만, AI, 블록체인 그리고", "사이버보안 분야의", "기술 선도에 앞장서고 있습니다."];
 
 const heroNavItems = ["회사소개", "항만물류 IT", "항만 블록체인", "AI 자율제조", "사이버보안", "소식", "인재채용", "지식자산"];
+const heroNavTargets = ["#top", "#technical", "#technical", "#technical", "#technical", "#news", "#footer", "#footer"];
 
 function CursorFollower() {
   const dotRef = useRef<HTMLDivElement | null>(null);
@@ -100,6 +101,7 @@ function RevealHeadline() {
 
 export function MainPage() {
   const reduceMotion = useReducedMotion();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     if (reduceMotion) {
@@ -133,7 +135,7 @@ export function MainPage() {
   return (
     <main className={styles.page}>
       <CursorFollower />
-      <section className={styles.hero} aria-label="메인 히어로">
+      <section id="top" className={styles.hero} aria-label="메인 히어로">
         <div className={styles.heroBackdrop} aria-hidden="true" />
         <header className={styles.heroHeader}>
           <a className={styles.heroLogo} href="/" aria-label="SmartM2M 홈">
@@ -155,14 +157,29 @@ export function MainPage() {
           </nav>
           <div className={styles.heroContact}>
             <a href="/">Contact Us</a>
-            <span className={styles.heroMenuIcon} aria-hidden="true">
+            <button
+              className={styles.heroMenuButton}
+              type="button"
+              aria-label={menuOpen ? "메뉴 닫기" : "메뉴 열기"}
+              aria-expanded={menuOpen}
+              onClick={() => setMenuOpen((open) => !open)}
+            >
+              <span className={styles.heroMenuIcon} aria-hidden="true">
               <span />
               <span />
               <span />
               <span />
-            </span>
+              </span>
+            </button>
           </div>
         </header>
+        <nav className={`${styles.mobileMenu} ${menuOpen ? styles.mobileMenuOpen : ""}`} aria-label="모바일 메뉴">
+          {heroNavItems.map((item, index) => (
+            <a href={heroNavTargets[index]} key={item} onClick={() => setMenuOpen(false)}>
+              {item}
+            </a>
+          ))}
+        </nav>
         <aside className={styles.heroRail} aria-hidden="true">
           <span>More</span>
           <span>Smart Solutions for a Secure Tomorrow, Empowering Customers to Achieve More</span>
