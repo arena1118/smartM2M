@@ -1,61 +1,74 @@
-/* 파트너 로고 행의 정적 위치와 간격을 정의합니다. */
+/* 기존 사이트와 같은 컬러 로고의 연속 이동을 정의합니다. */
 .section {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
   overflow: hidden;
-  padding: 46px 0 58px;
-  background: #f7f7f7;
+  padding: 100px 0;
+  display: grid;
+  gap: 35px;
+  background: #f9f9f9;
 }
-
-.row {
+.track {
   display: flex;
   width: max-content;
-  min-width: 100%;
-  align-items: center;
-  justify-content: center;
-  gap: 92px;
-  margin: 0;
-  padding: 0 88px;
-  list-style: none;
+  animation: slide 65s linear infinite;
 }
-
 .offset {
-  transform: translateX(-42px);
+  animation-delay: -12s;
 }
-
-.item {
+.row {
   display: flex;
-  flex: 0 0 auto;
-  height: 28px;
+  align-items: center;
+  gap: 90px;
+  list-style: none;
+  margin: 0;
+  padding: 0 45px;
+}
+.item {
+  width: 220px;
+  height: 38px;
+  display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0.72;
 }
-
 .item img {
-  display: block;
-  width: auto;
-  max-width: 154px;
-  height: 26px;
+  max-width: 100%;
+  max-height: 100%;
   object-fit: contain;
-  filter: grayscale(1);
 }
-
-@media (max-width: 900px) {
+.section:hover .track {
+  animation-play-state: paused;
+}
+@keyframes slide {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@media (max-width: 700px) {
   .section {
-    gap: 22px;
-    padding: 34px 0 42px;
+    padding: 65px 0;
+    gap: 24px;
   }
-
   .row {
-    justify-content: flex-start;
-    gap: 44px;
-    padding: 0 22px;
+    gap: 45px;
+    padding: 0 22.5px;
   }
-
+  .item {
+    width: 160px;
+    height: 28px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    animation: none;
+    width: 100%;
+  }
+  .row {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    width: 100%;
+  }
+  .row[aria-hidden="true"],
   .offset {
-    transform: none;
+    display: none;
   }
 }

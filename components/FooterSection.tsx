@@ -2,14 +2,29 @@
 import styles from "./FooterSection.module.css";
 
 const addresses = [
-  ["본사", "부산광역시 해운대구 센텀중앙로 97 센텀스카이비즈 A동 701호, 702호, 703호, 709호"],
-  ["인도네시아 지사", "9th Floor Menara Asia Afrika, Jl. Asia Afrika 133-137, Bandung, Jawa Barat, Indonesia"],
-  ["문현금융단지 지사", "부산광역시 남구 문현금융로 40, 21층 5호실"],
-  ["사무소", "부산광역시 중구 충장대로 11, 부산무역회관 4층 407호"],
+  [
+    "본사",
+    "부산광역시 해운대구 센텀중앙로 97 센텀스카이비즈 A동 701호, 702호, 703호, 709호",
+  ],
+  [
+    "인도네시아 지사",
+    "HQuarter Business Residence, 16th Floor Jl. Asia Afrika No. 158, Bandung, Jawa Barat 40261",
+  ],
+  ["중앙동 지사", "부산광역시 중구 중앙대로 11, 부산무역회관 505호"],
+  ["서울 지사", "서울특별시 강남구 봉은사로 37길 9, 3032호"],
 ];
 
-const solutionLinks = ["항만물류 IT 시스템", "항만 블록체인", "항만 사이버보안", "항만 민원대응 AI 솔루션"];
-const serviceLinks = ["회사소개", "소식", "인재채용"];
+const solutionLinks = [
+  ["생성형 AI기반 사이버보안", "solutions/ai-security/pen-testing"],
+  ["AI기반 KCMVP 평가", "solutions/ai-kcmvp/crypto-development"],
+  ["AI 응용서비스", "solutions/ai-application/ocr"],
+  ["자율 제조", "solutions/ai-smart-manufacturing/ops-optimization"],
+];
+const serviceLinks = [
+  ["회사소개", "about"],
+  ["소식", "news"],
+  ["인재채용", "careers"],
+];
 
 export function FooterSection() {
   return (
@@ -17,13 +32,7 @@ export function FooterSection() {
       <div className={styles.content}>
         <div className={styles.top}>
           <a className={styles.logo} href="/" aria-label="SmartM2M 홈">
-            <span className={styles.logoMark} aria-hidden="true">
-              <span />
-              <span />
-              <span />
-              <span />
-            </span>
-            <span className={styles.logoText}>SmartM2M</span>
+            <img src="/assets/smartm2m/current/logo.svg" alt="SmartM2M" />
           </a>
           <span className={styles.line} aria-hidden="true" />
           <a className={styles.topButton} href="#top" aria-label="맨 위로 이동">
@@ -48,18 +57,18 @@ export function FooterSection() {
             <div className={styles.quickMenus}>
               <nav className={styles.quickMenu} aria-label="솔루션">
                 <h3>SOLUTIONS</h3>
-                {solutionLinks.map((link) => (
-                  <a href="/" key={link}>
-                    {link}
+                {solutionLinks.map(([label, path]) => (
+                  <a href={`https://www.smartm2m.co.kr/ko/${path}`} key={path}>
+                    {label}
                   </a>
                 ))}
               </nav>
 
               <nav className={styles.quickMenu} aria-label="서비스">
                 <h3>SERVICES</h3>
-                {serviceLinks.map((link) => (
-                  <a href="/" key={link}>
-                    {link}
+                {serviceLinks.map(([label, path]) => (
+                  <a href={`https://www.smartm2m.co.kr/ko/${path}`} key={path}>
+                    {label}
                   </a>
                 ))}
               </nav>

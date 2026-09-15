@@ -1,0 +1,396 @@
+/* 순차 스크롤 장면과 축소되는 공통 배경의 레이아웃을 정의합니다. */
+.journey {
+  position: relative;
+  height: 620svh;
+  background: #f9f9f9;
+}
+.stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  min-height: 620px;
+  isolation: isolate;
+}
+.background {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  will-change: clip-path;
+}
+.texture {
+  position: absolute;
+  inset: 0;
+  background: url("/assets/smartm2m/current/solution-bg.webp") center / cover;
+}
+.solution {
+  position: absolute;
+  inset: 0;
+  padding: clamp(96px, 11vh, 120px) 2.6% 40px 5.2%;
+  color: white;
+}
+.heading p,
+.resultHeading > p {
+  margin: 0 0 12px;
+  font-size: 16px;
+  font-weight: 400;
+  color: #9fb1c8;
+}
+.heading h2 {
+  margin: 0;
+  font-size: 36px;
+  font-weight: 600;
+}
+.solutionBody {
+  display: grid;
+  grid-template-columns: 550fr 1080fr;
+  align-items: center;
+  gap: 7.3%;
+  margin-top: clamp(28px, 5vh, 70px);
+}
+.copy h3 {
+  font-size: clamp(30px, 2.6vw, 50px);
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  margin: 20px 0;
+  font-weight: 600;
+}
+.copy h3 span {
+  color: #d1eaff;
+}
+.copy p {
+  margin: 0;
+  font-size: clamp(16px, 1.04vw, 20px);
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+}
+.smartx {
+  width: 144px;
+  height: 50px;
+}
+.dashboard {
+  width: 100%;
+  max-height: 60svh;
+  object-fit: contain;
+}
+.cta {
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 35px;
+  margin-top: clamp(28px, 5vh, 75px);
+  padding: 15px 40px;
+  border-radius: 40px;
+  color: #f4f4f4;
+  background: linear-gradient(168deg, #2882ff, #7c3aed);
+  font-size: 20px;
+  text-decoration: none;
+}
+.cta span {
+  font-size: 26px;
+  line-height: 1;
+}
+.cue {
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  color: #9daeba;
+  font-size: 14px;
+}
+.cue::before {
+  content: "";
+  width: 1px;
+  height: 60px;
+  background: #8badbd80;
+}
+.cue img {
+  width: 18px;
+  height: 26px;
+  margin-top: -44px;
+}
+.message {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  font-size: clamp(24px, 2vw, 38px);
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: -0.02em;
+  pointer-events: none;
+}
+.results {
+  position: absolute;
+  inset: 6% 3.65%;
+  padding: clamp(70px, 9vh, 110px) 5.2% 50px;
+  color: #fff;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.watermark {
+  position: absolute;
+  top: -35px;
+  left: 0;
+  font-size: clamp(100px, 13vw, 250px);
+  white-space: nowrap;
+  color: #ffffff05;
+  pointer-events: none;
+}
+.resultHeading {
+  position: relative;
+}
+.resultHeading > p {
+  color: #aaa;
+}
+.resultHeading h2 {
+  font-size: clamp(38px, 2.7vw, 52px);
+  margin: 0 0 30px;
+  font-weight: 600;
+}
+.resultHeading div {
+  font-size: clamp(16px, 1.04vw, 20px);
+  line-height: 1.5;
+}
+.cards {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 30px;
+  margin-top: 40px;
+}
+.card,
+.historyLink {
+  position: relative;
+  aspect-ratio: 1;
+  border: 1px solid #ffffff30;
+  padding: 25px;
+}
+.card h3 {
+  font-size: clamp(16px, 1.1vw, 22px);
+  font-weight: 500;
+  line-height: 1.35;
+  white-space: pre-line;
+  word-break: keep-all;
+  margin: 0;
+}
+.card img {
+  position: absolute;
+  bottom: 18px;
+  right: 18px;
+  width: 40%;
+  height: 40%;
+  object-fit: contain;
+}
+.card:nth-child(4) {
+  background: #f9f9f9;
+  color: #222;
+}
+.historyLink {
+  background: linear-gradient(135deg, #b80b12, #ed1b23);
+  border: 0;
+  color: white;
+  text-decoration: none;
+  font-size: clamp(17px, 1.1vw, 22px);
+  line-height: 1.3;
+  transform: translateY(-24px);
+}
+.historyLink span {
+  position: absolute;
+  bottom: 22px;
+  right: 25px;
+  font-size: 30px;
+}
+@media (max-width: 1100px) {
+  .cards {
+    gap: 14px;
+  }
+  .card,
+  .historyLink {
+    padding: 16px;
+  }
+  .desktopBreak {
+    display: none;
+  }
+  .solutionBody {
+    gap: 5%;
+  }
+}
+@media (max-width: 700px) {
+  .journey {
+    height: 650svh;
+  }
+  .stage {
+    min-height: 560px;
+  }
+  .solution {
+    padding: 85px 24px 30px;
+  }
+  .heading p {
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+  .heading h2 {
+    font-size: 26px;
+  }
+  .solutionBody {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    margin-top: 22px;
+  }
+  .smartx {
+    width: 100px;
+    height: 34px;
+  }
+  .copy h3 {
+    font-size: 28px;
+    margin: 10px 0 14px;
+  }
+  .copy p {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .cta {
+    font-size: 15px;
+    padding: 12px 24px;
+    margin-top: 20px;
+  }
+  .dashboard {
+    max-height: 26svh;
+  }
+  .cue {
+    display: none;
+  }
+  .message {
+    font-size: clamp(18px, 4.8vw, 25px);
+    padding: 0 25px;
+    word-break: keep-all;
+  }
+  .results {
+    padding: 55px 22px 25px;
+  }
+  .resultHeading > p {
+    font-size: 12px;
+  }
+  .resultHeading h2 {
+    font-size: 32px;
+    margin-bottom: 16px;
+  }
+  .resultHeading div {
+    font-size: 13px;
+  }
+  .cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 24px;
+  }
+  .card {
+    aspect-ratio: auto;
+    min-height: 112px;
+    padding: 12px;
+  }
+  .card h3 {
+    font-size: 13px;
+  }
+  .card img {
+    width: 40px;
+    height: 40px;
+    bottom: 10px;
+    right: 10px;
+  }
+  .historyLink {
+    grid-column: 1/-1;
+    aspect-ratio: auto;
+    transform: none;
+    padding: 14px;
+    font-size: 14px;
+  }
+  .historyLink br {
+    display: none;
+  }
+  .historyLink span {
+    bottom: 8px;
+    right: 18px;
+  }
+}
+@media (max-height: 740px) and (min-width: 701px) {
+  .solutionBody {
+    margin-top: 20px;
+  }
+  .copy h3 {
+    font-size: 32px;
+  }
+  .copy p {
+    font-size: 16px;
+  }
+  .cta {
+    margin-top: 22px;
+  }
+  .smartx {
+    height: 36px;
+    width: 104px;
+  }
+  .dashboard {
+    max-height: 48svh;
+  }
+  .cue {
+    display: none;
+  }
+  .results {
+    padding-top: 70px;
+  }
+  .card,
+  .historyLink {
+    aspect-ratio: auto;
+    min-height: 150px;
+  }
+}
+.reduced {
+  height: auto;
+}
+.reduced .stage {
+  position: relative;
+  height: auto;
+  min-height: 0;
+}
+.reduced .background {
+  display: none;
+}
+.reduced .solution,
+.reduced .results,
+.reduced .message {
+  position: relative;
+  inset: auto;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+}
+.reduced .solution {
+  background: #071b31;
+  padding-bottom: 80px;
+}
+.reduced .message {
+  background: #353535;
+  padding: 100px 24px;
+}
+.reduced .results {
+  background: #353535;
+  margin: 0 3.65%;
+  padding-bottom: 60px;
+  min-height: 650px;
+}
+.reduced .card {
+  opacity: 1 !important;
+  transform: none !important;
+}
+.reduced .cue {
+  display: none;
+}

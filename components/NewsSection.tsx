@@ -1,62 +1,47 @@
-// 최신 소식 섹션을 Figma 기준의 정적 카드 배열로 퍼블리싱합니다.
-import { useState } from "react";
+"use client";
+// 실제 소식을 사진과 호버 카드, 순환 탐색으로 표시합니다.
+import { useEffect, useState } from "react";
+import { useReducedMotion } from "framer-motion";
+import news from "../public/assets/smartm2m/current/news.json";
 import styles from "./NewsSection.module.css";
-
-type NewsCard = {
-  name: string;
-  image?: string;
-  dark?: boolean;
-  crop?: {
-    width: number;
-    height: number;
-    left: number;
-    top: number;
-    opacity?: number;
-  };
-};
-
-const newsCards: NewsCard[] = [
-  {
-    name: "6",
-    image: "/assets/smartm2m/figma/news-figma-30.png",
-    dark: true,
-    crop: { width: 798, height: 478, left: -89, top: -2, opacity: 0.3 },
-  },
-  {
-    name: "1",
-    image: "/assets/smartm2m/figma/news-figma-24.png",
-    crop: { width: 681, height: 511, left: -155, top: -40 },
-  },
-  {
-    name: "2",
-    image: "/assets/smartm2m/figma/news-figma-28.png",
-    crop: { width: 806, height: 471, left: -167, top: -50 },
-  },
-  {
-    name: "3",
-    image: "/assets/smartm2m/figma/news-figma-29.png",
-    crop: { width: 691, height: 478, left: -111, top: -2 },
-  },
-  {
-    name: "4",
-  },
-  {
-    name: "5",
-    image: "/assets/smartm2m/figma/news-figma-24.png",
-    dark: true,
-    crop: { width: 681, height: 511, left: -155, top: -40, opacity: 0.3 },
-  },
-];
-
 export function NewsSection() {
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  const move = (direction: number) => {
-    setActiveIndex((current) => (current + direction + newsCards.length) % newsCards.length);
-  };
-
+  const [index, setIndex] = useState(news.length);
+  const [resetting, setResetting] = useState(false);
+  const [paused, setPaused] = useState(false);
+  const reduced = useReducedMotion();
+  useEffect(() => {
+    if (paused || reduced) return;
+    const timer = setInterval(
+      () =>
+        setIndex((i) =>
+          reduced
+            ? news.length + ((i + 1) % news.length)
+            : Math.min(i + 1, news.length * 2),
+        ),
+      4500,
+    );
+    return () => clearInterval(timer);
+  }, [paused, reduced]);
+  const visible = [...news, ...news, ...news];
+  useEffect(() => {
+    if (!resetting) return;
+    const frame = requestAnimationFrame(() =>
+      requestAnimationFrame(() => setResetting(false)),
+    );
+    return () => cancelAnimationFrame(frame);
+  }, [resetting]);
   return (
-    <section id="news" className={styles.section} aria-label="소식">
+    <section
+      id="news"
+      className={styles.section}
+      aria-label="소식"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocusCapture={() => setPaused(true)}
+      onBlurCapture={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget)) setPaused(false);
+      }}
+    >
       <header className={styles.header}>
         <div className={styles.title}>
           <p>
@@ -64,51 +49,85 @@ export function NewsSection() {
           </p>
           <h2>소식</h2>
         </div>
-        <a className={styles.moreLink} href="#news">
-          더보기
-          <img src="/assets/smartm2m/figma/news-more-arrow.svg" alt="" />
+        <a
+          className={styles.moreLink}
+          href="https://www.smartm2m.co.kr/ko/news?category=internal"
+        >
+          더보기 <img src="/assets/smartm2m/figma/news-more-arrow.svg" alt="" />
         </a>
       </header>
-
-      <div className={styles.board} style={{ transform: `translateX(-${activeIndex * 350}px)` }}>
-        {newsCards.map((card) => (
-          <article className={styles.cardShell} aria-label={`소식 카드 ${card.name}`} key={card.name}>
-            {card.image && card.crop ? (
-              <div className={`${styles.imageCard} ${card.dark ? styles.darkCard : ""}`}>
-                <img
-                  src={card.image}
-                  alt=""
-                  style={
-                    {
-                      width: `${card.crop.width}px`,
-                      height: `${card.crop.height}px`,
-                      left: `${card.crop.left}px`,
-                      top: `${card.crop.top}px`,
-                      opacity: card.crop.opacity ?? 1,
-                    } as React.CSSProperties
-                  }
-                />
-              </div>
-            ) : (
-              <div className={styles.featuredCard}>
-                <time>2024-10-28</time>
-                <h3>블록체인 기반 환적 모니터링 시스템(Port-i) 구축 및 상용화</h3>
-                <img src="/assets/smartm2m/figma/news-card-arrow.svg" alt="" />
-              </div>
-            )}
-          </article>
+      <div
+        className={styles.board}
+        style={{
+          transform: `translateX(calc(-1 * ${index} * (var(--card-width) + var(--card-gap))))`,
+          transition: resetting || reduced ? "none" : undefined,
+        }}
+        onTransitionEnd={(event) => {
+          if (event.target !== event.currentTarget) return;
+          if (index >= news.length * 2 || index < news.length) {
+            setResetting(true);
+            setIndex(news.length + (index % news.length));
+          }
+        }}
+      >
+        {visible.map((card, n) => (
+          <a
+            className={`${styles.card} ${n === index + 3 ? styles.featured : ""}`}
+            href={`https://www.smartm2m.co.kr${card.href}`}
+            key={n}
+            tabIndex={n >= index && n < index + 4 ? 0 : -1}
+            aria-label={card.text.slice(10)}
+          >
+            <img
+              src={
+                card.image.startsWith("/")
+                  ? `https://www.smartm2m.co.kr${card.image}`
+                  : card.image
+              }
+              alt=""
+              loading="lazy"
+            />
+            <div className={styles.overlay}>
+              <time>{card.text.slice(0, 10)}</time>
+              <h3>{card.text.slice(10)}</h3>
+              <img src="/assets/smartm2m/figma/news-card-arrow.svg" alt="" />
+            </div>
+          </a>
         ))}
       </div>
-
       <div className={styles.controls}>
         <span className={styles.progress}>
-          <span style={{ width: `${165 + activeIndex * 20}px` }} />
+          <span
+            style={{
+              width: `${(((index % news.length) + 1) / news.length) * 100}%`,
+            }}
+          />
         </span>
         <div className={styles.arrows}>
-          <button type="button" aria-label="이전 소식" onClick={() => move(-1)}>
+          <button
+            type="button"
+            aria-label="이전 소식"
+            onClick={() =>
+              setIndex((i) =>
+                reduced
+                  ? news.length + ((i - 1 + news.length) % news.length)
+                  : Math.max(i - 1, news.length - 1),
+              )
+            }
+          >
             <img src="/assets/smartm2m/figma/news-before.svg" alt="" />
           </button>
-          <button type="button" aria-label="다음 소식" onClick={() => move(1)}>
+          <button
+            type="button"
+            aria-label="다음 소식"
+            onClick={() =>
+              setIndex((i) =>
+                reduced
+                  ? news.length + ((i + 1) % news.length)
+                  : Math.min(i + 1, news.length * 2),
+              )
+            }
+          >
             <img src="/assets/smartm2m/figma/news-after.svg" alt="" />
           </button>
         </div>
