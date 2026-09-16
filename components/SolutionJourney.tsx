@@ -29,12 +29,12 @@ function Achievement({
 }) {
   const opacity = useTransform(
     progress,
-    [0.8 + index * 0.022, 0.87 + index * 0.022],
+    [0.79 + index * 0.012, 0.83 + index * 0.012],
     [0, 1],
   );
   const y = useTransform(
     progress,
-    [0.8 + index * 0.022, 0.87 + index * 0.022],
+    [0.79 + index * 0.012, 0.83 + index * 0.012],
     [24, 0],
   );
   return (
@@ -54,35 +54,35 @@ export function SolutionJourney() {
   });
   const background = useTransform(
     progress,
-    [0, 0.13, 0.48, 0.59],
+    [0, 0.08, 0.44, 0.52],
     ["#f9f9f9", "#071b31", "#071b31", "#353535"],
   );
-  const texture = useTransform(progress, [0, 0.13, 0.48, 0.59], [0, 1, 1, 0]);
-  const insetProgress = useTransform(progress, [0.44, 0.58], [0, 1]);
-  const insetY = useTransform(progress, [0.44, 0.58], [0, 6]);
+  const texture = useTransform(progress, [0, 0.08, 0.44, 0.52], [0, 1, 1, 0]);
+  const insetProgress = useTransform(progress, [0.44, 0.52], [0, 1]);
+  const insetY = useTransform(progress, [0.44, 0.52], [0, 6]);
   const clipPath = useMotionTemplate`inset(${insetY}% calc(var(--result-right) * ${insetProgress}) ${insetY}% calc(var(--result-left) * ${insetProgress}) round 3px)`;
   const solutionOpacity = useTransform(
     progress,
-    [0.14, 0.23, 0.37, 0.44],
+    [0.09, 0.14, 0.40, 0.44],
     [0, 1, 1, 0],
   );
-  const solutionY = useTransform(progress, [0.14, 0.23], [40, 0]);
+  const solutionY = useTransform(progress, [0.09, 0.14], [40, 0]);
   const solutionVisibility = useTransform(progress, (p) =>
-    p >= 0.14 && p < 0.44 ? "visible" : "hidden",
+    p >= 0.09 && p < 0.44 ? "visible" : "hidden",
   );
   const messageOpacity = useTransform(
     progress,
-    [0.6, 0.66, 0.72, 0.78],
+    [0.54, 0.58, 0.73, 0.77],
     [0, 1, 1, 0],
   );
   const messageY = useTransform(
     progress,
-    [0.6, 0.66, 0.72, 0.78],
+    [0.54, 0.58, 0.73, 0.77],
     [24, 0, 0, -24],
   );
-  const resultOpacity = useTransform(progress, [0.8, 0.87], [0, 1]);
+  const resultOpacity = useTransform(progress, [0.79, 0.83], [0, 1]);
   const resultVisibility = useTransform(progress, (p) =>
-    p >= 0.8 ? "visible" : "hidden",
+    p >= 0.79 ? "visible" : "hidden",
   );
 
   return (
