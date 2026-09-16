@@ -58,9 +58,9 @@ export function SolutionJourney() {
     ["#f9f9f9", "#071b31", "#071b31", "#353535"],
   );
   const texture = useTransform(progress, [0, 0.13, 0.48, 0.59], [0, 1, 1, 0]);
-  const insetX = useTransform(progress, [0.44, 0.58], [0, 3.65]);
+  const insetProgress = useTransform(progress, [0.44, 0.58], [0, 1]);
   const insetY = useTransform(progress, [0.44, 0.58], [0, 6]);
-  const clipPath = useMotionTemplate`inset(${insetY}% ${insetX}% round 3px)`;
+  const clipPath = useMotionTemplate`inset(${insetY}% calc(var(--result-right) * ${insetProgress}) ${insetY}% calc(var(--result-left) * ${insetProgress}) round 3px)`;
   const solutionOpacity = useTransform(
     progress,
     [0.14, 0.23, 0.37, 0.44],
@@ -166,7 +166,8 @@ export function SolutionJourney() {
           style={{ opacity: resultOpacity, visibility: resultVisibility }}
         >
           <span className={styles.watermark} aria-hidden="true">
-            Smart Solutions
+            <span>Smart Solutions&nbsp;</span>
+            <span>Smart Solutions&nbsp;</span>
           </span>
           <header className={styles.resultHeading}>
             <p>ACHIEVEMENTS</p>
