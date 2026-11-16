@@ -240,7 +240,7 @@ export function PrototypeOne() {
 
   useEffect(() => {
     const media = window.matchMedia(
-      "(min-width: 901px) and (prefers-reduced-motion: no-preference)",
+      "(min-width: 901px)",
     );
     const update = () => {
       setScrollExpertise(media.matches);
@@ -259,7 +259,6 @@ export function PrototypeOne() {
     const onWheel = (event: WheelEvent) => {
       if (
         event.ctrlKey ||
-        !event.cancelable ||
         Math.abs(event.deltaX) > Math.abs(event.deltaY) ||
         !event.deltaY
       )
@@ -267,10 +266,17 @@ export function PrototypeOne() {
       const bounds = section.getBoundingClientRect();
       const now = performance.now();
       const direction = Math.sign(event.deltaY);
+      const delta =
+        event.deltaY *
+        (event.deltaMode === 1
+          ? 16
+          : event.deltaMode === 2
+            ? window.innerHeight
+            : 1);
       if (
-        bounds.top > window.innerHeight * 0.35 ||
-        bounds.bottom < window.innerHeight * 0.5 ||
-        (bounds.top < -80 && direction > 0)
+        (bounds.top > window.innerHeight * 0.35 &&
+          bounds.top - Math.max(delta, 0) > window.innerHeight * 0.35) ||
+        bounds.bottom < window.innerHeight * 0.5
       )
         return;
       if (now < expertiseMotion.current.until) {
@@ -295,13 +301,6 @@ export function PrototypeOne() {
         expertiseMotion.current.until = now + 700;
         return;
       }
-      const delta =
-        event.deltaY *
-        (event.deltaMode === 1
-          ? 16
-          : event.deltaMode === 2
-            ? window.innerHeight
-            : 1);
       if (now - lastWheel > 180 || Math.sign(wheelAmount) !== direction)
         wheelAmount = 0;
       lastWheel = now;
