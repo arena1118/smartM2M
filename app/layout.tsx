@@ -3,8 +3,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "SmartM2M Main Animation Prototype",
-  description: "SmartM2M 메인 페이지 애니메이션 퍼블리싱 검토용 프로토타입",
+  title: "SmartM2M | 디자인 시안 1",
+  description: "스마트엠투엠 기업 홈페이지 디자인 시안 1 프로토타입",
 };
 
 export default function RootLayout({
