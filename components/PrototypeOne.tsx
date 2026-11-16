@@ -556,31 +556,82 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 }) {
                   setHeroFocused(false);
               }}
             >
-              {heroImages.map((image, i) => (
-                <motion.img
-                  key={image}
-                  src={image}
-                  aria-hidden={slide !== i}
-                  initial={false}
-                  animate={{
-                    opacity: slide === i ? 1 : 0,
-                    scale: reducedMotion || slide === i ? 1 : 1.035,
-                  }}
-                  transition={{
-                    opacity: { duration: reducedMotion ? 0 : 0.8 },
-                    scale: { duration: reducedMotion ? 0 : 1.2 },
-                  }}
-                  alt={
-                    [
-                      "AI 사이버보안 플랫폼",
-                      "AI 반도체 제조",
-                      "스마트항만 물류",
-                      "산업 기술 비주얼",
-                      "사이버보안 인프라",
-                    ][i]
-                  }
-                />
-              ))}
+              {variant === 2
+                ? heroImages.map((image, i) => {
+                    const depth =
+                      (i - slide + heroImages.length) % heroImages.length;
+                    return (
+                      <motion.div
+                        key={image}
+                        className={styles.heroDeckCard}
+                        aria-hidden={depth !== 0}
+                        initial={false}
+                        animate={{
+                          x: reducedMotion ? 0 : depth < 3 ? depth * 20 : -70,
+                          scaleY: reducedMotion
+                            ? 1
+                            : depth < 3
+                              ? 1 - depth * 0.077
+                              : 0.96,
+                          opacity:
+                            depth === 0
+                              ? 1
+                              : depth === 1
+                                ? 0.5
+                                : depth === 2
+                                  ? 0.2
+                                  : 0,
+                          rotate: reducedMotion || depth < 3 ? 0 : -3,
+                        }}
+                        style={{
+                          zIndex: depth < 3 ? 3 - depth : 4,
+                          pointerEvents: "none",
+                        }}
+                        transition={{
+                          duration: reducedMotion ? 0 : 0.85,
+                          ease: [0.22, 1, 0.36, 1],
+                        }}
+                      >
+                        <img
+                          src={image}
+                          alt={
+                            [
+                              "AI 사이버보안 플랫폼",
+                              "AI 반도체 제조",
+                              "스마트항만 물류",
+                              "산업 기술 비주얼",
+                              "사이버보안 인프라",
+                            ][i]
+                          }
+                        />
+                      </motion.div>
+                    );
+                  })
+                : heroImages.map((image, i) => (
+                    <motion.img
+                      key={image}
+                      src={image}
+                      aria-hidden={slide !== i}
+                      initial={false}
+                      animate={{
+                        opacity: slide === i ? 1 : 0,
+                        scale: reducedMotion || slide === i ? 1 : 1.035,
+                      }}
+                      transition={{
+                        opacity: { duration: reducedMotion ? 0 : 0.8 },
+                        scale: { duration: reducedMotion ? 0 : 1.2 },
+                      }}
+                      alt={
+                        [
+                          "AI 사이버보안 플랫폼",
+                          "AI 반도체 제조",
+                          "스마트항만 물류",
+                          "산업 기술 비주얼",
+                          "사이버보안 인프라",
+                        ][i]
+                      }
+                    />
+                  ))}
               <div className={styles.dots}>
                 {heroImages.map((_, i) => (
                   <button
@@ -591,7 +642,7 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 }) {
                   />
                 ))}
               </div>
-              {!reducedMotion && (
+              {variant === 1 && !reducedMotion && (
                 <button
                   className={styles.heroPlayback}
                   aria-label={

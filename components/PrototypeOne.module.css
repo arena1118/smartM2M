@@ -64,11 +64,36 @@
 .variantTwo .heroVisual {
   top: 50px;
 }
-.variantTwo .heroVisual:before {
-  background: #ffffff80;
+.variantTwo .heroVisual::before,
+.variantTwo .heroVisual::after {
+  display: none;
 }
-.variantTwo .heroVisual:after {
-  background: #fff3;
+.variantTwo .heroImage {
+  overflow: visible;
+  border: 0;
+  box-shadow: none;
+  perspective: 1200px;
+}
+.heroDeckCard {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border: 1px solid #fff;
+  border-radius: 10px;
+  box-shadow: 2px 2px 15px #0000001a;
+  background: #ffffff40;
+  transform-origin: center;
+}
+.heroDeckCard > img {
+  position: absolute;
+  left: -3.3%;
+  top: -7.1%;
+  width: 106.6%;
+  height: 115.4%;
+  object-fit: cover;
+}
+.variantTwo .dots {
+  z-index: 10;
 }
 .variantTwo .strengths > h2 {
   position: absolute;
