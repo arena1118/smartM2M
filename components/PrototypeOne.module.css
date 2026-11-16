@@ -1695,7 +1695,7 @@
       box-shadow 0.35s ease,
       border-color 0.35s ease;
   }
-  .strengthGrid article:hover {
+  .strengthGrid article.featured {
     translate: 0 -8px;
     border-color: #f35e43;
     box-shadow: 0 16px 30px #00000012;
@@ -1859,6 +1859,9 @@
 }
 .variantThree .strengthGrid h4 {
   color: #be161c;
+}
+.variantThree .strengthGrid article.featured {
+  background: white;
 }
 .variantThree .expertise,
 .variantThree .solutions,

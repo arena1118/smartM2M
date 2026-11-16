@@ -224,6 +224,7 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 | 3 }) {
   const [menu, setMenu] = useState(false);
   const [language, setLanguage] = useState(false);
   const [newsPosition, setNewsPosition] = useState(0);
+  const [highlightedStrength, setHighlightedStrength] = useState(0);
   const newsTrack = useRef<HTMLDivElement>(null);
   const hero = useRef<HTMLElement>(null);
   const expertise = useRef<HTMLElement>(null);
@@ -709,7 +710,14 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 | 3 }) {
           <h2 id="strength-heading">
             고객의 성장을 이끄는 스마트엠투엠의 경쟁력을 소개합니다.
           </h2>
-          <div className={styles.strengthGrid}>
+          <div
+            className={styles.strengthGrid}
+            onMouseLeave={() => setHighlightedStrength(0)}
+            onBlurCapture={(event) => {
+              if (!event.currentTarget.contains(event.relatedTarget))
+                setHighlightedStrength(0);
+            }}
+          >
             {strengths.map(([title, sub, body, icon], i) => (
               <motion.article
                 {...reveal}
@@ -718,7 +726,9 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 | 3 }) {
                   delay: reducedMotion ? 0 : i * 0.12,
                 }}
                 key={title}
-                className={i === 0 ? styles.featured : ""}
+                className={highlightedStrength === i ? styles.featured : ""}
+                onMouseEnter={() => setHighlightedStrength(i)}
+                onFocusCapture={() => setHighlightedStrength(i)}
               >
                 <div className={styles.strengthIcon}>
                   <img src={asset(`3309-95482-${icon}.svg`)} alt="" />
