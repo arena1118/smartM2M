@@ -1,5 +1,5 @@
 "use client";
-// Figma 1번 시안의 기업 소개 화면과 슬라이드·아코디언 동작을 제공합니다.
+// Figma 1·2번 시안의 공통 기업 소개 화면과 슬라이드·아코디언 동작을 제공합니다.
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   AnimatePresence,
@@ -198,7 +198,7 @@ function SectionTitle({
   );
 }
 
-export function PrototypeOne() {
+export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 }) {
   const reducedMotion = useReducedMotion();
   const [slide, setSlide] = useState(0);
   const [heroPaused, setHeroPaused] = useState(false);
@@ -239,9 +239,7 @@ export function PrototypeOne() {
   );
 
   useEffect(() => {
-    const media = window.matchMedia(
-      "(min-width: 901px)",
-    );
+    const media = window.matchMedia("(min-width: 901px)");
     const update = () => {
       setScrollExpertise(media.matches);
       if (media.matches) setOpen(expertiseMotion.current.index);
@@ -319,22 +317,28 @@ export function PrototypeOne() {
       const anchorY = currentY + bounds.top - 24;
       const direction = Math.sign(distance);
       const index = expertiseMotion.current.index;
-      const crossedDown = direction > 0 && previousY >= anchorY &&
+      const crossedDown =
+        direction > 0 &&
+        previousY >= anchorY &&
         currentY - distance <= anchorY + bounds.height;
-      const crossedUp = direction < 0 && currentY <= anchorY &&
-        currentY - distance >= anchorY;
+      const crossedUp =
+        direction < 0 && currentY <= anchorY && currentY - distance >= anchorY;
       if (
         (!crossedDown && !crossedUp) ||
         (direction > 0 && index === businesses.length - 1) ||
         (direction < 0 && index === 0)
-      ) return;
+      )
+        return;
       previousY = anchorY;
       window.scrollTo({ top: anchorY, behavior: "instant" });
       if (performance.now() >= expertiseMotion.current.until) {
         selectBusiness(index + direction);
       }
     };
-    window.addEventListener("wheel", onWheel, { passive: false, capture: true });
+    window.addEventListener("wheel", onWheel, {
+      passive: false,
+      capture: true,
+    });
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
       window.removeEventListener("wheel", onWheel, true);
@@ -373,7 +377,7 @@ export function PrototypeOne() {
   return (
     <main
       id="top"
-      className={styles.page}
+      className={`${styles.page} ${variant === 2 ? styles.variantTwo : ""}`}
       onKeyDown={(e) => {
         if (e.key === "Escape") {
           setMenu(false);
@@ -381,12 +385,25 @@ export function PrototypeOne() {
         }
       }}
     >
+      {variant === 2 && (
+        <div className={styles.heroBackdrop} aria-hidden="true">
+          <img src="/assets/sian-b/hero-background.webp" alt="" />
+          <img src="/assets/sian-b/hero-fade.png" alt="" />
+        </div>
+      )}
       <a href="#content" className={styles.skip}>
         본문 바로가기
       </a>
       <header className={styles.header}>
         <a href="#top" aria-label="SmartM2M 홈">
-          <img src={asset("3306-83886-imgLogo.svg")} alt="SmartM2M" />
+          <img
+            src={
+              variant === 2
+                ? "/assets/sian-b/logo-light.svg"
+                : asset("3306-83886-imgLogo.svg")
+            }
+            alt="SmartM2M"
+          />
         </a>
         <nav aria-label="주요 메뉴" className={styles.desktopNav}>
           {menus.map(([name, href]) => (
@@ -405,7 +422,15 @@ export function PrototypeOne() {
               aria-controls="language-menu"
               onClick={() => setLanguage(!language)}
             >
-              KR <img src={asset("3306-83886-imgVector.svg")} alt="" />
+              KR{" "}
+              <img
+                src={
+                  variant === 2
+                    ? "/assets/sian-b/chevron-light.svg"
+                    : asset("3306-83886-imgVector.svg")
+                }
+                alt=""
+              />
             </button>
             {language && (
               <div id="language-menu">
@@ -423,7 +448,14 @@ export function PrototypeOne() {
             aria-controls="prototype-menu"
             onClick={() => setMenu(!menu)}
           >
-            <img src={asset("3306-83886-imgGroup4055.svg")} alt="" />
+            <img
+              src={
+                variant === 2
+                  ? "/assets/sian-b/menu-light.svg"
+                  : asset("3306-83886-imgGroup4055.svg")
+              }
+              alt=""
+            />
           </button>
         </div>
       </header>
@@ -475,7 +507,15 @@ export function PrototypeOne() {
                   delay: reducedMotion ? 0 : 0.4,
                 }}
               >
-                <mark>스마트항만, 자율제조 분야</mark>에서
+                {variant === 2 ? (
+                  <>
+                    <mark>스마트항만, 자율제조</mark> 분야에서
+                  </>
+                ) : (
+                  <>
+                    <mark>스마트항만, 자율제조 분야</mark>에서
+                  </>
+                )}
               </motion.span>
               <motion.span
                 initial={reducedMotion ? false : { opacity: 0, y: 28 }}
@@ -488,6 +528,14 @@ export function PrototypeOne() {
                 기술을 현장의 변화로 잇습니다.
               </motion.span>
             </h1>
+            {variant === 2 && (
+              <p className={styles.heroDescription}>
+                스마트엠투엠은 AI 보안, 블록체인, 사이버보안/암호분야 초격차
+                기술을 통해
+                <br />
+                글로벌 강소 벤처기업으로 성장하고 있는 IT 보안 전문 기업입니다.
+              </p>
+            )}
           </div>
           <motion.div
             className={styles.heroVisual}
@@ -659,11 +707,30 @@ export function PrototypeOne() {
                             자세히보기 <Arrow />
                           </a>
                         </div>
-                        <img
-                          className={styles.businessImage}
-                          src={business.image}
-                          alt={`${business.title} 소개`}
-                        />
+                        {variant === 2 ? (
+                          <div className={styles.businessMedia}>
+                            <img
+                              className={styles.businessImage}
+                              src={business.image}
+                              alt={`${business.title} 소개`}
+                            />
+                            {i === 0 && (
+                              <a
+                                className={styles.businessPlay}
+                                href={business.href}
+                                aria-label="SmartX 소개 페이지 보기"
+                              >
+                                <img src="/assets/sian-b/play.svg" alt="" />
+                              </a>
+                            )}
+                          </div>
+                        ) : (
+                          <img
+                            className={styles.businessImage}
+                            src={business.image}
+                            alt={`${business.title} 소개`}
+                          />
+                        )}
                       </div>
                     </motion.div>
                   ) : (

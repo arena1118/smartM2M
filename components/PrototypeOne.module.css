@@ -7,6 +7,137 @@
   line-height: 1.3;
   letter-spacing: -0.02em;
 }
+.variantTwo {
+  position: relative;
+}
+.heroBackdrop {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 900px;
+  overflow: hidden;
+  background: #0e2742;
+  pointer-events: none;
+}
+.heroBackdrop img:first-child {
+  width: 100%;
+  height: 960px;
+  object-fit: cover;
+}
+.heroBackdrop img:last-child {
+  position: absolute;
+  width: 100%;
+  height: 181px;
+  bottom: -2px;
+  left: 0;
+}
+.variantTwo .content {
+  position: relative;
+}
+.variantTwo .header {
+  color: white;
+}
+.variantTwo .language > div {
+  color: #222;
+}
+.variantTwo .hero {
+  height: 580px;
+}
+.variantTwo .heroCopy {
+  padding-top: 120px;
+  color: white;
+}
+.variantTwo .heroCopy > p:first-child {
+  color: #e9e9e9;
+}
+.variantTwo .heroCopy mark {
+  background: none;
+  color: #fff88f;
+}
+.variantTwo .heroCopy > .heroDescription {
+  font-size: 20px;
+  line-height: 1.6;
+  letter-spacing: -0.02em;
+  color: white;
+  font-weight: 400;
+  margin: 55px 0 0;
+}
+.variantTwo .heroVisual {
+  top: 50px;
+}
+.variantTwo .heroVisual:before {
+  background: #ffffff80;
+}
+.variantTwo .heroVisual:after {
+  background: #fff3;
+}
+.variantTwo .strengths > h2 {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.variantTwo .strengthGrid article {
+  backdrop-filter: blur(30px);
+}
+.variantTwo .sectionTitle {
+  height: 79px;
+}
+.variantTwo .sectionTitle h2 {
+  font-size: 40px;
+  line-height: 48px;
+}
+.variantTwo .sectionTitle > div > p {
+  font-size: 22px;
+  line-height: 26px;
+}
+.variantTwo .solutions {
+  position: relative;
+  padding: 120px 0;
+}
+.variantTwo .solutions::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  left: calc((100vw - 100%) / -2);
+  width: 100vw;
+  background: #0e3846 url("/assets/sian-b/solution-background.webp") center /
+    cover no-repeat;
+}
+.variantTwo .solutions .sectionTitle {
+  position: relative;
+  color: white;
+}
+.variantTwo .solutions .eyebrow {
+  color: #edf7ff;
+  background: none !important;
+}
+.variantTwo .solutions .sectionTitle > div > p {
+  color: #ffffffbf;
+}
+.businessMedia {
+  position: relative;
+  width: 43.62%;
+  flex-shrink: 0;
+}
+.variantTwo .businessMedia .businessImage {
+  width: 100%;
+  display: block;
+}
+.businessPlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+.businessPlay img {
+  width: 100px;
+  height: 100px;
+  transition: transform 0.2s ease;
+}
+.businessPlay:hover img {
+  transform: scale(1.08);
+}
 .page p,
 .page h1,
 .page h2,
@@ -1597,5 +1728,73 @@
   .solutionGrid > article {
     opacity: 1 !important;
     transform: none !important;
+  }
+}
+
+@media (min-width: 901px) and (max-width: 1800px) {
+  .variantTwo .hero {
+    height: max(440px, 30.2083vw);
+  }
+  .variantTwo .heroCopy {
+    padding-top: 6.25vw;
+  }
+  .variantTwo .heroCopy > .heroDescription {
+    font-size: clamp(15px, 1.0417vw, 20px);
+    margin-top: 2.86vw;
+    max-width: 40vw;
+  }
+  .variantTwo .heroVisual {
+    top: 2.6042vw;
+  }
+  .variantTwo .heroBackdrop {
+    height: max(720px, 46.875vw);
+  }
+  .variantTwo .heroBackdrop img:first-child {
+    height: 100%;
+  }
+}
+@media (max-width: 900px) {
+  .variantTwo .hero {
+    height: auto;
+  }
+  .variantTwo .heroCopy {
+    padding-top: 0;
+  }
+  .variantTwo .heroVisual {
+    top: auto;
+  }
+  .variantTwo .heroCopy > .heroDescription {
+    font-size: 15px;
+    margin: 24px 0 0;
+  }
+  .variantTwo .heroDescription br {
+    display: none;
+  }
+  .variantTwo .heroBackdrop {
+    height: 1000px;
+  }
+  .variantTwo .sectionTitle {
+    height: auto;
+  }
+  .variantTwo .sectionTitle h2 {
+    font-size: 30px;
+    line-height: 1.2;
+  }
+  .variantTwo .sectionTitle > div > p {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .variantTwo .solutions {
+    padding: 60px 0;
+  }
+  .businessMedia {
+    width: 100%;
+  }
+  .variantTwo .businessMedia .businessImage {
+    height: auto;
+  }
+  .businessPlay img {
+    width: 64px;
+    height: 64px;
   }
 }
