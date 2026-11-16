@@ -1823,3 +1823,138 @@
     height: 64px;
   }
 }
+
+/* 3번 시안은 공통 카드 모션 위에 네트워크 배경과 넓은 섹션 여백을 적용합니다. */
+.variantThree .heroBackdrop {
+  height: 720px;
+  background: #0d172e;
+}
+.variantThree .heroBackdrop img:first-child {
+  position: static;
+  width: 100%;
+  height: 988px;
+  object-fit: cover;
+}
+.variantThree .hero {
+  height: 635px;
+}
+.variantThree .heroCopy mark {
+  color: white;
+}
+.variantThree .strengths {
+  margin-top: 80px;
+}
+.variantThree .strengths > h2 {
+  position: static;
+  width: auto;
+  height: 32px;
+  overflow: visible;
+  clip-path: none;
+}
+.variantThree .strengthGrid article {
+  height: 360px;
+  justify-content: center;
+  padding-top: 20px;
+  background: transparent;
+}
+.variantThree .strengthGrid h4 {
+  color: #be161c;
+}
+.variantThree .expertise,
+.variantThree .solutions,
+.variantThree .useCases,
+.variantThree .news {
+  margin-top: 160px;
+}
+.variantThree .sectionTitle {
+  height: 92px;
+}
+.variantThree .eyebrow {
+  font-size: 17px;
+  line-height: 22px;
+}
+.variantThree .sectionTitle h2 {
+  font-size: 50px;
+  line-height: 60px;
+}
+.variantThree .solutions {
+  padding: 0;
+}
+.variantThree .solutions::before {
+  display: none;
+}
+.variantThree .solutions .sectionTitle {
+  color: #222;
+}
+.variantThree .solutions .eyebrow {
+  color: transparent;
+  background: url('/assets/sian-a/assets/3306-84134-imgSolution.webp') center / cover !important;
+  background-clip: text !important;
+}
+.variantThree .solutions .sectionTitle > div > p {
+  color: #4e4e4e;
+}
+.variantThree .partnerGroup img {
+  max-width: none;
+  height: 30px;
+  width: auto;
+}
+.variantThree .partnerTrack {
+  width: max-content;
+}
+.variantThree .partnerGroup {
+  flex: none;
+  gap: 100px;
+  padding-right: 100px;
+}
+.variantThree .partnerGroup > span {
+  flex: 0 0 200px;
+}
+@media (min-width: 901px) and (max-width: 1800px) {
+  .variantThree .hero {
+    height: max(470px, 33.0729vw);
+  }
+  .variantThree .heroBackdrop {
+    height: max(555px, 37.5vw);
+  }
+  .variantThree .heroBackdrop img:first-child {
+    height: max(760px, 51.4583vw);
+  }
+  .variantThree .sectionTitle h2 {
+    font-size: 42px;
+  }
+}
+@media (max-width: 900px) {
+  .variantThree .hero {
+    height: auto;
+    padding-bottom: 35px;
+  }
+  .variantThree .heroBackdrop {
+    height: 720px;
+  }
+  .variantThree .heroBackdrop img:first-child {
+    height: 988px;
+  }
+  .variantThree .strengths {
+    margin-top: 70px;
+  }
+  .variantThree .strengths > h2 {
+    height: auto;
+  }
+  .variantThree .strengthGrid article {
+    height: 360px;
+  }
+  .variantThree .expertise,
+  .variantThree .solutions,
+  .variantThree .useCases,
+  .variantThree .news {
+    margin-top: 80px;
+  }
+  .variantThree .sectionTitle {
+    height: auto;
+  }
+  .variantThree .sectionTitle h2 {
+    font-size: 30px;
+    line-height: 1.2;
+  }
+}

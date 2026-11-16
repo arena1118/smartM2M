@@ -1,5 +1,5 @@
 "use client";
-// Figma 1·2번 시안의 공통 기업 소개 화면과 슬라이드·아코디언 동작을 제공합니다.
+// Figma 1·2·3번 시안의 공통 기업 소개 화면과 슬라이드·아코디언 동작을 제공합니다.
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   AnimatePresence,
@@ -162,6 +162,21 @@ const partners = [
   ["23-rims.svg", "중소조선연구원"],
   ["24-hanwha.svg", "한화에어로스페이스"],
 ];
+const partnersThree = [
+  ["img5.png", "부산광역시"],
+  ["img1.png", "부산대 융합보안대학원"],
+  ["img2.png", "부산대학교"],
+  ["img6.png", "부산테크노파크"],
+  ["img7.png", "부산항만공사"],
+  ["img3.png", "블록체인 플랫폼 연구센터"],
+  ["img4.png", "울산항만공사"],
+  ["img8.png", "정보통신기획평가원"],
+  ["img9.png", "컨테인어스"],
+  ["img10.png", "한국남부발전"],
+  ["img11.png", "한국연구재단"],
+  ["img12.png", "한국인터넷진흥원"],
+  ["img13.png", "한국전자통신연구원"],
+];
 
 function Arrow({ white = false }: { white?: boolean }) {
   return (
@@ -198,7 +213,7 @@ function SectionTitle({
   );
 }
 
-export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 }) {
+export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 | 3 }) {
   const reducedMotion = useReducedMotion();
   const [slide, setSlide] = useState(0);
   const [heroPaused, setHeroPaused] = useState(false);
@@ -377,7 +392,7 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 }) {
   return (
     <main
       id="top"
-      className={`${styles.page} ${variant === 2 ? styles.variantTwo : ""}`}
+      className={`${styles.page} ${variant !== 1 ? styles.variantTwo : ""} ${variant === 3 ? styles.variantThree : ""}`}
       onKeyDown={(e) => {
         if (e.key === "Escape") {
           setMenu(false);
@@ -385,10 +400,17 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 }) {
         }
       }}
     >
-      {variant === 2 && (
+      {variant !== 1 && (
         <div className={styles.heroBackdrop} aria-hidden="true">
-          <img src="/assets/sian-b/hero-background.webp" alt="" />
-          <img src="/assets/sian-b/hero-fade.png" alt="" />
+          <img
+            src={
+              variant === 3
+                ? "/assets/sian-c/hero-background.webp"
+                : "/assets/sian-b/hero-background.webp"
+            }
+            alt=""
+          />
+          {variant === 2 && <img src="/assets/sian-b/hero-fade.png" alt="" />}
         </div>
       )}
       <a href="#content" className={styles.skip}>
@@ -398,7 +420,7 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 }) {
         <a href="#top" aria-label="SmartM2M 홈">
           <img
             src={
-              variant === 2
+              variant !== 1
                 ? "/assets/sian-b/logo-light.svg"
                 : asset("3306-83886-imgLogo.svg")
             }
@@ -425,7 +447,7 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 }) {
               KR{" "}
               <img
                 src={
-                  variant === 2
+                  variant !== 1
                     ? "/assets/sian-b/chevron-light.svg"
                     : asset("3306-83886-imgVector.svg")
                 }
@@ -450,7 +472,7 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 }) {
           >
             <img
               src={
-                variant === 2
+                variant !== 1
                   ? "/assets/sian-b/menu-light.svg"
                   : asset("3306-83886-imgGroup4055.svg")
               }
@@ -507,7 +529,7 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 }) {
                   delay: reducedMotion ? 0 : 0.4,
                 }}
               >
-                {variant === 2 ? (
+                {variant !== 1 ? (
                   <>
                     <mark>스마트항만, 자율제조</mark> 분야에서
                   </>
@@ -528,7 +550,7 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 }) {
                 기술을 현장의 변화로 잇습니다.
               </motion.span>
             </h1>
-            {variant === 2 && (
+            {variant !== 1 && (
               <p className={styles.heroDescription}>
                 스마트엠투엠은 AI 보안, 블록체인, 사이버보안/암호분야 초격차
                 기술을 통해
@@ -556,7 +578,7 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 }) {
                   setHeroFocused(false);
               }}
             >
-              {variant === 2
+              {variant !== 1
                 ? heroImages.map((image, i) => {
                     const depth =
                       (i - slide + heroImages.length) % heroImages.length;
@@ -758,7 +780,7 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 }) {
                             자세히보기 <Arrow />
                           </a>
                         </div>
-                        {variant === 2 ? (
+                        {variant !== 1 ? (
                           <div className={styles.businessMedia}>
                             <img
                               className={styles.businessImage}
@@ -944,16 +966,21 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 }) {
                       key={copy}
                       aria-hidden={copy === 1}
                     >
-                      {partners
-                        .slice(row * 6, row * 6 + 6)
-                        .map(([file, name]) => (
-                          <span key={file}>
-                            <img
-                              src={base + file}
-                              alt={copy === 0 ? name : ""}
-                            />
-                          </span>
-                        ))}
+                      {(variant === 3
+                        ? partnersThree
+                        : partners.slice(row * 6, row * 6 + 6)
+                      ).map(([file, name]) => (
+                        <span key={file}>
+                          <img
+                            src={
+                              variant === 3
+                                ? "/assets/sian-c/" + file
+                                : base + file
+                            }
+                            alt={copy === 0 ? name : ""}
+                          />
+                        </span>
+                      ))}
                     </div>
                   ))}
                 </div>
