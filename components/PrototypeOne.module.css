@@ -1891,7 +1891,8 @@
 }
 .variantThree .solutions .eyebrow {
   color: transparent;
-  background: url('/assets/sian-a/assets/3306-84134-imgSolution.webp') center / cover !important;
+  background: url("/assets/sian-a/assets/3306-84134-imgSolution.webp") center /
+    cover !important;
   background-clip: text !important;
 }
 .variantThree .solutions .sectionTitle > div > p {
@@ -1959,5 +1960,215 @@
   .variantThree .sectionTitle h2 {
     font-size: 30px;
     line-height: 1.2;
+  }
+}
+
+/* 4번 시안은 본사 건물 비주얼과 소식 아래의 파트너 로고를 배치합니다. */
+.buildingBackdrop {
+  position: absolute;
+  top: 85px;
+  left: 0;
+  width: 100%;
+  height: 700px;
+  overflow: hidden;
+  background: #222;
+  pointer-events: none;
+}
+.buildingBackdrop > img,
+.buildingBackdrop > div {
+  position: absolute;
+  left: calc(50% - 180px);
+  top: -10px;
+  width: 1140px;
+  height: 800px;
+}
+.buildingBackdrop > img {
+  object-fit: fill;
+}
+.buildingBackdrop > div {
+  background:
+    linear-gradient(90deg, #222 0%, #2220 49%, #222 100%),
+    linear-gradient(
+      90deg,
+      #0d0d0dad 0%,
+      #0d0d0d7a 39%,
+      #0d0d0d0a 65%,
+      #0d0d0d00 100%
+    );
+}
+.variantFour .header {
+  color: #222;
+  background: #f9f9f9;
+}
+.variantFour .hero {
+  height: 700px;
+}
+.variantFour .heroCopy {
+  padding-top: 162px;
+}
+.variantFour .heroCopy > p:first-child {
+  font-size: 20px;
+  line-height: 26px;
+  margin-bottom: 30px;
+}
+.variantFour .heroCopy h1 {
+  font-size: 62px;
+}
+.variantFour .heroCopy mark {
+  background: linear-gradient(
+    transparent 49%,
+    #be161c 49%,
+    #be161c 95%,
+    transparent 95%
+  );
+}
+.variantFour .strengths {
+  margin-top: 100px;
+}
+.variantFour .strengths > h2 {
+  height: 42px;
+  font-size: 35px;
+  line-height: 42px;
+  margin-bottom: 40px;
+}
+.variantFour .strengthGrid article {
+  height: 350px;
+}
+.variantFour .strengthGrid h3 {
+  font-size: 30px;
+  line-height: 36px;
+}
+.variantFour .strengthIcon {
+  height: 40px;
+  margin-bottom: 15px;
+}
+.variantFour .strengthIcon img {
+  max-height: 40px;
+}
+.variantFour .expertise,
+.variantFour .solutions,
+.variantFour .news {
+  margin-top: 100px;
+}
+.variantFour .sectionTitle {
+  height: 96px;
+}
+.variantFour .eyebrow {
+  font-size: 20px;
+  line-height: 26px;
+}
+.bottomPartners {
+  margin-top: 100px;
+  height: 140px;
+}
+
+.bottomPartners .partners {
+  height: 140px;
+  padding-top: 40px;
+}
+.variantFour .partnerTrack {
+  width: max(200%, 2200px);
+}
+.variantFour .partnerGroup {
+  flex: 0 0 50%;
+  gap: 35px;
+  padding-right: 35px;
+}
+.variantFour .partnerGroup > span {
+  flex: 1;
+}
+.variantFour .partnerGroup img {
+  max-width: 100%;
+  height: auto;
+  width: auto;
+}
+@media (min-width: 901px) and (max-width: 1800px) {
+  .variantFour .hero {
+    height: max(500px, 36.4583vw);
+  }
+  .variantFour .heroCopy {
+    padding-top: 8.4375vw;
+  }
+  .variantFour .heroCopy h1 {
+    font-size: clamp(36px, 3.2292vw, 62px);
+  }
+  .variantFour .heroCopy > p:first-child {
+    font-size: clamp(13px, 1.0417vw, 20px);
+  }
+  .variantFour .buildingBackdrop {
+    height: max(500px, 36.4583vw);
+  }
+  .variantFour .buildingBackdrop > img,
+  .variantFour .buildingBackdrop > div {
+    left: 40.625%;
+    width: 59.375%;
+    height: 41.6667vw;
+  }
+  .variantFour .strengths > h2 {
+    font-size: 28px;
+  }
+  .variantFour .strengthGrid h3 {
+    font-size: 23px;
+  }
+}
+@media (max-width: 900px) {
+  .variantFour .buildingBackdrop {
+    top: 75px;
+    height: 470px;
+  }
+  .variantFour .buildingBackdrop > img,
+  .variantFour .buildingBackdrop > div {
+    left: 10%;
+    top: 0;
+    width: 90%;
+    height: 470px;
+  }
+  .variantFour .buildingBackdrop > img {
+    object-fit: cover;
+  }
+  .variantFour .hero {
+    height: 470px;
+    padding-top: 0;
+  }
+  .variantFour .heroCopy {
+    padding-top: 105px;
+  }
+  .variantFour .heroCopy h1 {
+    font-size: clamp(25px, 4.5vw, 39px);
+  }
+  .variantFour .heroCopy > p:first-child {
+    font-size: 13px;
+    margin-bottom: 25px;
+  }
+  .variantFour .strengths,
+  .variantFour .expertise,
+  .variantFour .solutions,
+  .variantFour .news {
+    margin-top: 70px;
+  }
+  .variantFour .strengths > h2 {
+    height: auto;
+    font-size: 23px;
+    line-height: 1.4;
+    margin-bottom: 30px;
+  }
+  .variantFour .strengthGrid h3 {
+    font-size: 23px;
+  }
+  .variantFour .sectionTitle {
+    height: auto;
+  }
+  .variantFour .eyebrow {
+    font-size: 15px;
+  }
+  .bottomPartners {
+    margin-top: 50px;
+  }
+}
+
+@media (max-width: 600px) {
+  .variantFour .strengthGrid h3 {
+    font-size: 18px;
+    line-height: 24px;
   }
 }

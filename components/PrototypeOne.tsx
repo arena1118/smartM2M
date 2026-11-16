@@ -1,5 +1,5 @@
 "use client";
-// Figma 1·2·3번 시안의 공통 기업 소개 화면과 슬라이드·아코디언 동작을 제공합니다.
+// Figma 1·2·3·4번 시안의 공통 기업 소개 화면과 슬라이드·아코디언 동작을 제공합니다.
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   AnimatePresence,
@@ -213,7 +213,46 @@ function SectionTitle({
   );
 }
 
-export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 | 3 }) {
+function PartnerMarquee({ variant }: { variant: number }) {
+  return (
+    <div
+      className={styles.partners}
+      tabIndex={0}
+      role="group"
+      aria-label="파트너 및 협력기관, 마우스 또는 키보드 포커스 시 이동 일시정지"
+    >
+      {[0, 1].map((row) => (
+        <div key={row}>
+          <div className={styles.partnerTrack}>
+            {[0, 1].map((copy) => (
+              <div
+                className={styles.partnerGroup}
+                key={copy}
+                aria-hidden={copy === 1}
+              >
+                {(variant === 3
+                  ? partnersThree
+                  : partners.slice(row * 6, row * 6 + 6)
+                ).map(([file, name]) => (
+                  <span key={file}>
+                    <img
+                      src={
+                        variant === 3 ? "/assets/sian-c/" + file : base + file
+                      }
+                      alt={copy === 0 ? name : ""}
+                    />
+                  </span>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 | 3 | 4 }) {
   const reducedMotion = useReducedMotion();
   const [slide, setSlide] = useState(0);
   const [heroPaused, setHeroPaused] = useState(false);
@@ -393,7 +432,7 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 | 3 }) {
   return (
     <main
       id="top"
-      className={`${styles.page} ${variant !== 1 ? styles.variantTwo : ""} ${variant === 3 ? styles.variantThree : ""}`}
+      className={`${styles.page} ${variant !== 1 ? styles.variantTwo : ""} ${variant >= 3 ? styles.variantThree : ""} ${variant === 4 ? styles.variantFour : ""}`}
       onKeyDown={(e) => {
         if (e.key === "Escape") {
           setMenu(false);
@@ -401,7 +440,13 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 | 3 }) {
         }
       }}
     >
-      {variant !== 1 && (
+      {variant === 4 && (
+        <div className={styles.buildingBackdrop} aria-hidden="true">
+          <img src="/assets/sian-d/building.webp" alt="" />
+          <div />
+        </div>
+      )}
+      {(variant === 2 || variant === 3) && (
         <div className={styles.heroBackdrop} aria-hidden="true">
           <img
             src={
@@ -421,7 +466,7 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 | 3 }) {
         <a href="#top" aria-label="SmartM2M 홈">
           <img
             src={
-              variant !== 1
+              variant === 2 || variant === 3
                 ? "/assets/sian-b/logo-light.svg"
                 : asset("3306-83886-imgLogo.svg")
             }
@@ -448,7 +493,7 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 | 3 }) {
               KR{" "}
               <img
                 src={
-                  variant !== 1
+                  variant === 2 || variant === 3
                     ? "/assets/sian-b/chevron-light.svg"
                     : asset("3306-83886-imgVector.svg")
                 }
@@ -473,7 +518,7 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 | 3 }) {
           >
             <img
               src={
-                variant !== 1
+                variant === 2 || variant === 3
                   ? "/assets/sian-b/menu-light.svg"
                   : asset("3306-83886-imgGroup4055.svg")
               }
@@ -536,7 +581,7 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 | 3 }) {
               >
                 {variant === 3 ? (
                   "AI로 시작되는 변화입니다."
-                ) : variant !== 1 ? (
+                ) : variant === 2 ? (
                   <>
                     <mark>스마트항만, 자율제조</mark> 분야에서
                   </>
@@ -559,7 +604,7 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 | 3 }) {
                 </motion.span>
               )}
             </h1>
-            {variant !== 1 && (
+            {(variant === 2 || variant === 3) && (
               <p className={styles.heroDescription}>
                 {variant === 3 ? (
                   <>
@@ -580,127 +625,129 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 | 3 }) {
               </p>
             )}
           </div>
-          <motion.div
-            className={styles.heroVisual}
-            initial={reducedMotion ? false : { opacity: 0, x: 35 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{
-              duration: reducedMotion ? 0 : 1,
-              delay: reducedMotion ? 0 : 0.3,
-            }}
-          >
-            <div
-              className={styles.heroImage}
-              onPointerEnter={() => setHeroHovered(true)}
-              onPointerLeave={() => setHeroHovered(false)}
-              onFocusCapture={() => setHeroFocused(true)}
-              onBlurCapture={(event) => {
-                if (!event.currentTarget.contains(event.relatedTarget))
-                  setHeroFocused(false);
+          {variant !== 4 && (
+            <motion.div
+              className={styles.heroVisual}
+              initial={reducedMotion ? false : { opacity: 0, x: 35 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{
+                duration: reducedMotion ? 0 : 1,
+                delay: reducedMotion ? 0 : 0.3,
               }}
             >
-              {variant !== 1
-                ? heroImages.map((image, i) => {
-                    const depth =
-                      (i - slide + heroImages.length) % heroImages.length;
-                    return (
-                      <motion.div
+              <div
+                className={styles.heroImage}
+                onPointerEnter={() => setHeroHovered(true)}
+                onPointerLeave={() => setHeroHovered(false)}
+                onFocusCapture={() => setHeroFocused(true)}
+                onBlurCapture={(event) => {
+                  if (!event.currentTarget.contains(event.relatedTarget))
+                    setHeroFocused(false);
+                }}
+              >
+                {variant !== 1
+                  ? heroImages.map((image, i) => {
+                      const depth =
+                        (i - slide + heroImages.length) % heroImages.length;
+                      return (
+                        <motion.div
+                          key={image}
+                          className={styles.heroDeckCard}
+                          aria-hidden={depth !== 0}
+                          initial={false}
+                          animate={{
+                            x: reducedMotion ? 0 : depth < 3 ? depth * 20 : -70,
+                            scaleY: reducedMotion
+                              ? 1
+                              : depth < 3
+                                ? 1 - depth * 0.077
+                                : 0.96,
+                            opacity:
+                              depth === 0
+                                ? 1
+                                : depth === 1
+                                  ? 0.5
+                                  : depth === 2
+                                    ? 0.2
+                                    : 0,
+                            rotate: reducedMotion || depth < 3 ? 0 : -3,
+                          }}
+                          style={{
+                            zIndex: depth < 3 ? 3 - depth : 4,
+                            pointerEvents: "none",
+                          }}
+                          transition={{
+                            duration: reducedMotion ? 0 : 0.85,
+                            ease: [0.22, 1, 0.36, 1],
+                          }}
+                        >
+                          <img
+                            src={image}
+                            alt={
+                              [
+                                "AI 사이버보안 플랫폼",
+                                "AI 반도체 제조",
+                                "스마트항만 물류",
+                                "산업 기술 비주얼",
+                                "사이버보안 인프라",
+                              ][i]
+                            }
+                          />
+                        </motion.div>
+                      );
+                    })
+                  : heroImages.map((image, i) => (
+                      <motion.img
                         key={image}
-                        className={styles.heroDeckCard}
-                        aria-hidden={depth !== 0}
+                        src={image}
+                        aria-hidden={slide !== i}
                         initial={false}
                         animate={{
-                          x: reducedMotion ? 0 : depth < 3 ? depth * 20 : -70,
-                          scaleY: reducedMotion
-                            ? 1
-                            : depth < 3
-                              ? 1 - depth * 0.077
-                              : 0.96,
-                          opacity:
-                            depth === 0
-                              ? 1
-                              : depth === 1
-                                ? 0.5
-                                : depth === 2
-                                  ? 0.2
-                                  : 0,
-                          rotate: reducedMotion || depth < 3 ? 0 : -3,
-                        }}
-                        style={{
-                          zIndex: depth < 3 ? 3 - depth : 4,
-                          pointerEvents: "none",
+                          opacity: slide === i ? 1 : 0,
+                          scale: reducedMotion || slide === i ? 1 : 1.035,
                         }}
                         transition={{
-                          duration: reducedMotion ? 0 : 0.85,
-                          ease: [0.22, 1, 0.36, 1],
+                          opacity: { duration: reducedMotion ? 0 : 0.8 },
+                          scale: { duration: reducedMotion ? 0 : 1.2 },
                         }}
-                      >
-                        <img
-                          src={image}
-                          alt={
-                            [
-                              "AI 사이버보안 플랫폼",
-                              "AI 반도체 제조",
-                              "스마트항만 물류",
-                              "산업 기술 비주얼",
-                              "사이버보안 인프라",
-                            ][i]
-                          }
-                        />
-                      </motion.div>
-                    );
-                  })
-                : heroImages.map((image, i) => (
-                    <motion.img
-                      key={image}
-                      src={image}
-                      aria-hidden={slide !== i}
-                      initial={false}
-                      animate={{
-                        opacity: slide === i ? 1 : 0,
-                        scale: reducedMotion || slide === i ? 1 : 1.035,
-                      }}
-                      transition={{
-                        opacity: { duration: reducedMotion ? 0 : 0.8 },
-                        scale: { duration: reducedMotion ? 0 : 1.2 },
-                      }}
-                      alt={
-                        [
-                          "AI 사이버보안 플랫폼",
-                          "AI 반도체 제조",
-                          "스마트항만 물류",
-                          "산업 기술 비주얼",
-                          "사이버보안 인프라",
-                        ][i]
-                      }
+                        alt={
+                          [
+                            "AI 사이버보안 플랫폼",
+                            "AI 반도체 제조",
+                            "스마트항만 물류",
+                            "산업 기술 비주얼",
+                            "사이버보안 인프라",
+                          ][i]
+                        }
+                      />
+                    ))}
+                <div className={styles.dots}>
+                  {heroImages.map((_, i) => (
+                    <button
+                      key={i}
+                      aria-label={`메인 비주얼 ${i + 1}번 보기`}
+                      aria-pressed={slide === i}
+                      onClick={() => setSlide(i)}
                     />
                   ))}
-              <div className={styles.dots}>
-                {heroImages.map((_, i) => (
+                </div>
+                {variant === 1 && !reducedMotion && (
                   <button
-                    key={i}
-                    aria-label={`메인 비주얼 ${i + 1}번 보기`}
-                    aria-pressed={slide === i}
-                    onClick={() => setSlide(i)}
-                  />
-                ))}
+                    className={styles.heroPlayback}
+                    aria-label={
+                      heroPaused
+                        ? "메인 비주얼 자동 재생"
+                        : "메인 비주얼 자동 재생 일시정지"
+                    }
+                    aria-pressed={heroPaused}
+                    onClick={() => setHeroPaused(!heroPaused)}
+                  >
+                    {heroPaused ? "자동 재생" : "일시정지"}
+                  </button>
+                )}
               </div>
-              {variant === 1 && !reducedMotion && (
-                <button
-                  className={styles.heroPlayback}
-                  aria-label={
-                    heroPaused
-                      ? "메인 비주얼 자동 재생"
-                      : "메인 비주얼 자동 재생 일시정지"
-                  }
-                  aria-pressed={heroPaused}
-                  onClick={() => setHeroPaused(!heroPaused)}
-                >
-                  {heroPaused ? "자동 재생" : "일시정지"}
-                </button>
-              )}
-            </div>
-          </motion.div>
+            </motion.div>
+          )}
         </section>
         <motion.section
           {...reveal}
@@ -731,7 +778,14 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 | 3 }) {
                 onFocusCapture={() => setHighlightedStrength(i)}
               >
                 <div className={styles.strengthIcon}>
-                  <img src={asset(`3309-95482-${icon}.svg`)} alt="" />
+                  <img
+                    src={
+                      variant === 4
+                        ? `/assets/sian-d/${icon}.svg`
+                        : asset(`3309-95482-${icon}.svg`)
+                    }
+                    alt=""
+                  />
                 </div>
                 <h3>{title}</h3>
                 <h4>{sub}</h4>
@@ -955,69 +1009,36 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 | 3 }) {
             ))}
           </div>
         </motion.section>
-        <motion.section {...reveal} className={styles.useCases}>
-          <SectionTitle
-            en="USE CASE"
-            title="적용범위"
-            description="산업별 특성과 현장의 요구에 맞춰 최적의 솔루션을 제공합니다."
-            texture="3306-85106-imgUseCase.png"
-          />
-          <div
-            className={styles.caseTrack}
-            tabIndex={0}
-            role="region"
-            aria-label="적용범위, 좌우로 스크롤"
-          >
-            {cases.map(([name, img], i) => (
-              <article
-                className={`${styles.caseCard} ${i > 1 ? styles.darkCase : ""}`}
-                key={name}
-              >
-                <img
-                  src={asset(`3306-85106-${img}.png`)}
-                  alt={`${name} 산업`}
-                />
-                <h3>{name}</h3>
-              </article>
-            ))}
-          </div>
-          <div
-            className={styles.partners}
-            tabIndex={0}
-            role="group"
-            aria-label="파트너 및 협력기관, 마우스 또는 키보드 포커스 시 이동 일시정지"
-          >
-            {[0, 1].map((row) => (
-              <div key={row}>
-                <div className={styles.partnerTrack}>
-                  {[0, 1].map((copy) => (
-                    <div
-                      className={styles.partnerGroup}
-                      key={copy}
-                      aria-hidden={copy === 1}
-                    >
-                      {(variant === 3
-                        ? partnersThree
-                        : partners.slice(row * 6, row * 6 + 6)
-                      ).map(([file, name]) => (
-                        <span key={file}>
-                          <img
-                            src={
-                              variant === 3
-                                ? "/assets/sian-c/" + file
-                                : base + file
-                            }
-                            alt={copy === 0 ? name : ""}
-                          />
-                        </span>
-                      ))}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </motion.section>
+        {variant !== 4 && (
+          <motion.section {...reveal} className={styles.useCases}>
+            <SectionTitle
+              en="USE CASE"
+              title="적용범위"
+              description="산업별 특성과 현장의 요구에 맞춰 최적의 솔루션을 제공합니다."
+              texture="3306-85106-imgUseCase.png"
+            />
+            <div
+              className={styles.caseTrack}
+              tabIndex={0}
+              role="region"
+              aria-label="적용범위, 좌우로 스크롤"
+            >
+              {cases.map(([name, img], i) => (
+                <article
+                  className={`${styles.caseCard} ${i > 1 ? styles.darkCase : ""}`}
+                  key={name}
+                >
+                  <img
+                    src={asset(`3306-85106-${img}.png`)}
+                    alt={`${name} 산업`}
+                  />
+                  <h3>{name}</h3>
+                </article>
+              ))}
+            </div>
+            <PartnerMarquee variant={variant} />
+          </motion.section>
+        )}
         <motion.section {...reveal} id="news" className={styles.news}>
           <SectionTitle
             en="SMARTM2M NEWS"
@@ -1080,6 +1101,11 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 | 3 }) {
             </button>
           </div>
         </motion.section>
+        {variant === 4 && (
+          <div className={styles.bottomPartners}>
+            <PartnerMarquee variant={variant} />
+          </div>
+        )}
       </div>
       <footer className={styles.footer}>
         <div className={styles.footerTop}>
