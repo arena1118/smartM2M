@@ -1,10 +1,17 @@
 "use client";
 // Figma 1번 시안의 기업 소개 화면과 슬라이드·아코디언 동작을 제공합니다.
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import {
+  AnimatePresence,
+  motion,
+  useInView,
+  useReducedMotion,
+} from "framer-motion";
 import styles from "./PrototypeOne.module.css";
 
 const base = "/assets/sian-a/";
-const asset = (name: string) => base + "assets/" + name.replace(/\.png$/, ".webp");
+const asset = (name: string) =>
+  base + "assets/" + name.replace(/\.png$/, ".webp");
 const origin = "https://www.smartm2m.co.kr";
 const security = origin + "/ko/solutions/ai-security/pen-testing";
 const blockchain = origin + "/ko/solutions/blockchain/cicd";
@@ -182,12 +189,47 @@ function SectionTitle({
 }
 
 export function PrototypeOne() {
+  const reducedMotion = useReducedMotion();
   const [slide, setSlide] = useState(0);
+  const [heroPaused, setHeroPaused] = useState(false);
+  const [heroHovered, setHeroHovered] = useState(false);
+  const [heroFocused, setHeroFocused] = useState(false);
   const [open, setOpen] = useState<number | null>(0);
   const [menu, setMenu] = useState(false);
   const [language, setLanguage] = useState(false);
   const [newsPosition, setNewsPosition] = useState(0);
   const newsTrack = useRef<HTMLDivElement>(null);
+  const hero = useRef<HTMLElement>(null);
+  const heroInView = useInView(hero, { amount: 0.2 });
+  const reveal = {
+    initial: reducedMotion ? (false as const) : { opacity: 0, y: 32 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, amount: 0.12 },
+    transition: {
+      duration: reducedMotion ? 0 : 0.75,
+      ease: "easeOut" as const,
+    },
+  };
+  const accordionTransition = {
+    duration: reducedMotion ? 0 : 0.55,
+    ease: "easeInOut" as const,
+  };
+
+  useEffect(() => {
+    if (
+      reducedMotion ||
+      heroPaused ||
+      heroHovered ||
+      heroFocused ||
+      !heroInView
+    )
+      return;
+    const timer = window.setInterval(() => {
+      if (!document.hidden)
+        setSlide((current) => (current + 1) % heroImages.length);
+    }, 5000);
+    return () => window.clearInterval(timer);
+  }, [reducedMotion, heroPaused, heroHovered, heroFocused, heroInView, slide]);
   const moveNews = (direction: number) => {
     const track = newsTrack.current;
     if (track)
@@ -273,36 +315,97 @@ export function PrototypeOne() {
         </nav>
       )}
       <div id="content" className={styles.content}>
-        <section className={styles.hero} aria-label="스마트엠투엠 소개">
+        <section
+          ref={hero}
+          className={styles.hero}
+          aria-label="스마트엠투엠 소개"
+        >
           <div className={styles.heroCopy}>
-            <p>
+            <motion.p
+              initial={reducedMotion ? false : { opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: reducedMotion ? 0 : 0.7 }}
+            >
               Smart Solutions for a Secure Tomorrow, Empowering Customers to
               Achieve More
-            </p>
+            </motion.p>
             <h1>
-              <span>
+              <motion.span
+                initial={reducedMotion ? false : { opacity: 0, y: 28 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: reducedMotion ? 0 : 0.8,
+                  delay: reducedMotion ? 0 : 0.2,
+                }}
+              >
                 <mark>AI, 사이버보안, 블록체인,</mark>
-              </span>
-              <span>
+              </motion.span>
+              <motion.span
+                initial={reducedMotion ? false : { opacity: 0, y: 28 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: reducedMotion ? 0 : 0.8,
+                  delay: reducedMotion ? 0 : 0.4,
+                }}
+              >
                 <mark>스마트항만, 자율제조 분야</mark>에서
-              </span>
-              <span>기술을 현장의 변화로 잇습니다.</span>
+              </motion.span>
+              <motion.span
+                initial={reducedMotion ? false : { opacity: 0, y: 28 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: reducedMotion ? 0 : 0.8,
+                  delay: reducedMotion ? 0 : 0.6,
+                }}
+              >
+                기술을 현장의 변화로 잇습니다.
+              </motion.span>
             </h1>
           </div>
-          <div className={styles.heroVisual}>
-            <div className={styles.heroImage}>
-              <img
-                src={heroImages[slide]}
-                alt={
-                  [
-                    "AI 사이버보안 플랫폼",
-                    "AI 반도체 제조",
-                    "스마트항만 물류",
-                    "산업 기술 비주얼",
-                    "사이버보안 인프라",
-                  ][slide]
-                }
-              />
+          <motion.div
+            className={styles.heroVisual}
+            initial={reducedMotion ? false : { opacity: 0, x: 35 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{
+              duration: reducedMotion ? 0 : 1,
+              delay: reducedMotion ? 0 : 0.3,
+            }}
+          >
+            <div
+              className={styles.heroImage}
+              onPointerEnter={() => setHeroHovered(true)}
+              onPointerLeave={() => setHeroHovered(false)}
+              onFocusCapture={() => setHeroFocused(true)}
+              onBlurCapture={(event) => {
+                if (!event.currentTarget.contains(event.relatedTarget))
+                  setHeroFocused(false);
+              }}
+            >
+              {heroImages.map((image, i) => (
+                <motion.img
+                  key={image}
+                  src={image}
+                  aria-hidden={slide !== i}
+                  initial={false}
+                  animate={{
+                    opacity: slide === i ? 1 : 0,
+                    scale: reducedMotion || slide === i ? 1 : 1.035,
+                  }}
+                  transition={{
+                    opacity: { duration: reducedMotion ? 0 : 0.8 },
+                    scale: { duration: reducedMotion ? 0 : 1.2 },
+                  }}
+                  alt={
+                    [
+                      "AI 사이버보안 플랫폼",
+                      "AI 반도체 제조",
+                      "스마트항만 물류",
+                      "산업 기술 비주얼",
+                      "사이버보안 인프라",
+                    ][i]
+                  }
+                />
+              ))}
               <div className={styles.dots}>
                 {heroImages.map((_, i) => (
                   <button
@@ -313,10 +416,25 @@ export function PrototypeOne() {
                   />
                 ))}
               </div>
+              {!reducedMotion && (
+                <button
+                  className={styles.heroPlayback}
+                  aria-label={
+                    heroPaused
+                      ? "메인 비주얼 자동 재생"
+                      : "메인 비주얼 자동 재생 일시정지"
+                  }
+                  aria-pressed={heroPaused}
+                  onClick={() => setHeroPaused(!heroPaused)}
+                >
+                  {heroPaused ? "자동 재생" : "일시정지"}
+                </button>
+              )}
             </div>
-          </div>
+          </motion.div>
         </section>
-        <section
+        <motion.section
+          {...reveal}
           className={styles.strengths}
           aria-labelledby="strength-heading"
         >
@@ -325,7 +443,15 @@ export function PrototypeOne() {
           </h2>
           <div className={styles.strengthGrid}>
             {strengths.map(([title, sub, body, icon], i) => (
-              <article key={title} className={i === 0 ? styles.featured : ""}>
+              <motion.article
+                {...reveal}
+                transition={{
+                  ...reveal.transition,
+                  delay: reducedMotion ? 0 : i * 0.12,
+                }}
+                key={title}
+                className={i === 0 ? styles.featured : ""}
+              >
                 <div className={styles.strengthIcon}>
                   <img src={asset(`3309-95482-${icon}.svg`)} alt="" />
                 </div>
@@ -350,11 +476,11 @@ export function PrototypeOne() {
                     )}
                   </div>
                 )}
-              </article>
+              </motion.article>
             ))}
           </div>
-        </section>
-        <section id="expertise" className={styles.expertise}>
+        </motion.section>
+        <motion.section {...reveal} id="expertise" className={styles.expertise}>
           <SectionTitle
             en="CORE EXPERTISE"
             title="핵심 사업 분야"
@@ -364,56 +490,76 @@ export function PrototypeOne() {
           <div className={styles.accordion}>
             {businesses.map((business, i) => (
               <article key={business.title} id={`business-panel-${i}`}>
-                {open === i ? (
-                  <div
-                    className={styles.businessPanel}
-                    style={{
-                      backgroundImage: `url(${asset("3306-83996-imgBg.png")})`,
-                    }}
-                  >
-                    <div className={styles.businessCopy}>
+                <AnimatePresence initial={false}>
+                  {open === i ? (
+                    <motion.div
+                      key="expanded"
+                      className={styles.accordionClip}
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={accordionTransition}
+                    >
+                      <div
+                        className={styles.businessPanel}
+                        style={{
+                          backgroundImage: `url(${asset("3306-83996-imgBg.png")})`,
+                        }}
+                      >
+                        <div className={styles.businessCopy}>
+                          <button
+                            className={styles.businessHeading}
+                            onClick={() => setOpen(null)}
+                            aria-expanded="true"
+                            aria-controls={`business-panel-${i}`}
+                          >
+                            <h3>{business.title}</h3>
+                            <span>{business.en}</span>
+                          </button>
+                          <h4>{business.summary}</h4>
+                          <div className={styles.businessBody}>
+                            {business.body.map((line) => (
+                              <p key={line}>{line}</p>
+                            ))}
+                          </div>
+                          <a className={styles.pill} href={business.href}>
+                            자세히보기 <Arrow />
+                          </a>
+                        </div>
+                        <img
+                          className={styles.businessImage}
+                          src={business.image}
+                          alt={`${business.title} 소개`}
+                        />
+                      </div>
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="collapsed"
+                      className={styles.accordionClip}
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={accordionTransition}
+                    >
                       <button
-                        className={styles.businessHeading}
-                        onClick={() => setOpen(null)}
-                        aria-expanded="true"
+                        className={styles.businessRow}
+                        onClick={() => setOpen(i)}
+                        aria-expanded="false"
                         aria-controls={`business-panel-${i}`}
                       >
                         <h3>{business.title}</h3>
-                        <span>{business.en}</span>
+                        <span>{business.summary}</span>
+                        <img src={asset("3306-83996-imgIcon.svg")} alt="" />
                       </button>
-                      <h4>{business.summary}</h4>
-                      <div className={styles.businessBody}>
-                        {business.body.map((line) => (
-                          <p key={line}>{line}</p>
-                        ))}
-                      </div>
-                      <a className={styles.pill} href={business.href}>
-                        자세히보기 <Arrow />
-                      </a>
-                    </div>
-                    <img
-                      className={styles.businessImage}
-                      src={business.image}
-                      alt={`${business.title} 소개`}
-                    />
-                  </div>
-                ) : (
-                  <button
-                    className={styles.businessRow}
-                    onClick={() => setOpen(i)}
-                    aria-expanded="false"
-                    aria-controls={`business-panel-${i}`}
-                  >
-                    <h3>{business.title}</h3>
-                    <span>{business.summary}</span>
-                    <img src={asset("3306-83996-imgIcon.svg")} alt="" />
-                  </button>
-                )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </article>
             ))}
           </div>
-        </section>
-        <section id="solutions" className={styles.solutions}>
+        </motion.section>
+        <motion.section {...reveal} id="solutions" className={styles.solutions}>
           <SectionTitle
             en="SOLUTION"
             title="대표 솔루션"
@@ -422,7 +568,15 @@ export function PrototypeOne() {
           />
           <div className={styles.solutionGrid}>
             {[0, 1].map((i) => (
-              <article className={styles.solutionCard} key={i}>
+              <motion.article
+                {...reveal}
+                transition={{
+                  ...reveal.transition,
+                  delay: reducedMotion ? 0 : i * 0.15,
+                }}
+                className={styles.solutionCard}
+                key={i}
+              >
                 <img
                   className={styles.glowOne}
                   src={base + (i ? "glow-mint.svg" : "glow-purple.svg")}
@@ -488,11 +642,11 @@ export function PrototypeOne() {
                     <Arrow />
                   </a>
                 </div>
-              </article>
+              </motion.article>
             ))}
           </div>
-        </section>
-        <section className={styles.useCases}>
+        </motion.section>
+        <motion.section {...reveal} className={styles.useCases}>
           <SectionTitle
             en="USE CASE"
             title="적용범위"
@@ -518,17 +672,39 @@ export function PrototypeOne() {
               </article>
             ))}
           </div>
-          <div className={styles.partners} aria-label="파트너 및 협력기관">
+          <div
+            className={styles.partners}
+            tabIndex={0}
+            role="group"
+            aria-label="파트너 및 협력기관, 마우스 또는 키보드 포커스 시 이동 일시정지"
+          >
             {[0, 1].map((row) => (
               <div key={row}>
-                {partners.slice(row * 6, row * 6 + 6).map(([file, name]) => (
-                  <img src={base + file} alt={name} key={file} />
-                ))}
+                <div className={styles.partnerTrack}>
+                  {[0, 1].map((copy) => (
+                    <div
+                      className={styles.partnerGroup}
+                      key={copy}
+                      aria-hidden={copy === 1}
+                    >
+                      {partners
+                        .slice(row * 6, row * 6 + 6)
+                        .map(([file, name]) => (
+                          <span key={file}>
+                            <img
+                              src={base + file}
+                              alt={copy === 0 ? name : ""}
+                            />
+                          </span>
+                        ))}
+                    </div>
+                  ))}
+                </div>
               </div>
             ))}
           </div>
-        </section>
-        <section id="news" className={styles.news}>
+        </motion.section>
+        <motion.section {...reveal} id="news" className={styles.news}>
           <SectionTitle
             en="SMARTM2M NEWS"
             title="소식"
@@ -589,7 +765,7 @@ export function PrototypeOne() {
               <img src={asset("3306-85212-imgAfter.svg")} alt="" />
             </button>
           </div>
-        </section>
+        </motion.section>
       </div>
       <footer className={styles.footer}>
         <div className={styles.footerTop}>

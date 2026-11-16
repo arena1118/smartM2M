@@ -206,6 +206,25 @@
   width: calc(100% + 50px);
   height: 600px;
   object-fit: cover;
+  pointer-events: none;
+}
+.heroPlayback {
+  position: absolute;
+  right: 18px;
+  bottom: 12px;
+  border: 1px solid #ffffff80;
+  border-radius: 18px;
+  background: #13395a80;
+  color: white !important;
+  padding: 6px 12px;
+  font-size: 12px !important;
+  backdrop-filter: blur(8px);
+}
+.heroPlayback:hover {
+  background: #13395acc;
+}
+.accordionClip {
+  overflow: hidden;
 }
 .dots {
   display: flex;
@@ -664,18 +683,48 @@
   align-content: start;
 }
 .partners > div {
+  overflow: hidden;
+  height: 30px;
+}
+.partnerTrack {
+  display: flex;
+  width: max(200%, 2200px);
+  animation: partnerTravel 36s linear infinite;
+}
+.partners > div:nth-child(2) .partnerTrack {
+  animation-direction: reverse;
+}
+.partnerGroup {
+  flex: 0 0 50%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 35px;
+  padding-right: 35px;
 }
-.partners > div img {
-  max-width: 205px;
+.partnerGroup > span {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+}
+.partnerGroup img {
+  max-width: 100%;
   max-height: 30px;
   object-fit: contain;
 }
-.partners > div:nth-child(2) {
-  transform: translateX(65px);
+.partners:hover .partnerTrack,
+.partners:focus-within .partnerTrack {
+  animation-play-state: paused;
+}
+@keyframes partnerTravel {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
 .news {
   position: relative;
@@ -924,10 +973,6 @@
     width: 117.87%;
     height: auto;
   }
-  .partners > div img {
-    max-width: 14%;
-    height: auto;
-  }
   .caseTrack,
   .newsTrack {
     margin-right: -10vw;
@@ -1172,17 +1217,10 @@
     gap: 25px;
   }
   .partners > div {
-    gap: 25px;
     width: 100%;
-    overflow: hidden;
   }
-  .partners > div img {
-    max-width: 130px;
+  .partnerGroup img {
     max-height: 25px;
-    flex-shrink: 0;
-  }
-  .partners > div:nth-child(2) {
-    transform: none;
   }
   .newsCard {
     flex-basis: 280px;
@@ -1448,9 +1486,72 @@
     font-size: 12px;
   }
 }
+@media (hover: hover) and (pointer: fine) {
+  .strengthGrid article,
+  .solutionCard,
+  .newsCard > div {
+    transition:
+      translate 0.35s ease,
+      box-shadow 0.35s ease,
+      border-color 0.35s ease;
+  }
+  .strengthGrid article:hover {
+    translate: 0 -8px;
+    border-color: #f35e43;
+    box-shadow: 0 16px 30px #00000012;
+  }
+  .solutionCard:hover {
+    translate: 0 -6px;
+    box-shadow: 0 16px 30px #00000012;
+  }
+  .smartxMockup,
+  .accioMockup {
+    transition: translate 0.6s ease;
+  }
+  .solutionCard:hover :is(.smartxMockup, .accioMockup) {
+    translate: -8px -8px;
+  }
+  .caseCard > img {
+    transition: scale 0.65s ease;
+  }
+  .caseCard:hover > img {
+    scale: 1.04;
+  }
+  .newsCard:hover > div {
+    translate: 0 -5px;
+    box-shadow: 0 10px 25px #00000018;
+  }
+  .pill img,
+  .dots button {
+    transition:
+      translate 0.25s ease,
+      scale 0.25s ease;
+  }
+  .pill:hover img {
+    translate: 3px 0;
+  }
+  .dots button:hover {
+    scale: 1.3;
+  }
+}
+.page button:active {
+  scale: 0.97;
+}
 @media (prefers-reduced-motion: reduce) {
   .page * {
+    animation: none !important;
     scroll-behavior: auto !important;
     transition: none !important;
+    translate: none !important;
+    scale: none !important;
+  }
+  .heroCopy > p,
+  .heroCopy h1 > span,
+  .heroVisual,
+  .content > section,
+  .strengthGrid > article,
+  .solutionGrid > article {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }
