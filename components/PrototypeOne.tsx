@@ -162,21 +162,6 @@ const partners = [
   ["23-rims.svg", "중소조선연구원"],
   ["24-hanwha.svg", "한화에어로스페이스"],
 ];
-const partnersThree = [
-  ["img5.png", "부산광역시"],
-  ["img1.png", "부산대 융합보안대학원"],
-  ["img2.png", "부산대학교"],
-  ["img6.png", "부산테크노파크"],
-  ["img7.png", "부산항만공사"],
-  ["img3.png", "블록체인 플랫폼 연구센터"],
-  ["img4.png", "울산항만공사"],
-  ["img8.png", "정보통신기획평가원"],
-  ["img9.png", "컨테인어스"],
-  ["img10.png", "한국남부발전"],
-  ["img11.png", "한국연구재단"],
-  ["img12.png", "한국인터넷진흥원"],
-  ["img13.png", "한국전자통신연구원"],
-];
 
 function Arrow({ white = false }: { white?: boolean }) {
   return (
@@ -216,10 +201,14 @@ function SectionTitle({
 function PartnerMarquee({ variant }: { variant: number }) {
   return (
     <div
-      className={styles.partners}
+      className={`${styles.partners} ${variant <= 3 ? styles.partnersAuto : ""}`}
       tabIndex={0}
       role="group"
-      aria-label="파트너 및 협력기관, 마우스 또는 키보드 포커스 시 이동 일시정지"
+      aria-label={
+        variant <= 3
+          ? "파트너 및 협력기관 자동 슬라이드"
+          : "파트너 및 협력기관, 마우스 또는 키보드 포커스 시 이동 일시정지"
+      }
     >
       {[0, 1].map((row) => (
         <div key={row}>
@@ -230,17 +219,9 @@ function PartnerMarquee({ variant }: { variant: number }) {
                 key={copy}
                 aria-hidden={copy === 1}
               >
-                {(variant === 3
-                  ? partnersThree
-                  : partners.slice(row * 6, row * 6 + 6)
-                ).map(([file, name]) => (
+                {partners.slice(row * 6, row * 6 + 6).map(([file, name]) => (
                   <span key={file}>
-                    <img
-                      src={
-                        variant === 3 ? "/assets/sian-c/" + file : base + file
-                      }
-                      alt={copy === 0 ? name : ""}
-                    />
+                    <img src={base + file} alt={copy === 0 ? name : ""} />
                   </span>
                 ))}
               </div>

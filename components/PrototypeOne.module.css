@@ -918,6 +918,10 @@
 .partners:focus-within .partnerTrack {
   animation-play-state: paused;
 }
+.partnersAuto:hover .partnerTrack,
+.partnersAuto:focus-within .partnerTrack {
+  animation-play-state: running;
+}
 @keyframes partnerTravel {
   from {
     transform: translateX(0);
@@ -1897,22 +1901,6 @@
 }
 .variantThree .solutions .sectionTitle > div > p {
   color: #4e4e4e;
-}
-.variantThree .partnerGroup img {
-  max-width: none;
-  height: 30px;
-  width: auto;
-}
-.variantThree .partnerTrack {
-  width: max-content;
-}
-.variantThree .partnerGroup {
-  flex: none;
-  gap: 100px;
-  padding-right: 100px;
-}
-.variantThree .partnerGroup > span {
-  flex: 0 0 200px;
 }
 @media (min-width: 901px) and (max-width: 1800px) {
   .variantThree .hero {
