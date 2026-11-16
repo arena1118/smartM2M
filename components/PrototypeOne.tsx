@@ -212,11 +212,7 @@ export function PrototypeOne() {
   const newsTrack = useRef<HTMLDivElement>(null);
   const hero = useRef<HTMLElement>(null);
   const expertise = useRef<HTMLElement>(null);
-  const expertiseViewport = useRef<HTMLDivElement>(null);
-  const expertiseSnap = useRef<{ destination: number | null; until: number }>({
-    destination: null,
-    until: 0,
-  });
+  const expertiseMotion = useRef({ index: 0, until: 0 });
   const heroInView = useInView(hero, { amount: 0.2 });
   const reveal = {
     initial: reducedMotion ? (false as const) : { opacity: 0, y: 32 },
@@ -232,39 +228,24 @@ export function PrototypeOne() {
     ease: "easeInOut" as const,
   };
 
-  const expertiseRange = useCallback(() => {
-    if (!expertise.current || !expertiseViewport.current) return null;
-    return {
-      start:
-        expertise.current.getBoundingClientRect().top +
-        window.scrollY -
-        parseFloat(getComputedStyle(expertiseViewport.current).top),
-      step: window.innerHeight * 0.55,
-    };
-  }, []);
-
   const selectBusiness = useCallback(
     (index: number | null) => {
-      if (!scrollExpertise) {
-        setOpen(index);
-        return;
-      }
-      if (index === null) return;
-      const range = expertiseRange();
-      if (!range) return;
-      const destination = range.start + (index + 0.25) * range.step;
-      expertiseSnap.current = { destination, until: performance.now() + 1400 };
+      if (scrollExpertise && index === null) return;
+      if (index !== null) expertiseMotion.current.index = index;
+      expertiseMotion.current.until = performance.now() + 700;
       setOpen(index);
-      window.scrollTo({ top: destination, behavior: "instant" });
     },
-    [scrollExpertise, expertiseRange],
+    [scrollExpertise],
   );
 
   useEffect(() => {
     const media = window.matchMedia(
       "(min-width: 901px) and (min-height: 720px) and (prefers-reduced-motion: no-preference)",
     );
-    const update = () => setScrollExpertise(media.matches);
+    const update = () => {
+      setScrollExpertise(media.matches);
+      if (media.matches) setOpen(expertiseMotion.current.index);
+    };
     update();
     media.addEventListener("change", update);
     return () => media.removeEventListener("change", update);
@@ -272,43 +253,9 @@ export function PrototypeOne() {
 
   useEffect(() => {
     const section = expertise.current;
-    const viewport = expertiseViewport.current;
-    if (!scrollExpertise || !section || !viewport) return;
-    let frame = 0;
+    if (!scrollExpertise || !section) return;
     let wheelAmount = 0;
     let lastWheel = 0;
-    let holdUntil = 0;
-    const measure = () =>
-      section.style.setProperty(
-        "--expertise-content-height",
-        `${viewport.getBoundingClientRect().height}px`,
-      );
-    const observer = new ResizeObserver(measure);
-    observer.observe(viewport);
-    measure();
-
-    const sync = () => {
-      frame = 0;
-      const range = expertiseRange();
-      if (!range) return;
-      const snap = expertiseSnap.current;
-      if (
-        snap.destination !== null &&
-        performance.now() < snap.until &&
-        Math.abs(window.scrollY - snap.destination) > 3
-      )
-        return;
-      snap.destination = null;
-      const progress = (window.scrollY - range.start) / range.step;
-      const index = Math.max(
-        0,
-        Math.min(businesses.length - 1, Math.floor(progress)),
-      );
-      setOpen((current) => (current === index ? current : index));
-    };
-    const onScroll = () => {
-      if (!frame) frame = requestAnimationFrame(sync);
-    };
     const onWheel = (event: WheelEvent) => {
       if (
         event.ctrlKey ||
@@ -317,11 +264,37 @@ export function PrototypeOne() {
         !event.deltaY
       )
         return;
-      const range = expertiseRange();
-      if (!range) return;
-      const progress = (window.scrollY - range.start) / range.step;
+      const bounds = section.getBoundingClientRect();
+      if (bounds.height > window.innerHeight - 32) return;
       const now = performance.now();
       const direction = Math.sign(event.deltaY);
+      if (
+        (bounds.top < -2 && direction > 0) ||
+        (bounds.bottom > window.innerHeight && direction < 0)
+      )
+        return;
+      if (now < expertiseMotion.current.until) {
+        event.preventDefault();
+        return;
+      }
+      const index = expertiseMotion.current.index;
+      if (
+        (direction < 0 && index === 0) ||
+        (direction > 0 && index === businesses.length - 1)
+      )
+        return;
+      event.preventDefault();
+      if (
+        (direction > 0 && bounds.top > 24) ||
+        (direction < 0 && bounds.top < 22)
+      ) {
+        window.scrollTo({
+          top: window.scrollY + bounds.top - 24,
+          behavior: "instant",
+        });
+        expertiseMotion.current.until = now + 700;
+        return;
+      }
       const delta =
         event.deltaY *
         (event.deltaMode === 1
@@ -329,60 +302,17 @@ export function PrototypeOne() {
           : event.deltaMode === 2
             ? window.innerHeight
             : 1);
-      const end = range.start + (businesses.length - 0.5) * range.step;
-      if (
-        (progress < 0 &&
-          direction > 0 &&
-          window.scrollY + delta >= range.start) ||
-        (progress >= businesses.length - 0.5 &&
-          direction < 0 &&
-          window.scrollY + delta <= end)
-      ) {
-        event.preventDefault();
-        holdUntil = now + 700;
-        selectBusiness(direction > 0 ? 0 : businesses.length - 1);
-        return;
-      }
-      if (progress < -0.01 || progress >= businesses.length - 0.5) return;
-      if (
-        now < holdUntil ||
-        (expertiseSnap.current.destination !== null &&
-          now < expertiseSnap.current.until)
-      ) {
-        event.preventDefault();
-        return;
-      }
-      const index = Math.max(
-        0,
-        Math.min(businesses.length - 1, Math.floor(progress)),
-      );
-      if (
-        (direction < 0 && index === 0) ||
-        (direction > 0 && index === businesses.length - 1)
-      )
-        return;
-      event.preventDefault();
       if (now - lastWheel > 180 || Math.sign(wheelAmount) !== direction)
         wheelAmount = 0;
       lastWheel = now;
       wheelAmount += delta;
       if (Math.abs(wheelAmount) < 55) return;
       wheelAmount = 0;
-      holdUntil = now + 700;
       selectBusiness(index + direction);
     };
-    sync();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("wheel", onWheel, { passive: false });
-    return () => {
-      observer.disconnect();
-      cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("wheel", onWheel);
-      section.style.removeProperty("--expertise-content-height");
-      expertiseSnap.current.destination = null;
-    };
-  }, [scrollExpertise, expertiseRange, selectBusiness]);
+    section.addEventListener("wheel", onWheel, { passive: false });
+    return () => section.removeEventListener("wheel", onWheel);
+  }, [scrollExpertise, selectBusiness]);
 
   useEffect(() => {
     if (
@@ -652,91 +582,95 @@ export function PrototypeOne() {
         <section
           ref={expertise}
           id="expertise"
-          className={`${styles.expertise} ${scrollExpertise ? styles.expertiseScroll : ""}`}
+          className={`${styles.expertise} ${scrollExpertise ? styles.expertiseWheel : ""}`}
         >
-          <div ref={expertiseViewport} className={styles.expertiseViewport}>
-            <SectionTitle
-              en="CORE EXPERTISE"
-              title="핵심 사업 분야"
-              description="핵심 기술과 산업 전문성을 바탕으로 다양한 사업 분야의 혁신을 이끕니다."
-              texture="3306-83996-imgCoreExpertise.png"
-            />
-            <div className={styles.accordion}>
-              {businesses.map((business, i) => (
-                <article key={business.title} id={`business-panel-${i}`}>
-                  <AnimatePresence initial={false}>
-                    {open === i ? (
-                      <motion.div
-                        key="expanded"
-                        className={styles.accordionClip}
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={accordionTransition}
+          <SectionTitle
+            en="CORE EXPERTISE"
+            title="핵심 사업 분야"
+            description="핵심 기술과 산업 전문성을 바탕으로 다양한 사업 분야의 혁신을 이끕니다."
+            texture="3306-83996-imgCoreExpertise.png"
+          />
+          <div className={styles.accordion}>
+            {businesses.map((business, i) => (
+              <article key={business.title} id={`business-panel-${i}`}>
+                <AnimatePresence initial={false}>
+                  {open === i ? (
+                    <motion.div
+                      key="expanded"
+                      className={styles.accordionClip}
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={accordionTransition}
+                    >
+                      <div
+                        className={`${styles.businessPanel} ${business.dark ? styles.businessPanelDark : ""}`}
+                        style={{
+                          backgroundImage: `url(${business.background})`,
+                        }}
                       >
-                        <div
-                          className={`${styles.businessPanel} ${business.dark ? styles.businessPanelDark : ""}`}
-                          style={{
-                            backgroundImage: `url(${business.background})`,
-                          }}
-                        >
-                          <div className={styles.businessCopy}>
-                            <button
-                              className={styles.businessHeading}
-                              onClick={() =>
-                                selectBusiness(scrollExpertise ? i : null)
-                              }
-                              aria-expanded="true"
-                              aria-controls={`business-panel-${i}`}
-                            >
-                              <h3>{business.title}</h3>
-                              <span>{business.en}</span>
-                            </button>
-                            <h4>{business.summary}</h4>
-                            <div className={styles.businessBody}>
-                              {business.body.map((line) => (
-                                <p key={line}>{line}</p>
-                              ))}
-                            </div>
-                            <a className={styles.pill} href={business.href}>
-                              자세히보기 <Arrow />
-                            </a>
+                        <div className={styles.businessCopy}>
+                          <button
+                            className={styles.businessHeading}
+                            onClick={() =>
+                              selectBusiness(scrollExpertise ? i : null)
+                            }
+                            aria-expanded="true"
+                            aria-controls={`business-panel-${i}`}
+                          >
+                            <h3>{business.title}</h3>
+                            <span>{business.en}</span>
+                          </button>
+                          <h4>{business.summary}</h4>
+                          <div className={styles.businessBody}>
+                            {business.body.map((line) => (
+                              <p key={line}>{line}</p>
+                            ))}
                           </div>
-                          <img
-                            className={styles.businessImage}
-                            src={business.image}
-                            alt={`${business.title} 소개`}
-                          />
+                          <a className={styles.pill} href={business.href}>
+                            자세히보기 <Arrow />
+                          </a>
                         </div>
-                      </motion.div>
-                    ) : (
-                      <motion.div
-                        key="collapsed"
-                        className={styles.accordionClip}
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={accordionTransition}
+                        <img
+                          className={styles.businessImage}
+                          src={business.image}
+                          alt={`${business.title} 소개`}
+                        />
+                      </div>
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="collapsed"
+                      className={styles.accordionClip}
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={accordionTransition}
+                    >
+                      <button
+                        className={styles.businessRow}
+                        onMouseDown={(event) => event.preventDefault()}
+                        onClick={() => selectBusiness(i)}
+                        aria-expanded="false"
+                        aria-controls={`business-panel-${i}`}
                       >
-                        <button
-                          className={styles.businessRow}
-                          onClick={() => selectBusiness(i)}
-                          aria-expanded="false"
-                          aria-controls={`business-panel-${i}`}
-                        >
-                          <h3>{business.title}</h3>
-                          <span>{business.summary}</span>
-                          <img src={asset("3306-83996-imgIcon.svg")} alt="" />
-                        </button>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </article>
-              ))}
-            </div>
+                        <h3>{business.title}</h3>
+                        <span>{business.summary}</span>
+                        <img src={asset("3306-83996-imgIcon.svg")} alt="" />
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </article>
+            ))}
           </div>
         </section>
-        <motion.section {...reveal} id="solutions" className={styles.solutions}>
+        <motion.section
+          {...reveal}
+          viewport={{ once: true, amount: 0 }}
+          id="solutions"
+          className={styles.solutions}
+        >
           <SectionTitle
             en="SOLUTION"
             title="대표 솔루션"
