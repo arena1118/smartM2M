@@ -240,7 +240,7 @@ export function PrototypeOne() {
 
   useEffect(() => {
     const media = window.matchMedia(
-      "(min-width: 901px) and (min-height: 720px) and (prefers-reduced-motion: no-preference)",
+      "(min-width: 901px) and (prefers-reduced-motion: no-preference)",
     );
     const update = () => {
       setScrollExpertise(media.matches);
@@ -265,12 +265,12 @@ export function PrototypeOne() {
       )
         return;
       const bounds = section.getBoundingClientRect();
-      if (bounds.height > window.innerHeight - 32) return;
       const now = performance.now();
       const direction = Math.sign(event.deltaY);
       if (
-        (bounds.top < -2 && direction > 0) ||
-        (bounds.bottom > window.innerHeight && direction < 0)
+        bounds.top > window.innerHeight * 0.35 ||
+        bounds.bottom < window.innerHeight * 0.5 ||
+        (bounds.top < -80 && direction > 0)
       )
         return;
       if (now < expertiseMotion.current.until) {
@@ -285,7 +285,7 @@ export function PrototypeOne() {
         return;
       event.preventDefault();
       if (
-        (direction > 0 && bounds.top > 24) ||
+        (direction > 0 && bounds.top > 26) ||
         (direction < 0 && bounds.top < 22)
       ) {
         window.scrollTo({
@@ -310,8 +310,8 @@ export function PrototypeOne() {
       wheelAmount = 0;
       selectBusiness(index + direction);
     };
-    section.addEventListener("wheel", onWheel, { passive: false });
-    return () => section.removeEventListener("wheel", onWheel);
+    window.addEventListener("wheel", onWheel, { passive: false });
+    return () => window.removeEventListener("wheel", onWheel);
   }, [scrollExpertise, selectBusiness]);
 
   useEffect(() => {
