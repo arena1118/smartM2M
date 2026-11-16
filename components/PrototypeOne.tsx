@@ -256,6 +256,7 @@ export function PrototypeOne() {
     if (!scrollExpertise || !section) return;
     let wheelAmount = 0;
     let lastWheel = 0;
+    let previousY = window.scrollY;
     const onWheel = (event: WheelEvent) => {
       if (
         event.ctrlKey ||
@@ -309,8 +310,36 @@ export function PrototypeOne() {
       wheelAmount = 0;
       selectBusiness(index + direction);
     };
-    window.addEventListener("wheel", onWheel, { passive: false });
-    return () => window.removeEventListener("wheel", onWheel);
+    const onScroll = () => {
+      const currentY = window.scrollY;
+      const distance = currentY - previousY;
+      previousY = currentY;
+      if (Math.abs(distance) < 2) return;
+      const bounds = section.getBoundingClientRect();
+      const anchorY = currentY + bounds.top - 24;
+      const direction = Math.sign(distance);
+      const index = expertiseMotion.current.index;
+      const crossedDown = direction > 0 && previousY >= anchorY &&
+        currentY - distance <= anchorY + bounds.height;
+      const crossedUp = direction < 0 && currentY <= anchorY &&
+        currentY - distance >= anchorY;
+      if (
+        (!crossedDown && !crossedUp) ||
+        (direction > 0 && index === businesses.length - 1) ||
+        (direction < 0 && index === 0)
+      ) return;
+      previousY = anchorY;
+      window.scrollTo({ top: anchorY, behavior: "instant" });
+      if (performance.now() >= expertiseMotion.current.until) {
+        selectBusiness(index + direction);
+      }
+    };
+    window.addEventListener("wheel", onWheel, { passive: false, capture: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("wheel", onWheel, true);
+      window.removeEventListener("scroll", onScroll);
+    };
   }, [scrollExpertise, selectBusiness]);
 
   useEffect(() => {
