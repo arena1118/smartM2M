@@ -76,6 +76,8 @@ const businesses = [
     ],
     href: security,
     image: asset("3306-83996-imgImage93.png"),
+    background: asset("expertise-ai.png"),
+    dark: false,
   },
   {
     title: "암호기술",
@@ -87,6 +89,8 @@ const businesses = [
     ],
     href: menus[2][1],
     image: base + "crypto-technology.webp",
+    background: asset("expertise-crypto.png"),
+    dark: false,
   },
   {
     title: "스마트항만",
@@ -98,6 +102,8 @@ const businesses = [
     ],
     href: menus[5][1],
     image: base + "thumb-port.webp",
+    background: asset("expertise-port.png"),
+    dark: true,
   },
   {
     title: "블록체인",
@@ -109,6 +115,8 @@ const businesses = [
     ],
     href: blockchain,
     image: base + "thumb-blockchain.webp",
+    background: asset("expertise-blockchain.png"),
+    dark: true,
   },
   {
     title: "제조 AX",
@@ -120,6 +128,8 @@ const businesses = [
     ],
     href: menus[4][1],
     image: base + "thumb-manufacturing.webp",
+    background: asset("expertise-manufacturing.png"),
+    dark: false,
   },
 ];
 const cases = [
@@ -319,12 +329,12 @@ export function PrototypeOne() {
           : event.deltaMode === 2
             ? window.innerHeight
             : 1);
-      const end = range.start + businesses.length * range.step;
+      const end = range.start + (businesses.length - 0.5) * range.step;
       if (
         (progress < 0 &&
           direction > 0 &&
           window.scrollY + delta >= range.start) ||
-        (progress >= businesses.length &&
+        (progress >= businesses.length - 0.5 &&
           direction < 0 &&
           window.scrollY + delta <= end)
       ) {
@@ -333,7 +343,7 @@ export function PrototypeOne() {
         selectBusiness(direction > 0 ? 0 : businesses.length - 1);
         return;
       }
-      if (progress < -0.01 || progress >= businesses.length) return;
+      if (progress < -0.01 || progress >= businesses.length - 0.5) return;
       if (
         now < holdUntil ||
         (expertiseSnap.current.destination !== null &&
@@ -665,9 +675,9 @@ export function PrototypeOne() {
                         transition={accordionTransition}
                       >
                         <div
-                          className={styles.businessPanel}
+                          className={`${styles.businessPanel} ${business.dark ? styles.businessPanelDark : ""}`}
                           style={{
-                            backgroundImage: `url(${asset("3306-83996-imgBg.png")})`,
+                            backgroundImage: `url(${business.background})`,
                           }}
                         >
                           <div className={styles.businessCopy}>

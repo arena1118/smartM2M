@@ -357,23 +357,34 @@
   margin-top: 120px;
 }
 .expertiseScroll {
+  --expertise-top: clamp(20px, 4vh, 50px);
+  --expertise-row-height: clamp(54px, 8vh, 87px);
   position: relative;
   overflow-anchor: none;
-  height: calc(var(--expertise-content-height, 897px) + 275vh);
+  height: calc(var(--expertise-content-height, 897px) + 247.5vh);
 }
 .expertiseScroll .expertiseViewport {
   position: sticky;
-  top: clamp(20px, 4vh, 50px);
+  top: var(--expertise-top);
 }
 .expertiseScroll .businessPanel {
-  height: clamp(280px, calc(100vh - 600px), 420px);
+  height: max(
+    280px,
+    calc(
+      100vh - 2 * var(--expertise-top) - 125px - 4 *
+        var(--expertise-row-height) - 6px
+    )
+  );
 }
 .expertiseScroll .businessRow {
-  height: clamp(54px, 8vh, 87px);
+  height: var(--expertise-row-height);
   padding-block: 0;
 }
 .expertiseScroll .businessImage {
-  height: 100%;
+  height: auto;
+  aspect-ratio: 636 / 358;
+  object-fit: contain;
+  max-height: 100%;
 }
 @media (max-height: 950px) and (min-width: 901px) {
   .expertiseScroll .businessPanel {
@@ -454,6 +465,12 @@
   flex: 1;
   min-width: 0;
 }
+.businessPanelDark {
+  color: white;
+}
+.businessPanel .pill {
+  color: #222;
+}
 .businessHeading {
   display: flex;
   align-items: flex-end;
@@ -470,6 +487,7 @@
   white-space: nowrap;
 }
 .businessHeading > span {
+  color: #222;
   font-size: 17px;
   line-height: 20px;
   padding: 3px 5px;
