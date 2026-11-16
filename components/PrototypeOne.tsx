@@ -519,7 +519,11 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 | 3 }) {
                   delay: reducedMotion ? 0 : 0.2,
                 }}
               >
-                <mark>AI, 사이버보안, 블록체인,</mark>
+                {variant === 3 ? (
+                  "더 똑똑하게, 더 안전하게."
+                ) : (
+                  <mark>AI, 사이버보안, 블록체인,</mark>
+                )}
               </motion.span>
               <motion.span
                 initial={reducedMotion ? false : { opacity: 0, y: 28 }}
@@ -529,7 +533,9 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 | 3 }) {
                   delay: reducedMotion ? 0 : 0.4,
                 }}
               >
-                {variant !== 1 ? (
+                {variant === 3 ? (
+                  "AI로 시작되는 변화입니다."
+                ) : variant !== 1 ? (
                   <>
                     <mark>스마트항만, 자율제조</mark> 분야에서
                   </>
@@ -539,23 +545,37 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 | 3 }) {
                   </>
                 )}
               </motion.span>
-              <motion.span
-                initial={reducedMotion ? false : { opacity: 0, y: 28 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{
-                  duration: reducedMotion ? 0 : 0.8,
-                  delay: reducedMotion ? 0 : 0.6,
-                }}
-              >
-                기술을 현장의 변화로 잇습니다.
-              </motion.span>
+              {variant !== 3 && (
+                <motion.span
+                  initial={reducedMotion ? false : { opacity: 0, y: 28 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: reducedMotion ? 0 : 0.8,
+                    delay: reducedMotion ? 0 : 0.6,
+                  }}
+                >
+                  기술을 현장의 변화로 잇습니다.
+                </motion.span>
+              )}
             </h1>
             {variant !== 1 && (
               <p className={styles.heroDescription}>
-                스마트엠투엠은 AI 보안, 블록체인, 사이버보안/암호분야 초격차
-                기술을 통해
-                <br />
-                글로벌 강소 벤처기업으로 성장하고 있는 IT 보안 전문 기업입니다.
+                {variant === 3 ? (
+                  <>
+                    스마트엠투엠은 AI·사이버보안·블록체인 기술로 데이터를
+                    보호하고,
+                    <br />
+                    항만과 제조 현장의 업무 효율을 높입니다.
+                  </>
+                ) : (
+                  <>
+                    스마트엠투엠은 AI 보안, 블록체인, 사이버보안/암호분야 초격차
+                    기술을 통해
+                    <br />
+                    글로벌 강소 벤처기업으로 성장하고 있는 IT 보안 전문
+                    기업입니다.
+                  </>
+                )}
               </p>
             )}
           </div>
