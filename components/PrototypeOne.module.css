@@ -228,6 +228,98 @@
   font-size: 19px;
   font-weight: 500;
 }
+.menuGroup {
+  position: relative;
+}
+.menuGroup summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.menuGroup summary::-webkit-details-marker {
+  display: none;
+}
+.menuGroup summary span {
+  font-size: 14px;
+}
+.submenu {
+  display: grid;
+  gap: 0;
+  color: #222;
+  background: white;
+}
+.submenu a {
+  padding: 12px 18px;
+  font-size: 15px;
+  font-weight: 400;
+  white-space: normal;
+  line-height: 1.5;
+}
+.submenu a:hover,
+.submenu a:focus-visible {
+  background: #fff3f3;
+  color: #ed1b23;
+}
+.submenu small {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: #777;
+}
+.desktopNav .submenu {
+  position: absolute;
+  top: 100%;
+  left: -18px;
+  min-width: 260px;
+  max-width: 350px;
+  padding: 14px 0;
+  border-radius: 8px;
+  box-shadow: 0 12px 35px #0003;
+}
+.desktopNav .menuGroup:not([open]) .submenu {
+  display: none;
+}
+.desktopNav .menuGroup:hover .submenu {
+  display: grid;
+}
+.desktopNav .menuGroup summary {
+  padding: 15px 0;
+}
+.mobileNav.officialFullMenu {
+  width: min(480px, calc(100% - 48px));
+  max-height: calc(100dvh - 110px);
+  overflow-y: auto;
+  color: #222;
+  gap: 0;
+}
+.officialFullMenu > .menuGroup,
+.officialFullMenu > a {
+  padding: 18px 0;
+  border-bottom: 1px solid #eee;
+}
+.officialFullMenu summary {
+  font-weight: 600;
+}
+.officialFullMenu .submenu {
+  padding-top: 12px;
+}
+.officialFullMenu .submenu a {
+  padding-left: 10px;
+}
+.officialFullMenu details[open] > summary {
+  color: #ed1b23;
+}
+@media (max-width: 1600px) {
+  .variantTwo:not(.variantThree) .desktopNav {
+    display: none;
+  }
+  .variantTwo:not(.variantThree) .headerActions {
+    margin-left: auto;
+  }
+}
 .headerActions {
   display: flex;
   align-items: center;
@@ -804,6 +896,10 @@
 .caseTrack::-webkit-scrollbar,
 .newsTrack::-webkit-scrollbar {
   display: none;
+}
+.caseTrackAuto {
+  scroll-snap-type: none;
+  scroll-behavior: auto;
 }
 .caseCard {
   width: 360px;

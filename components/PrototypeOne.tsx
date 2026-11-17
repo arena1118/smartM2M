@@ -28,6 +28,139 @@ const menus = [
   ["소식", "#news"],
   ["인재채용", origin + "/ko/careers"],
 ];
+const officialMenus = [
+  {
+    name: "회사소개",
+    items: [
+      ["비전", "/ko/about#vision"],
+      ["핵심가치", "/ko/about#core-values"],
+      ["연혁", "/ko/about#history"],
+      ["지식재산", "/ko/about#intellectual-property"],
+      ["오시는 길", "/ko/about#location"],
+    ],
+  },
+  {
+    name: "생성형 AI기반 사이버보안",
+    items: [
+      [
+        "SmartX",
+        "/ko/solutions/ai-security/pen-testing",
+        "AI 에이전트 기반 자율 취약점 진단 플랫폼",
+      ],
+      ["생성형 AI 보안", "/ko/solutions/ai-security/generative"],
+      [
+        "AI 레드팀 테스트베드 및 AI 포렌식 솔루션",
+        "/ko/solutions/ai-security/red-team-forensics",
+      ],
+      ["비전 AI 보안", "/ko/solutions/ai-security/vision"],
+      ["도메인 특화 AI 보안", "/ko/solutions/ai-security/domain"],
+      ["지능형 SIEM/SOAR", "/ko/solutions/ai-security/siem-soar"],
+      ["AI 보안 컨설팅", "/ko/solutions/ai-security/consulting"],
+      ["모빌리티 사이버보안 솔루션", "/ko/solutions/cybersecurity/mobility"],
+      ["항만 사이버보안 솔루션", "/ko/solutions/cybersecurity/port"],
+    ],
+  },
+  {
+    name: "AI기반 KCMVP 평가",
+    items: [
+      ["KCMVP 인증 암호 개발", "/ko/solutions/ai-kcmvp/crypto-development"],
+      ["KCMVP 컨설팅", "/ko/solutions/ai-kcmvp/consulting"],
+      [
+        "AI기반 KCMVP 검증 및 평가",
+        "/ko/solutions/ai-kcmvp/verification-evaluation",
+      ],
+      [
+        "LLM/에이전트 기반 암호 검증",
+        "/ko/solutions/ai-kcmvp/llm-agent-crypto-verification",
+      ],
+    ],
+  },
+  {
+    name: "AI 응용서비스",
+    items: [
+      ["AI OCR", "/ko/solutions/ai-application/ocr"],
+      ["AI Agent", "/ko/solutions/ai-application/agent"],
+    ],
+  },
+  {
+    name: "자율 제조",
+    items: [
+      [
+        "공정 운영시스템 최적화",
+        "/ko/solutions/ai-smart-manufacturing/ops-optimization",
+      ],
+      [
+        "공정 품질 관리 자동화",
+        "/ko/solutions/ai-smart-manufacturing/quality-automation",
+      ],
+      [
+        "작업자 안전 검사",
+        "/ko/solutions/ai-smart-manufacturing/worker-safety",
+      ],
+      [
+        "공정 예지보전",
+        "/ko/solutions/ai-smart-manufacturing/predictive-maintenance",
+      ],
+    ],
+  },
+  {
+    name: "항만 블록체인",
+    items: [
+      [
+        "ACCIO",
+        "/ko/solutions/blockchain/cicd",
+        "클라우드 기반 블록체인 구축 및 개발 환경",
+      ],
+      [
+        "항만물류 특화 블록체인 플랫폼",
+        "/ko/solutions/blockchain/port-logistics-platform",
+      ],
+      ["DID 기반 사용자 인증/인가", "/ko/solutions/blockchain/did-auth"],
+    ],
+  },
+  {
+    name: "소식",
+    items: [
+      ["언론보도", "/ko/news"],
+      ["사내소식", "/ko/news?category=internal"],
+    ],
+  },
+];
+
+function OfficialMenuItems({ expanded = false }: { expanded?: boolean }) {
+  return (
+    <>
+      {officialMenus.map(({ name, items }) => (
+        <details
+          key={name}
+          name={expanded ? "official-menu" : "official-header"}
+          className={styles.menuGroup}
+          onKeyDown={(event) => {
+            if (event.key === "Escape") {
+              event.currentTarget.open = false;
+              event.currentTarget.querySelector("summary")?.focus();
+            }
+          }}
+        >
+          <summary>
+            {name}
+            <span aria-hidden="true">⌄</span>
+          </summary>
+          <div className={styles.submenu}>
+            {items.map(([label, path, description]) => (
+              <a key={path} href={origin + path}>
+                {label}
+                {description && <small>{description}</small>}
+              </a>
+            ))}
+          </div>
+        </details>
+      ))}
+      <a href={origin + "/ko/careers"}>인재채용</a>
+    </>
+  );
+}
+
 const heroImages = [
   asset("3309-95482-imgChatGpt202610210210121.png"),
   asset(
@@ -245,11 +378,49 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 | 3 | 4 }) {
   const [language, setLanguage] = useState(false);
   const [newsPosition, setNewsPosition] = useState(0);
   const [highlightedStrength, setHighlightedStrength] = useState(0);
+  const [caseHovered, setCaseHovered] = useState(false);
+  const caseTrack = useRef<HTMLDivElement>(null);
+  const caseDirection = useRef(1);
   const newsTrack = useRef<HTMLDivElement>(null);
   const hero = useRef<HTMLElement>(null);
   const expertise = useRef<HTMLElement>(null);
   const expertiseMotion = useRef({ index: 0, until: 0 });
   const heroInView = useInView(hero, { amount: 0.2 });
+  const casesInView = useInView(caseTrack, { amount: 0.2 });
+
+  useEffect(() => {
+    const track = caseTrack.current;
+    if (variant !== 2 || reducedMotion || caseHovered || !casesInView || !track)
+      return;
+    let frame = 0;
+    const timer = window.setInterval(() => {
+      if (document.hidden || frame) return;
+      const max = track.scrollWidth - track.clientWidth;
+      if (max <= 0) return;
+      if (track.scrollLeft >= max - 1) caseDirection.current = -1;
+      if (track.scrollLeft <= 1) caseDirection.current = 1;
+      const first = track.children[0] as HTMLElement;
+      const second = track.children[1] as HTMLElement;
+      const step = second.offsetLeft - first.offsetLeft;
+      const start = track.scrollLeft;
+      const target = Math.max(
+        0,
+        Math.min(max, start + step * caseDirection.current),
+      );
+      const started = performance.now();
+      const animate = (now: number) => {
+        const progress = Math.min((now - started) / 700, 1);
+        const eased = (1 - Math.cos(Math.PI * progress)) / 2;
+        track.scrollLeft = start + (target - start) * eased;
+        frame = progress < 1 ? requestAnimationFrame(animate) : 0;
+      };
+      frame = requestAnimationFrame(animate);
+    }, 6000);
+    return () => {
+      window.clearInterval(timer);
+      cancelAnimationFrame(frame);
+    };
+  }, [variant, reducedMotion, caseHovered, casesInView]);
   const reveal = {
     initial: reducedMotion ? (false as const) : { opacity: 0, y: 32 },
     whileInView: { opacity: 1, y: 0 },
@@ -455,11 +626,15 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 | 3 | 4 }) {
           />
         </a>
         <nav aria-label="주요 메뉴" className={styles.desktopNav}>
-          {menus.map(([name, href]) => (
-            <a key={name} href={href}>
-              {name}
-            </a>
-          ))}
+          {variant === 2 ? (
+            <OfficialMenuItems />
+          ) : (
+            menus.map(([name, href]) => (
+              <a key={name} href={href}>
+                {name}
+              </a>
+            ))
+          )}
         </nav>
         <div className={styles.headerActions}>
           <a className={styles.contact} href="mailto:smartm2m@smartm2m.co.kr">
@@ -511,14 +686,21 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 | 3 | 4 }) {
       {menu && (
         <nav
           id="prototype-menu"
-          className={styles.mobileNav}
+          className={`${styles.mobileNav} ${variant === 2 ? styles.officialFullMenu : ""}`}
+          onKeyDown={(event) => {
+            if (event.key === "Escape") setMenu(false);
+          }}
           aria-label="전체 메뉴"
         >
-          {menus.map(([name, href]) => (
-            <a key={name} href={href} onClick={() => setMenu(false)}>
-              {name}
-            </a>
-          ))}
+          {variant === 2 ? (
+            <OfficialMenuItems expanded />
+          ) : (
+            menus.map(([name, href]) => (
+              <a key={name} href={href} onClick={() => setMenu(false)}>
+                {name}
+              </a>
+            ))
+          )}
           <a href="mailto:smartm2m@smartm2m.co.kr">Contact Us</a>
         </nav>
       )}
@@ -991,7 +1173,10 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 | 3 | 4 }) {
               texture="3306-85106-imgUseCase.png"
             />
             <div
-              className={styles.caseTrack}
+              ref={caseTrack}
+              className={`${styles.caseTrack} ${variant === 2 ? styles.caseTrackAuto : ""}`}
+              onPointerEnter={() => setCaseHovered(true)}
+              onPointerLeave={() => setCaseHovered(false)}
               tabIndex={0}
               role="region"
               aria-label="적용범위, 좌우로 스크롤"
