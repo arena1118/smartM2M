@@ -363,7 +363,13 @@ function PartnerMarquee({ variant }: { variant: number }) {
   );
 }
 
-export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 | 3 | 4 }) {
+export function PrototypeOne({
+  variant = 1,
+  copyVariant = 2,
+}: {
+  variant?: 1 | 2 | 3 | 4;
+  copyVariant?: 1 | 2 | 3 | 4;
+}) {
   const reducedMotion = useReducedMotion();
   const [slide, setSlide] = useState(0);
   const [heroPaused, setHeroPaused] = useState(false);
@@ -756,7 +762,15 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 | 3 | 4 }) {
                 {variant === 3 ? (
                   "더 똑똑하게, 더 안전하게."
                 ) : variant === 2 ? (
-                  "더 안전한 데이터, 더 효율적인 현장."
+                  copyVariant === 1 ? (
+                    <mark>AI, 사이버보안, 블록체인,</mark>
+                  ) : copyVariant === 3 ? (
+                    "더 똑똑하게, 더 안전하게."
+                  ) : copyVariant === 4 ? (
+                    "일은 더 쉽게, 보안은 더 든든하게."
+                  ) : (
+                    "더 안전한 데이터, 더 효율적인 현장."
+                  )
                 ) : (
                   <mark>AI, 사이버보안, 블록체인,</mark>
                 )}
@@ -772,16 +786,30 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 | 3 | 4 }) {
                 {variant === 3 ? (
                   "AI로 시작되는 변화입니다."
                 ) : variant === 2 ? (
-                  <>
-                    <mark>기술로 만드는 변화</mark>입니다.
-                  </>
+                  copyVariant === 1 ? (
+                    <>
+                      <mark>스마트항만, 자율제조</mark> 분야에서
+                    </>
+                  ) : copyVariant === 3 ? (
+                    <>
+                      <mark>AI로 시작되는 변화</mark>입니다.
+                    </>
+                  ) : copyVariant === 4 ? (
+                    <mark>AI가 함께합니다.</mark>
+                  ) : (
+                    <>
+                      <mark>기술로 만드는 변화</mark>입니다.
+                    </>
+                  )
                 ) : (
                   <>
                     <mark>스마트항만, 자율제조 분야</mark>에서
                   </>
                 )}
               </motion.span>
-              {(variant === 1 || variant === 4) && (
+              {(variant === 1 ||
+                variant === 4 ||
+                (variant === 2 && copyVariant === 1)) && (
                 <motion.span
                   initial={reducedMotion ? false : { opacity: 0, y: 28 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -796,12 +824,22 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 | 3 | 4 }) {
             </h1>
             {(variant === 2 || variant === 3) && (
               <p className={styles.heroDescription}>
-                <>
-                  스마트엠투엠은 AI·사이버보안·블록체인 기술로 데이터를
-                  보호하고,
-                  <br />
-                  항만과 제조 현장의 업무 효율을 높입니다.
-                </>
+                {variant === 2 && copyVariant === 1 ? (
+                  <>
+                    스마트엠투엠은 AI 보안, 블록체인, 사이버보안/암호분야 초격차
+                    기술을 통해
+                    <br />
+                    글로벌 강소 벤처기업으로 성장하고 있는 IT 보안 전문
+                    기업입니다.
+                  </>
+                ) : (
+                  <>
+                    스마트엠투엠은 AI·사이버보안·블록체인 기술로 데이터를
+                    보호하고,
+                    <br />
+                    항만과 제조 현장의 업무 효율을 높입니다.
+                  </>
+                )}
               </p>
             )}
           </div>
