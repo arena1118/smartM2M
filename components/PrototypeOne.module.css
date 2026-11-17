@@ -242,9 +242,6 @@
 .menuGroup summary::-webkit-details-marker {
   display: none;
 }
-.menuGroup summary span {
-  font-size: 14px;
-}
 .submenu {
   display: grid;
   gap: 0;

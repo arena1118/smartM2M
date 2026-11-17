@@ -144,7 +144,6 @@ function OfficialMenuItems({ expanded = false }: { expanded?: boolean }) {
         >
           <summary>
             {name}
-            <span aria-hidden="true">⌄</span>
           </summary>
           <div className={styles.submenu}>
             {items.map(([label, path, description]) => (
