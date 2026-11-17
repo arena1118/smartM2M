@@ -428,7 +428,7 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 | 3 | 4 }) {
     },
   };
   const accordionTransition = {
-    duration: reducedMotion ? 0 : 0.55,
+    duration: reducedMotion ? 0 : variant === 2 ? 0.3 : 0.55,
     ease: "easeInOut" as const,
   };
 
@@ -461,7 +461,8 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 | 3 | 4 }) {
     let lastWheel = 0;
     let burstAmount = 0;
     let burstStarted = 0;
-    let bypassUntil = 0;
+    let fastGesture = false;
+    let lastInput = 0;
     let previousY = window.scrollY;
     const onWheel = (event: WheelEvent) => {
       if (
@@ -480,6 +481,23 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 | 3 | 4 }) {
           : event.deltaMode === 2
             ? window.innerHeight
             : 1);
+      if (variant === 2) {
+        if (now - lastInput > 200) fastGesture = false;
+        lastInput = now;
+        if (now - burstStarted > 120 || Math.sign(burstAmount) !== direction) {
+          burstStarted = now;
+          burstAmount = 0;
+        }
+        burstAmount += delta;
+        if (Math.abs(delta) >= 180 || Math.abs(burstAmount) >= 260) {
+          fastGesture = true;
+          wheelAmount = 0;
+        }
+        if (fastGesture) return;
+        // 화면을 끌어올리지 않고 카드가 충분히 보이는 위치에서만 전환합니다.
+        if (bounds.top > Math.max(24, window.innerHeight - bounds.height - 24))
+          return;
+      }
       if (
         (bounds.top > window.innerHeight * 0.35 &&
           bounds.top - Math.max(delta, 0) > window.innerHeight * 0.35) ||
@@ -491,18 +509,6 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 | 3 | 4 }) {
         return;
       }
       const index = expertiseMotion.current.index;
-      if (variant === 2) {
-        if (now - burstStarted > 120 || Math.sign(burstAmount) !== direction) {
-          burstStarted = now;
-          burstAmount = 0;
-        }
-        burstAmount += delta;
-        if (Math.abs(delta) >= 180 || Math.abs(burstAmount) >= 260) {
-          bypassUntil = now + 250;
-          wheelAmount = 0;
-        }
-        if (now < bypassUntil) return;
-      }
       if (
         (direction < 0 && index === 0) ||
         (direction > 0 && index === businesses.length - 1)
@@ -514,14 +520,15 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 | 3 | 4 }) {
       }
       event.preventDefault();
       if (
-        (direction > 0 && bounds.top > 26) ||
-        (direction < 0 && bounds.top < 22)
+        variant !== 2 &&
+        ((direction > 0 && bounds.top > 26) ||
+          (direction < 0 && bounds.top < 22))
       ) {
         window.scrollTo({
           top: window.scrollY + bounds.top - 24,
           behavior: "instant",
         });
-        expertiseMotion.current.until = now + (variant === 2 ? 300 : 700);
+        expertiseMotion.current.until = now + 700;
         return;
       }
       if (now - lastWheel > 180 || Math.sign(wheelAmount) !== direction)
@@ -533,14 +540,10 @@ export function PrototypeOne({ variant = 1 }: { variant?: 1 | 2 | 3 | 4 }) {
       selectBusiness(index + direction);
     };
     const onScroll = () => {
+      if (variant === 2) return;
       const currentY = window.scrollY;
       const distance = currentY - previousY;
       previousY = currentY;
-      if (
-        variant === 2 &&
-        (performance.now() < bypassUntil || Math.abs(distance) >= 180)
-      )
-        return;
       if (Math.abs(distance) < 2) return;
       const bounds = section.getBoundingClientRect();
       const anchorY = currentY + bounds.top - 24;
