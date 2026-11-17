@@ -64,6 +64,14 @@
 .variantTwo .heroVisual {
   top: 50px;
 }
+.variantTwo .heroCopy > .longDescription {
+  max-width: min(760px, 42vw);
+}
+@media (max-width: 900px) {
+  .variantTwo .heroCopy > .longDescription {
+    max-width: 100%;
+  }
+}
 .variantTwo .heroVisual::before,
 .variantTwo .heroVisual::after {
   display: none;

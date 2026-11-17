@@ -8,5 +8,14 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <PrototypeOne variant={2} copyVariant={3} />;
+  return (
+    <PrototypeOne
+      variant={2}
+      copyVariant={3}
+      supportingCopy={[
+        "AI 모델의 보안성 검증과 암호·블록체인 기술로 데이터 활용의 신뢰성을 높이고,",
+        "산업별 요구에 맞춘 AI 분석과 업무 자동화를 통해 현장의 판단과 운영을 고도화합니다.",
+      ]}
+    />
+  );
 }

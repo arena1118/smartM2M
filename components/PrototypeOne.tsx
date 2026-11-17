@@ -366,9 +366,11 @@ function PartnerMarquee({ variant }: { variant: number }) {
 export function PrototypeOne({
   variant = 1,
   copyVariant = 2,
+  supportingCopy,
 }: {
   variant?: 1 | 2 | 3 | 4;
   copyVariant?: 1 | 2 | 3 | 4;
+  supportingCopy?: [string, string];
 }) {
   const reducedMotion = useReducedMotion();
   const [slide, setSlide] = useState(0);
@@ -823,8 +825,16 @@ export function PrototypeOne({
               )}
             </h1>
             {(variant === 2 || variant === 3) && (
-              <p className={styles.heroDescription}>
-                {variant === 2 && copyVariant === 1 ? (
+              <p
+                className={`${styles.heroDescription} ${supportingCopy ? styles.longDescription : ""}`}
+              >
+                {supportingCopy ? (
+                  <>
+                    {supportingCopy[0]}
+                    <br />
+                    {supportingCopy[1]}
+                  </>
+                ) : variant === 2 && copyVariant === 1 ? (
                   <>
                     스마트엠투엠은 AI 보안, 블록체인, 사이버보안/암호분야 초격차
                     기술을 통해

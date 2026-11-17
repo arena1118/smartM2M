@@ -8,5 +8,14 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <PrototypeOne variant={2} copyVariant={2} />;
+  return (
+    <PrototypeOne
+      variant={2}
+      copyVariant={2}
+      supportingCopy={[
+        "AI 보안 진단·암호모듈 검증·블록체인 플랫폼 구축 역량을 바탕으로,",
+        "기업의 보안 체계를 강화하고 다양한 산업 현장의 요구에 맞춘 업무 지능화·자동화 솔루션을 제공합니다.",
+      ]}
+    />
+  );
 }

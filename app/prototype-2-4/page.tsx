@@ -8,5 +8,14 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <PrototypeOne variant={2} copyVariant={4} />;
+  return (
+    <PrototypeOne
+      variant={2}
+      copyVariant={4}
+      supportingCopy={[
+        "보안 솔루션 개발과 산업 플랫폼 구축·운영 경험을 바탕으로,",
+        "산업별 업무 환경에 맞춘 AI 자동화와 보안 체계를 구현해 업무 효율과 시스템 안정성을 높입니다.",
+      ]}
+    />
+  );
 }
