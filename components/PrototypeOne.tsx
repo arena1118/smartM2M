@@ -830,9 +830,7 @@ export function PrototypeOne({
               >
                 {supportingCopy ? (
                   <>
-                    {supportingCopy[0]}
-                    <br />
-                    {supportingCopy[1]}
+                    {supportingCopy.join(" ")}
                   </>
                 ) : variant === 2 && copyVariant === 1 ? (
                   <>
