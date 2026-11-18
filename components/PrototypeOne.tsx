@@ -170,9 +170,13 @@ const defaultHeroImages = [
     "3309-95482-imgU4617165514Premium3DVisualizationOfDesktopCybersecurityC5E309007C574C06Baf2A0A0655E69A211.png",
   ),
 ];
-const revisedHeroImages = [1, 2, 3, 4].map(
-  (number) => `/assets/sian-b-revision/hero-${number}.png`,
-);
+const revisedHeroImages = [
+  "/assets/sian-b-revision/hero-1.png",
+  "/assets/sian-b-revision/hero-2.png",
+  "/assets/sian-b-revision/hero-blockchain.png",
+  "/assets/sian-b-revision/hero-3.png",
+  "/assets/sian-b-revision/hero-4.png",
+];
 const strengths = [
   [
     "AI와 보안의 결합",
@@ -436,6 +440,8 @@ export function PrototypeOne({
   const [menu, setMenu] = useState(false);
   const [language, setLanguage] = useState(false);
   const [newsPosition, setNewsPosition] = useState(0);
+  const [newsHovered, setNewsHovered] = useState(false);
+  const [newsFocused, setNewsFocused] = useState(false);
   const [highlightedStrength, setHighlightedStrength] = useState(0);
   const [caseHovered, setCaseHovered] = useState(false);
   const caseTrack = useRef<HTMLDivElement>(null);
@@ -670,19 +676,53 @@ export function PrototypeOne({
     }, 5000);
     return () => window.clearInterval(timer);
   }, [reducedMotion, heroPaused, heroHovered, heroFocused, heroInView, slide]);
-  const moveNews = (direction: number) => {
-    const track = newsTrack.current;
-    if (track)
-      track.scrollBy({
-        left:
-          direction *
-            (track.firstElementChild?.getBoundingClientRect().width || 340) +
-          direction * 40,
-        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
-          ? "instant"
-          : "smooth",
-      });
-  };
+  const moveNews = useCallback(
+    (direction: number) => {
+      const track = newsTrack.current;
+      if (!track) return;
+      if (designRevision && track.firstElementChild) {
+        const step =
+          track.firstElementChild.getBoundingClientRect().width +
+          parseFloat(getComputedStyle(track).columnGap);
+        const cycle = officialNews.length * step;
+        const current = track.scrollLeft;
+        const reset =
+          direction > 0 && current >= cycle
+            ? current - cycle
+            : direction < 0 && current < step
+              ? current + cycle
+              : current;
+        const advance = () =>
+          track.scrollTo({
+            left: reset + direction * step,
+            behavior: window.matchMedia("(prefers-reduced-motion: reduce)")
+              .matches
+              ? "instant"
+              : "smooth",
+          });
+        if (reset !== current) {
+          track.scrollTo({ left: reset, behavior: "instant" });
+          requestAnimationFrame(advance);
+        } else advance();
+      } else
+        track.scrollBy({
+          left:
+            direction *
+              (track.firstElementChild?.getBoundingClientRect().width || 340) +
+            direction * 40,
+          behavior: window.matchMedia("(prefers-reduced-motion: reduce)")
+            .matches
+            ? "instant"
+            : "smooth",
+        });
+    },
+    [designRevision],
+  );
+  useEffect(() => {
+    if (!designRevision || reducedMotion || newsHovered || newsFocused) return;
+    const timer = window.setInterval(() => moveNews(1), 4500);
+    return () => window.clearInterval(timer);
+  }, [designRevision, reducedMotion, newsHovered, newsFocused, moveNews]);
   return (
     <main
       id="top"
@@ -977,13 +1017,21 @@ export function PrototypeOne({
                           <img
                             src={image}
                             alt={
-                              [
-                                "AI 사이버보안 플랫폼",
-                                "AI 반도체 제조",
-                                "스마트항만 물류",
-                                "산업 기술 비주얼",
-                                "사이버보안 인프라",
-                              ][i]
+                              (designRevision
+                                ? [
+                                    "사이버보안 인프라",
+                                    "AI 기술",
+                                    "블록체인 플랫폼",
+                                    "스마트항만 물류",
+                                    "제조 공정 자동화",
+                                  ]
+                                : [
+                                    "AI 사이버보안 플랫폼",
+                                    "AI 반도체 제조",
+                                    "스마트항만 물류",
+                                    "산업 기술 비주얼",
+                                    "사이버보안 인프라",
+                                  ])[i]
                             }
                           />
                         </motion.div>
@@ -1357,7 +1405,21 @@ export function PrototypeOne({
             <PartnerMarquee variant={variant} />
           </motion.section>
         )}
-        <motion.section {...reveal} id="news" className={styles.news}>
+        <motion.section
+          {...reveal}
+          id="news"
+          className={styles.news}
+          onFocusCapture={() => {
+            if (designRevision) setNewsFocused(true);
+          }}
+          onBlurCapture={(event) => {
+            if (
+              designRevision &&
+              !event.currentTarget.contains(event.relatedTarget)
+            )
+              setNewsFocused(false);
+          }}
+        >
           <SectionTitle
             en="SMARTM2M NEWS"
             title="소식"
@@ -1378,6 +1440,12 @@ export function PrototypeOne({
             <div
               ref={newsTrack}
               className={styles.newsTrack}
+              onMouseEnter={() => {
+                if (designRevision) setNewsHovered(true);
+              }}
+              onMouseLeave={() => {
+                if (designRevision) setNewsHovered(false);
+              }}
               onScroll={(e) => {
                 const el = e.currentTarget;
                 setNewsPosition(

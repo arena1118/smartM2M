@@ -2284,12 +2284,18 @@
   height: 103.27%;
 }
 .designRevision .heroDeckCard:nth-child(3) > img {
+  left: -12.24%;
+  top: -7.31%;
+  width: 120.39%;
+  height: 114.81%;
+}
+.designRevision .heroDeckCard:nth-child(4) > img {
   left: -0.13%;
   top: -0.19%;
   width: 104.08%;
   height: 104.04%;
 }
-.designRevision .heroDeckCard:nth-child(4) > img {
+.designRevision .heroDeckCard:nth-child(5) > img {
   left: -6.18%;
   top: -7.3%;
   width: 106.98%;
@@ -2436,4 +2442,18 @@
 }
 .designRevision .partners > div:nth-child(2) .partnerTrack {
   animation-direction: normal;
+}
+@media (min-width: 901px) {
+  .designRevision.variantTwo:not(.variantThree) .heroCopy {
+    padding-top: clamp(90px, 6.770833vw, 130px);
+  }
+  .designRevision .heroCopy > .heroDescription {
+    margin-top: clamp(24px, 2.34375vw, 45px);
+  }
+  .designRevision .heroVisual {
+    top: clamp(30px, 3.125vw, 60px);
+  }
+  .designRevision .strengths {
+    margin-top: 80px;
+  }
 }
