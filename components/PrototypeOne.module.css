@@ -2480,6 +2480,13 @@
 .designRevision .caseMarqueeLane {
   animation-direction: normal;
 }
+.designRevision .smartxMockup {
+  width: calc(50% + 16px);
+  max-width: none;
+}
+.designRevision .solutionCard:first-child {
+  overflow: clip;
+}
 .designRevision .partners > div:first-child .partnerTrack {
   animation-direction: reverse;
 }
