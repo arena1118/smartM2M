@@ -1374,36 +1374,38 @@ export function PrototypeOne({
           >
             <img src={asset("3306-85212-imgGroup.svg")} alt="" />
           </a>
-          <div
-            ref={newsTrack}
-            className={styles.newsTrack}
-            onScroll={(e) => {
-              const el = e.currentTarget;
-              setNewsPosition(
-                el.scrollLeft / (el.scrollWidth - el.clientWidth || 1),
-              );
-            }}
-          >
-            {newsItems.map(({ title, image, href, placeholder }, i) => (
-              <a
-                className={styles.newsCard}
-                key={`${href}-${i}`}
-                href={href}
-                aria-label={title}
-              >
-                <div>
-                  <img src={image} alt="" />
-                  {placeholder && (
-                    <img
-                      className={styles.newsLogo}
-                      src={asset("3306-85212-imgLogo.svg")}
-                      alt="SmartM2M"
-                    />
-                  )}
-                </div>
-                <h3>{title}</h3>
-              </a>
-            ))}
+          <div className={designRevision ? styles.newsViewport : undefined}>
+            <div
+              ref={newsTrack}
+              className={styles.newsTrack}
+              onScroll={(e) => {
+                const el = e.currentTarget;
+                setNewsPosition(
+                  el.scrollLeft / (el.scrollWidth - el.clientWidth || 1),
+                );
+              }}
+            >
+              {newsItems.map(({ title, image, href, placeholder }, i) => (
+                <a
+                  className={styles.newsCard}
+                  key={`${href}-${i}`}
+                  href={href}
+                  aria-label={title}
+                >
+                  <div>
+                    <img src={image} alt="" />
+                    {placeholder && (
+                      <img
+                        className={styles.newsLogo}
+                        src={asset("3306-85212-imgLogo.svg")}
+                        alt="SmartM2M"
+                      />
+                    )}
+                  </div>
+                  <h3>{title}</h3>
+                </a>
+              ))}
+            </div>
           </div>
           <div className={styles.newsControls}>
             <div

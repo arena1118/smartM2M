@@ -2344,14 +2344,28 @@
   width: 100vw;
   margin-inline: calc((100% - 100vw) / 2);
   padding-inline: calc((100vw - min(1600px, 83.333333vw)) / 2);
-  mask-image: linear-gradient(
-    90deg,
-    transparent,
-    #000 8%,
-    #000 92%,
-    transparent
-  );
+  mask-image: none;
   padding-block: 5px;
+}
+.newsViewport {
+  position: relative;
+}
+.newsViewport::before,
+.newsViewport::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  bottom: 0;
+  width: max(0px, calc((100vw - 1600px) / 2));
+  background: rgb(249 249 249 / 60%);
+  pointer-events: none;
+}
+.newsViewport::before {
+  left: calc((100% - 100vw) / 2);
+}
+.newsViewport::after {
+  right: calc((100% - 100vw) / 2);
 }
 .designRevision .newsCard {
   transition: transform 0.35s ease;
@@ -2415,11 +2429,11 @@
   object-fit: cover;
 }
 .designRevision .caseMarqueeLane {
-  animation-direction: reverse;
-}
-.designRevision .partners > div:first-child .partnerTrack {
   animation-direction: normal;
 }
-.designRevision .partners > div:nth-child(2) .partnerTrack {
+.designRevision .partners > div:first-child .partnerTrack {
   animation-direction: reverse;
+}
+.designRevision .partners > div:nth-child(2) .partnerTrack {
+  animation-direction: normal;
 }
