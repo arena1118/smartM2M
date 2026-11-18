@@ -456,8 +456,19 @@ export function PrototypeOne({
   useEffect(() => {
     const track = newsTrack.current;
     if (designRevision && track?.firstElementChild) {
-      track.scrollLeft =
-        track.firstElementChild.getBoundingClientRect().width - 20;
+      let previousStep = 0;
+      const alignCards = () => {
+        const step =
+          track.firstElementChild!.getBoundingClientRect().width +
+          parseFloat(getComputedStyle(track).columnGap);
+        const index = previousStep ? Math.round(track.scrollLeft / previousStep) : 1;
+        track.scrollTo({ left: index * step, behavior: "instant" });
+        previousStep = step;
+      };
+      alignCards();
+      const observer = new ResizeObserver(alignCards);
+      observer.observe(track);
+      return () => observer.disconnect();
     }
   }, [designRevision]);
 
