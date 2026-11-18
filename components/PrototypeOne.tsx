@@ -531,10 +531,10 @@ export function PrototypeOne({
       if (scrollExpertise && index === null) return;
       if (index !== null) expertiseMotion.current.index = index;
       expertiseMotion.current.until =
-        performance.now() + (variant === 2 ? 300 : 700);
+        performance.now() + (designRevision ? 260 : variant === 2 ? 300 : 700);
       setOpen(index);
     },
-    [scrollExpertise, variant],
+    [scrollExpertise, variant, designRevision],
   );
 
   useEffect(() => {
@@ -558,6 +558,7 @@ export function PrototypeOne({
     let fastGesture = false;
     let lastInput = 0;
     let previousY = window.scrollY;
+    let previousDirection = 0;
     const onWheel = (event: WheelEvent) => {
       if (
         event.ctrlKey ||
@@ -575,6 +576,39 @@ export function PrototypeOne({
           : event.deltaMode === 2
             ? window.innerHeight
             : 1);
+      if (designRevision) {
+        const entryTop = Math.max(24, window.innerHeight - bounds.height - 24);
+        if (bounds.top > entryTop || bounds.bottom < window.innerHeight * 0.5) {
+          wheelAmount = 0;
+          previousDirection = 0;
+          return;
+        }
+        if (previousDirection && previousDirection !== direction) {
+          wheelAmount = 0;
+          expertiseMotion.current.until = 0;
+        }
+        previousDirection = direction;
+        if (now < expertiseMotion.current.until) {
+          event.preventDefault();
+          return;
+        }
+        const index = expertiseMotion.current.index;
+        if (
+          (direction < 0 && index === 0) ||
+          (direction > 0 && index === businesses.length - 1)
+        ) {
+          wheelAmount = 0;
+          return;
+        }
+        event.preventDefault();
+        if (now - lastWheel > 180) wheelAmount = 0;
+        lastWheel = now;
+        wheelAmount += delta;
+        if (Math.abs(wheelAmount) < 48) return;
+        wheelAmount = 0;
+        selectBusiness(index + direction);
+        return;
+      }
       if (variant === 2) {
         if (now - lastInput > 200) fastGesture = false;
         lastInput = now;
@@ -670,7 +704,7 @@ export function PrototypeOne({
       window.removeEventListener("wheel", onWheel, true);
       window.removeEventListener("scroll", onScroll);
     };
-  }, [scrollExpertise, selectBusiness, variant]);
+  }, [scrollExpertise, selectBusiness, variant, designRevision]);
 
   useEffect(() => {
     if (
