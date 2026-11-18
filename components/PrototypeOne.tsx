@@ -158,7 +158,7 @@ function OfficialMenuItems({ expanded = false }: { expanded?: boolean }) {
   );
 }
 
-const heroImages = [
+const defaultHeroImages = [
   asset("3309-95482-imgChatGpt202610210210121.png"),
   asset(
     "3309-95482-imgU4617165514FuturisticAiSemiconductorManufacturingSceneCe8AeeafAaab49868B5CAc6C9C4B293012.png",
@@ -169,6 +169,9 @@ const heroImages = [
     "3309-95482-imgU4617165514Premium3DVisualizationOfDesktopCybersecurityC5E309007C574C06Baf2A0A0655E69A211.png",
   ),
 ];
+const revisedHeroImages = [1, 2, 3, 4].map(
+  (number) => `/assets/sian-b-revision/hero-${number}.png`,
+);
 const strengths = [
   [
     "AI와 보안의 결합",
@@ -316,7 +319,9 @@ function SectionTitle({
     <div className={styles.sectionTitle}>
       <p
         className={styles.eyebrow}
-        style={{ backgroundImage: `url(${asset(texture)})` }}
+        style={{
+          backgroundImage: `url(${texture.startsWith("/") ? texture : asset(texture)})`,
+        }}
       >
         {en}
       </p>
@@ -363,15 +368,52 @@ function PartnerMarquee({ variant }: { variant: number }) {
   );
 }
 
+function CaseMarquee() {
+  return (
+    <div
+      className={styles.caseMarquee}
+      tabIndex={0}
+      role="region"
+      aria-label="적용범위 자동 슬라이드, 마우스 또는 키보드 포커스 시 일시정지"
+    >
+      <div className={styles.caseMarqueeLane}>
+        {[0, 1].map((copy) => (
+          <div
+            className={styles.caseMarqueeGroup}
+            key={copy}
+            aria-hidden={copy === 1}
+          >
+            {cases.map(([name, img], i) => (
+              <article
+                className={`${styles.caseCard} ${i > 1 ? styles.darkCase : ""}`}
+                key={name}
+              >
+                <img
+                  src={asset(`3306-85106-${img}.png`)}
+                  alt={copy === 0 ? `${name} 산업` : ""}
+                />
+                <h3>{name}</h3>
+              </article>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export function PrototypeOne({
   variant = 1,
   copyVariant = 2,
   supportingCopy,
+  designRevision = false,
 }: {
   variant?: 1 | 2 | 3 | 4;
   copyVariant?: 1 | 2 | 3 | 4;
   supportingCopy?: [string, string];
+  designRevision?: boolean;
 }) {
+  const heroImages = designRevision ? revisedHeroImages : defaultHeroImages;
   const reducedMotion = useReducedMotion();
   const [slide, setSlide] = useState(0);
   const [heroPaused, setHeroPaused] = useState(false);
@@ -394,8 +436,23 @@ export function PrototypeOne({
   const casesInView = useInView(caseTrack, { amount: 0.2 });
 
   useEffect(() => {
+    const track = newsTrack.current;
+    if (designRevision && track?.firstElementChild) {
+      track.scrollLeft =
+        track.firstElementChild.getBoundingClientRect().width - 20;
+    }
+  }, [designRevision]);
+
+  useEffect(() => {
     const track = caseTrack.current;
-    if (variant !== 2 || reducedMotion || caseHovered || !casesInView || !track)
+    if (
+      designRevision ||
+      variant !== 2 ||
+      reducedMotion ||
+      caseHovered ||
+      !casesInView ||
+      !track
+    )
       return;
     let frame = 0;
     const timer = window.setInterval(() => {
@@ -425,7 +482,7 @@ export function PrototypeOne({
       window.clearInterval(timer);
       cancelAnimationFrame(frame);
     };
-  }, [variant, reducedMotion, caseHovered, casesInView]);
+  }, [variant, reducedMotion, caseHovered, casesInView, designRevision]);
   const reveal = {
     initial: reducedMotion ? (false as const) : { opacity: 0, y: 32 },
     whileInView: { opacity: 1, y: 0 },
@@ -617,7 +674,7 @@ export function PrototypeOne({
   return (
     <main
       id="top"
-      className={`${styles.page} ${variant !== 1 ? styles.variantTwo : ""} ${variant >= 3 ? styles.variantThree : ""} ${variant === 4 ? styles.variantFour : ""}`}
+      className={`${styles.page} ${variant !== 1 ? styles.variantTwo : ""} ${variant >= 3 ? styles.variantThree : ""} ${variant === 4 ? styles.variantFour : ""} ${designRevision ? styles.designRevision : ""}`}
       onKeyDown={(e) => {
         if (e.key === "Escape") {
           setMenu(false);
@@ -829,9 +886,7 @@ export function PrototypeOne({
                 className={`${styles.heroDescription} ${supportingCopy ? styles.longDescription : ""}`}
               >
                 {supportingCopy ? (
-                  <>
-                    {supportingCopy.join(" ")}
-                  </>
+                  <>{supportingCopy.join(" ")}</>
                 ) : variant === 2 && copyVariant === 1 ? (
                   <>
                     스마트엠투엠은 AI 보안, 블록체인, 사이버보안/암호분야 초격차
@@ -1006,16 +1061,30 @@ export function PrototypeOne({
                 <div className={styles.strengthIcon}>
                   <img
                     src={
-                      variant === 4
-                        ? `/assets/sian-d/${icon}.svg`
-                        : asset(`3309-95482-${icon}.svg`)
+                      designRevision && i === 1
+                        ? "/assets/sian-b-revision/strength-2.svg"
+                        : variant === 4
+                          ? `/assets/sian-d/${icon}.svg`
+                          : asset(`3309-95482-${icon}.svg`)
                     }
                     alt=""
                   />
                 </div>
                 <h3>{title}</h3>
                 <h4>{sub}</h4>
-                <p>{body}</p>
+                <p>
+                  {designRevision && i === 1 ? (
+                    <>
+                      100건 이상 공공 SW 구축·운영 경험과
+                      <br />
+                      KCMVP 검증필 암호모듈 기술을
+                      <br />
+                      보유하고 있습니다.
+                    </>
+                  ) : (
+                    body
+                  )}
+                </p>
                 {i === 0 && (
                   <a className={styles.pill} href={security}>
                     SmartX 자세히보기 <Arrow />
@@ -1238,33 +1307,41 @@ export function PrototypeOne({
         {variant !== 4 && (
           <motion.section {...reveal} className={styles.useCases}>
             <SectionTitle
-              en="USE CASE"
-              title="적용범위"
+              en={designRevision ? "SECTORS & PARTNERS" : "USE CASE"}
+              title={designRevision ? "주요기관 및 파트너" : "적용범위"}
               description="산업별 특성과 현장의 요구에 맞춰 최적의 솔루션을 제공합니다."
-              texture="3306-85106-imgUseCase.png"
+              texture={
+                designRevision
+                  ? "/assets/sian-b-revision/sectors-title.png"
+                  : "3306-85106-imgUseCase.png"
+              }
             />
-            <div
-              ref={caseTrack}
-              className={`${styles.caseTrack} ${variant === 2 ? styles.caseTrackAuto : ""}`}
-              onPointerEnter={() => setCaseHovered(true)}
-              onPointerLeave={() => setCaseHovered(false)}
-              tabIndex={0}
-              role="region"
-              aria-label="적용범위, 좌우로 스크롤"
-            >
-              {cases.map(([name, img], i) => (
-                <article
-                  className={`${styles.caseCard} ${i > 1 ? styles.darkCase : ""}`}
-                  key={name}
-                >
-                  <img
-                    src={asset(`3306-85106-${img}.png`)}
-                    alt={`${name} 산업`}
-                  />
-                  <h3>{name}</h3>
-                </article>
-              ))}
-            </div>
+            {designRevision ? (
+              <CaseMarquee />
+            ) : (
+              <div
+                ref={caseTrack}
+                className={`${styles.caseTrack} ${variant === 2 ? styles.caseTrackAuto : ""}`}
+                onPointerEnter={() => setCaseHovered(true)}
+                onPointerLeave={() => setCaseHovered(false)}
+                tabIndex={0}
+                role="region"
+                aria-label="적용범위, 좌우로 스크롤"
+              >
+                {cases.map(([name, img], i) => (
+                  <article
+                    className={`${styles.caseCard} ${i > 1 ? styles.darkCase : ""}`}
+                    key={name}
+                  >
+                    <img
+                      src={asset(`3306-85106-${img}.png`)}
+                      alt={`${name} 산업`}
+                    />
+                    <h3>{name}</h3>
+                  </article>
+                ))}
+              </div>
+            )}
             <PartnerMarquee variant={variant} />
           </motion.section>
         )}
@@ -1291,25 +1368,34 @@ export function PrototypeOne({
               );
             }}
           >
-            {news.map(([title, img], i) => (
-              <a
-                className={styles.newsCard}
-                key={img}
-                href={origin + "/ko/news"}
-              >
-                <div>
-                  <img src={asset(`3306-85212-${img}.png`)} alt="" />
-                  {i === 0 && (
+            {(designRevision ? [...news, ...news] : news).map(
+              ([title, img], i) => (
+                <a
+                  className={styles.newsCard}
+                  key={`${img}-${i}`}
+                  href={origin + "/ko/news"}
+                >
+                  <div>
                     <img
-                      className={styles.newsLogo}
-                      src={asset("3306-85212-imgLogo.svg")}
-                      alt="SmartM2M"
+                      src={
+                        designRevision
+                          ? `/assets/sian-b-revision/news-${(i % news.length) + 1}.png`
+                          : asset(`3306-85212-${img}.png`)
+                      }
+                      alt=""
                     />
-                  )}
-                </div>
-                <h3>{title}</h3>
-              </a>
-            ))}
+                    {i % news.length === 0 && (
+                      <img
+                        className={styles.newsLogo}
+                        src={asset("3306-85212-imgLogo.svg")}
+                        alt="SmartM2M"
+                      />
+                    )}
+                  </div>
+                  <h3>{title}</h3>
+                </a>
+              ),
+            )}
           </div>
           <div className={styles.newsControls}>
             <div

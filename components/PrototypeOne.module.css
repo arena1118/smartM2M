@@ -2269,3 +2269,158 @@
     padding-top: 150px;
   }
 }
+
+/* 2-1 개정안의 이미지 배치, 느린 카드 흐름과 섹션 간격을 정의합니다. */
+.designRevision .heroDeckCard:nth-child(1) > img {
+  left: -24.74%;
+  top: -18.27%;
+  width: 148.16%;
+  height: 120.77%;
+}
+.designRevision .heroDeckCard:nth-child(2) > img {
+  left: -4.08%;
+  top: -1.92%;
+  width: 105%;
+  height: 103.27%;
+}
+.designRevision .heroDeckCard:nth-child(3) > img {
+  left: -0.13%;
+  top: -0.19%;
+  width: 104.08%;
+  height: 104.04%;
+}
+.designRevision .heroDeckCard:nth-child(4) > img {
+  left: -6.18%;
+  top: -7.3%;
+  width: 106.98%;
+  height: 114.42%;
+}
+.designRevision .strengthGrid article:nth-child(2) .strengthIcon img {
+  width: 36px;
+  height: 36px;
+}
+.designRevision .strengthGrid article:nth-child(2) > p {
+  width: 312px;
+  max-width: none;
+}
+.designRevision .expertise,
+.designRevision .solutions,
+.designRevision .useCases,
+.designRevision .news {
+  margin-top: 160px;
+}
+.caseMarquee {
+  overflow: hidden;
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 7%,
+    #000 93%,
+    transparent
+  );
+}
+.caseMarqueeLane {
+  display: flex;
+  width: max-content;
+  animation: caseTravel 120s linear infinite;
+}
+.caseMarqueeGroup {
+  display: flex;
+  flex-shrink: 0;
+  gap: 40px;
+  padding-right: 40px;
+}
+.caseMarquee:hover .caseMarqueeLane,
+.caseMarquee:focus-within .caseMarqueeLane {
+  animation-play-state: paused;
+}
+@keyframes caseTravel {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.designRevision .newsTrack {
+  scroll-snap-type: none;
+  width: 100vw;
+  margin-inline: calc((100% - 100vw) / 2);
+  padding-inline: calc((100vw - min(1600px, 83.333333vw)) / 2);
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 8%,
+    #000 92%,
+    transparent
+  );
+  padding-block: 5px;
+}
+.designRevision .newsCard {
+  transition: transform 0.35s ease;
+}
+.designRevision .newsCard:hover {
+  transform: translateY(-5px);
+}
+.designRevision .newsCard h3 {
+  font-weight: 500;
+  min-height: 91px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  word-break: keep-all;
+}
+@media (max-width: 1300px) {
+  .designRevision .strengthGrid article:nth-child(2) > p {
+    width: auto;
+    max-width: 100%;
+  }
+  .designRevision .strengthGrid article:nth-child(2) > p br {
+    display: none;
+  }
+  .designRevision .newsTrack {
+    padding-inline: 40px;
+  }
+}
+@media (max-width: 900px) {
+  .designRevision .expertise,
+  .designRevision .solutions,
+  .designRevision .useCases,
+  .designRevision .news {
+    margin-top: 80px;
+  }
+  .designRevision .newsTrack {
+    padding-inline: 24px;
+  }
+  .caseMarqueeGroup {
+    gap: 20px;
+    padding-right: 20px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .caseMarquee {
+    overflow-x: auto;
+  }
+  .caseMarqueeLane {
+    animation: none;
+  }
+  .caseMarqueeGroup[aria-hidden="true"] {
+    display: none;
+  }
+}
+.designRevision .newsCard:nth-child(5n + 1) > div {
+  background: #f4f4f4;
+}
+.designRevision .newsCard:nth-child(5n + 1) > div > img:first-child {
+  position: absolute;
+  width: 635%;
+  height: 424%;
+  left: -140%;
+  top: -71.5%;
+  max-width: none;
+  opacity: 0.4;
+}
+.designRevision .newsCard:nth-child(5n) > div > img:first-child {
+  width: 798px;
+  height: 477px;
+  max-width: none;
+  object-fit: fill;
+}

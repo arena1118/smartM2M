@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <PrototypeOne variant={2} copyVariant={1} />;
+  return <PrototypeOne variant={2} copyVariant={1} designRevision />;
 }
