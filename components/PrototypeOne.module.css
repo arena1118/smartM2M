@@ -2406,21 +2406,20 @@
     display: none;
   }
 }
-.designRevision .newsCard:nth-child(5n + 1) > div {
-  background: #f4f4f4;
+.designRevision .newsCard > div > img:first-child {
+  position: static;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  opacity: 1;
+  object-fit: cover;
 }
-.designRevision .newsCard:nth-child(5n + 1) > div > img:first-child {
-  position: absolute;
-  width: 635%;
-  height: 424%;
-  left: -140%;
-  top: -71.5%;
-  max-width: none;
-  opacity: 0.4;
+.designRevision .caseMarqueeLane {
+  animation-direction: reverse;
 }
-.designRevision .newsCard:nth-child(5n) > div > img:first-child {
-  width: 798px;
-  height: 477px;
-  max-width: none;
-  object-fit: fill;
+.designRevision .partners > div:first-child .partnerTrack {
+  animation-direction: normal;
+}
+.designRevision .partners > div:nth-child(2) .partnerTrack {
+  animation-direction: reverse;
 }

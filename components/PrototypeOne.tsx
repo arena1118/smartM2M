@@ -8,6 +8,7 @@ import {
   useReducedMotion,
 } from "framer-motion";
 import styles from "./PrototypeOne.module.css";
+import { officialNews } from "./officialNews";
 
 const base = "/assets/sian-a/";
 const asset = (name: string) =>
@@ -414,6 +415,17 @@ export function PrototypeOne({
   designRevision?: boolean;
 }) {
   const heroImages = designRevision ? revisedHeroImages : defaultHeroImages;
+  const newsItems = designRevision
+    ? [...officialNews, ...officialNews].map((item) => ({
+        ...item,
+        placeholder: false,
+      }))
+    : news.map(([title, img], i) => ({
+        title,
+        image: asset(`3306-85212-${img}.png`),
+        href: origin + "/ko/news",
+        placeholder: i === 0,
+      }));
   const reducedMotion = useReducedMotion();
   const [slide, setSlide] = useState(0);
   const [heroPaused, setHeroPaused] = useState(false);
@@ -1353,7 +1365,11 @@ export function PrototypeOne({
           />
           <a
             className={styles.more}
-            href={origin + "/ko/news"}
+            href={
+              designRevision
+                ? origin + "/news?category=internal"
+                : origin + "/ko/news"
+            }
             aria-label="소식 더보기"
           >
             <img src={asset("3306-85212-imgGroup.svg")} alt="" />
@@ -1368,34 +1384,26 @@ export function PrototypeOne({
               );
             }}
           >
-            {(designRevision ? [...news, ...news] : news).map(
-              ([title, img], i) => (
-                <a
-                  className={styles.newsCard}
-                  key={`${img}-${i}`}
-                  href={origin + "/ko/news"}
-                >
-                  <div>
+            {newsItems.map(({ title, image, href, placeholder }, i) => (
+              <a
+                className={styles.newsCard}
+                key={`${href}-${i}`}
+                href={href}
+                aria-label={title}
+              >
+                <div>
+                  <img src={image} alt="" />
+                  {placeholder && (
                     <img
-                      src={
-                        designRevision
-                          ? `/assets/sian-b-revision/news-${(i % news.length) + 1}.png`
-                          : asset(`3306-85212-${img}.png`)
-                      }
-                      alt=""
+                      className={styles.newsLogo}
+                      src={asset("3306-85212-imgLogo.svg")}
+                      alt="SmartM2M"
                     />
-                    {i % news.length === 0 && (
-                      <img
-                        className={styles.newsLogo}
-                        src={asset("3306-85212-imgLogo.svg")}
-                        alt="SmartM2M"
-                      />
-                    )}
-                  </div>
-                  <h3>{title}</h3>
-                </a>
-              ),
-            )}
+                  )}
+                </div>
+                <h3>{title}</h3>
+              </a>
+            ))}
           </div>
           <div className={styles.newsControls}>
             <div
