@@ -2301,11 +2301,31 @@
   width: 106.98%;
   height: 114.42%;
 }
-.designRevision .strengthGrid article:nth-child(2) .strengthIcon img {
-  width: 36px;
-  height: 36px;
+.designRevision .strengthGrid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.designRevision .strengthGrid article {
+  min-width: 0;
+  padding-inline: 30px;
+  border-color: #f9f9f9;
+  background: linear-gradient(#f9f9f93d, #f9f9f94d 60%);
+  backdrop-filter: blur(30px);
+}
+.designRevision .strengthGrid article.featured {
+  background: white;
+  border-color: #f35e43;
+  translate: none;
+}
+.designRevision .strengthGrid article:nth-child(1) > p,
+.designRevision .strengthGrid article:nth-child(4) > p {
+  width: 310px;
+  max-width: none;
 }
 .designRevision .strengthGrid article:nth-child(2) > p {
+  width: 339px;
+  max-width: none;
+}
+.designRevision .strengthGrid article:nth-child(3) > p {
   width: 312px;
   max-width: none;
 }
@@ -2411,11 +2431,16 @@
   overflow: hidden;
   word-break: keep-all;
 }
+@media (max-width: 1600px) {
+  .designRevision .strengthGrid article:nth-child(n) > p {
+    max-width: calc(100% + 36px);
+  }
+}
 @media (max-width: 1399px) {
   .designRevision .news { --news-columns: 3; }
 }
 @media (max-width: 1300px) {
-  .designRevision .strengthGrid article:nth-child(2) > p {
+  .designRevision .strengthGrid article:nth-child(n) > p {
     width: auto;
     max-width: 100%;
   }
@@ -2426,10 +2451,20 @@
     --news-content: calc(100vw - 80px);
   }
 }
+@media (max-width: 600px) {
+  .designRevision .strengthGrid article {
+    padding-inline: 12px;
+    height: auto;
+    min-height: 320px;
+  }
+}
 @media (max-width: 999px) {
   .designRevision .news { --news-columns: 2; --news-gap: 24px; }
 }
 @media (max-width: 900px) {
+  .designRevision .strengthGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
   .designRevision .expertise,
   .designRevision .solutions,
   .designRevision .useCases,
@@ -2504,6 +2539,6 @@
     top: clamp(30px, 3.125vw, 60px);
   }
   .designRevision .strengths {
-    margin-top: 80px;
+    margin-top: 100px;
   }
 }

@@ -203,6 +203,22 @@ const strengths = [
     "imgIcon2",
   ],
 ];
+const revisedStrengths = [
+  strengths[0],
+  [
+    strengths[2][0],
+    strengths[2][1],
+    "부산항만공사 디지털-AI 통합 플랫폼\n(체인포털) 구축 및 운영을 수행하고 있습니다.",
+    strengths[2][3],
+  ],
+  [
+    "연구개발 중심의 조직",
+    "연구 및 개발 인력 90%",
+    "전문연구사업자 / AI 팩토리 전문기업\n이노비즈 / 부산 서비스 강소기업\n2024 청년친화강소기업 선정",
+    strengths[1][3],
+  ],
+  strengths[3],
+];
 const businesses = [
   {
     title: "AI·사이버보안",
@@ -1151,7 +1167,7 @@ export function PrototypeOne({
                 setHighlightedStrength(0);
             }}
           >
-            {strengths.map(([title, sub, body, icon], i) => (
+            {(designRevision ? revisedStrengths : strengths).map(([title, sub, body, icon], i) => (
               <motion.article
                 {...reveal}
                 transition={{
@@ -1166,8 +1182,8 @@ export function PrototypeOne({
                 <div className={styles.strengthIcon}>
                   <img
                     src={
-                      designRevision && i === 1
-                        ? "/assets/sian-b-revision/strength-2.svg"
+                      designRevision
+                        ? `/assets/sian-b-revision/cards-20261119/strength-${i + 1}.svg`
                         : variant === 4
                           ? `/assets/sian-d/${icon}.svg`
                           : asset(`3309-95482-${icon}.svg`)
@@ -1177,31 +1193,21 @@ export function PrototypeOne({
                 </div>
                 <h3>{title}</h3>
                 <h4>{sub}</h4>
-                <p>
-                  {designRevision && i === 1 ? (
-                    <>
-                      100건 이상 공공 SW 구축·운영 경험과
-                      <br />
-                      KCMVP 검증필 암호모듈 기술을
-                      <br />
-                      보유하고 있습니다.
-                    </>
-                  ) : (
-                    body
-                  )}
-                </p>
+                <p>{body}</p>
                 {i === 0 && (
                   <a className={styles.pill} href={security}>
                     SmartX 자세히보기 <Arrow />
                   </a>
                 )}
-                {i === 2 && (
+                {i === (designRevision ? 1 : 2) && (
                   <div className={styles.brandRow}>
                     {["imgImage89", "imgImage90", "imgImage91"].map(
                       (name, j) => (
                         <img
                           key={name}
-                          src={asset(`3309-95482-${name}.png`)}
+                          src={designRevision
+                            ? `/assets/sian-b-revision/cards-20261119/${["chainportal", "port-i", "allcon-e"][j]}.png`
+                            : asset(`3309-95482-${name}.png`)}
                           alt={["CHAINPORTAL", "Port-i", "올컨e"][j]}
                         />
                       ),
