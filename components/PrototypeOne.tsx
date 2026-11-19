@@ -465,8 +465,6 @@ export function PrototypeOne({
   const newsTrack = useRef<HTMLDivElement>(null);
   const hero = useRef<HTMLElement>(null);
   const expertise = useRef<HTMLElement>(null);
-  const expertiseTrack = useRef<HTMLDivElement>(null);
-  const expertiseClick = useRef<number | null>(null);
   const expertiseMotion = useRef({ index: 0, until: 0 });
   const heroInView = useInView(hero, { amount: 0.2 });
   const casesInView = useInView(caseTrack, { amount: 0.2 });
@@ -546,49 +544,16 @@ export function PrototypeOne({
 
   const selectBusiness = useCallback(
     (index: number | null) => {
-      if (designRevision) {
-        if (index === null) return;
-        const track = expertiseTrack.current;
-        const stage = track?.firstElementChild;
-        if (track && stage && getComputedStyle(stage).position === "sticky") {
-          const inset = parseFloat(getComputedStyle(stage).top);
-          const start = window.scrollY + track.getBoundingClientRect().top - inset;
-          const distance = parseFloat(getComputedStyle(track).getPropertyValue("--expertise-distance"));
-          const step = distance / (businesses.length - 1);
-          const progress = Math.min(distance, Math.max(0, window.scrollY - start));
-          if (Math.round(progress / step) !== index || window.scrollY < start) {
-            window.scrollTo({ top: start + index * step, behavior: "instant" });
-          }
-        } else if (index !== open) {
-          expertiseClick.current = index;
-        }
-        setOpen(index);
-        return;
-      }
       if (scrollExpertise && index === null) return;
       if (index !== null) expertiseMotion.current.index = index;
       expertiseMotion.current.until =
-        performance.now() + (variant === 2 ? 300 : 700);
+        performance.now() + (designRevision ? 260 : variant === 2 ? 300 : 700);
       setOpen(index);
     },
-    [scrollExpertise, variant, designRevision, open],
+    [scrollExpertise, variant, designRevision],
   );
 
   useEffect(() => {
-    const index = expertiseClick.current;
-    if (!designRevision || index === null) return;
-    expertiseClick.current = null;
-    const row = expertiseTrack.current?.firstElementChild?.children[index];
-    if (row) {
-      window.scrollTo({
-        top: window.scrollY + row.getBoundingClientRect().top - window.innerHeight * 0.4,
-        behavior: "instant",
-      });
-    }
-  }, [designRevision, open]);
-
-  useEffect(() => {
-    if (designRevision) return;
     const media = window.matchMedia("(min-width: 901px)");
     const update = () => {
       setScrollExpertise(media.matches);
@@ -597,52 +562,11 @@ export function PrototypeOne({
     update();
     media.addEventListener("change", update);
     return () => media.removeEventListener("change", update);
-  }, [designRevision]);
-
-  useEffect(() => {
-    const track = expertiseTrack.current;
-    const stage = track?.firstElementChild;
-    if (!designRevision || !track || !(stage instanceof HTMLElement)) return;
-
-    let frame = 0;
-    const update = () => {
-      frame = 0;
-      const scrollY = window.scrollY;
-      const bounds = track.getBoundingClientRect();
-
-      const style = getComputedStyle(stage);
-      if (style.position === "sticky") {
-        const distance = parseFloat(getComputedStyle(track).getPropertyValue("--expertise-distance"));
-        const progress = Math.max(0, Math.min(1, (parseFloat(style.top) - bounds.top) / distance));
-        setOpen(Math.round(progress * (businesses.length - 1)));
-        return;
-      }
-
-      if (expertiseClick.current !== null || bounds.bottom <= 0 || bounds.top >= window.innerHeight) return;
-      const trigger = window.innerHeight * 0.65;
-      let active = 0;
-      Array.from(stage.children).forEach((row, index) => {
-        if (row.getBoundingClientRect().top <= trigger) active = index;
-      });
-      setOpen(active);
-    };
-    const scheduleUpdate = () => {
-      if (!frame) frame = window.requestAnimationFrame(update);
-    };
-
-    scheduleUpdate();
-    window.addEventListener("scroll", scheduleUpdate, { passive: true });
-    window.addEventListener("resize", scheduleUpdate);
-    return () => {
-      window.cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", scheduleUpdate);
-      window.removeEventListener("resize", scheduleUpdate);
-    };
-  }, [designRevision]);
+  }, []);
 
   useEffect(() => {
     const section = expertise.current;
-    if (designRevision || !scrollExpertise || !section) return;
+    if (!scrollExpertise || !section) return;
     let wheelAmount = 0;
     let lastWheel = 0;
     let burstAmount = 0;
@@ -650,6 +574,7 @@ export function PrototypeOne({
     let fastGesture = false;
     let lastInput = 0;
     let previousY = window.scrollY;
+    let previousDirection = 0;
     const onWheel = (event: WheelEvent) => {
       if (
         event.ctrlKey ||
@@ -667,6 +592,39 @@ export function PrototypeOne({
           : event.deltaMode === 2
             ? window.innerHeight
             : 1);
+      if (designRevision) {
+        const entryTop = Math.max(24, window.innerHeight - bounds.height - 24);
+        if (bounds.top > entryTop || bounds.bottom < window.innerHeight * 0.5) {
+          wheelAmount = 0;
+          previousDirection = 0;
+          return;
+        }
+        if (previousDirection && previousDirection !== direction) {
+          wheelAmount = 0;
+          expertiseMotion.current.until = 0;
+        }
+        previousDirection = direction;
+        if (now < expertiseMotion.current.until) {
+          event.preventDefault();
+          return;
+        }
+        const index = expertiseMotion.current.index;
+        if (
+          (direction < 0 && index === 0) ||
+          (direction > 0 && index === businesses.length - 1)
+        ) {
+          wheelAmount = 0;
+          return;
+        }
+        event.preventDefault();
+        if (now - lastWheel > 180) wheelAmount = 0;
+        lastWheel = now;
+        wheelAmount += delta;
+        if (Math.abs(wheelAmount) < 48) return;
+        wheelAmount = 0;
+        selectBusiness(index + direction);
+        return;
+      }
       if (variant === 2) {
         if (now - lastInput > 200) fastGesture = false;
         lastInput = now;
@@ -1271,100 +1229,98 @@ export function PrototypeOne({
             description="핵심 기술과 산업 전문성을 바탕으로 다양한 사업 분야의 혁신을 이끕니다."
             texture="3306-83996-imgCoreExpertise.png"
           />
-          <div ref={expertiseTrack} className={designRevision ? styles.expertiseTrack : undefined}>
-            <div className={styles.accordion}>
-              {businesses.map((business, i) => (
-                <article key={business.title} id={`business-panel-${i}`}>
-                  <AnimatePresence initial={false}>
-                    {open === i ? (
-                      <motion.div
-                        key={designRevision ? "business" : "expanded"}
-                        className={styles.accordionClip}
-                        initial={designRevision ? false : { height: 0, opacity: 0 }}
-                        animate={designRevision ? undefined : { height: "auto", opacity: 1 }}
-                        exit={designRevision ? undefined : { height: 0, opacity: 0 }}
-                        transition={accordionTransition}
+          <div className={styles.accordion}>
+            {businesses.map((business, i) => (
+              <article key={business.title} id={`business-panel-${i}`}>
+                <AnimatePresence initial={false}>
+                  {open === i ? (
+                    <motion.div
+                      key="expanded"
+                      className={styles.accordionClip}
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={accordionTransition}
+                    >
+                      <div
+                        className={`${styles.businessPanel} ${business.dark ? styles.businessPanelDark : ""}`}
+                        style={{
+                          backgroundImage: `url(${business.background})`,
+                        }}
                       >
-                        <div
-                          className={`${styles.businessPanel} ${business.dark ? styles.businessPanelDark : ""}`}
-                          style={{
-                            backgroundImage: `url(${business.background})`,
-                          }}
-                        >
-                          <div className={styles.businessCopy}>
-                            <button
-                              className={styles.businessHeading}
-                              onClick={() =>
-                                selectBusiness(scrollExpertise || designRevision ? i : null)
-                              }
-                              aria-expanded="true"
-                              aria-controls={`business-panel-${i}`}
-                            >
-                              <h3>{business.title}</h3>
-                              <span>{business.en}</span>
-                            </button>
-                            <h4>{business.summary}</h4>
-                            <div className={styles.businessBody}>
-                              {business.body.map((line) => (
-                                <p key={line}>{line}</p>
-                              ))}
-                            </div>
-                            <a className={styles.pill} href={business.href}>
-                              자세히보기 <Arrow />
-                            </a>
+                        <div className={styles.businessCopy}>
+                          <button
+                            className={styles.businessHeading}
+                            onClick={() =>
+                              selectBusiness(scrollExpertise ? i : null)
+                            }
+                            aria-expanded="true"
+                            aria-controls={`business-panel-${i}`}
+                          >
+                            <h3>{business.title}</h3>
+                            <span>{business.en}</span>
+                          </button>
+                          <h4>{business.summary}</h4>
+                          <div className={styles.businessBody}>
+                            {business.body.map((line) => (
+                              <p key={line}>{line}</p>
+                            ))}
                           </div>
-                          {variant !== 1 ? (
-                            <div className={styles.businessMedia}>
-                              <img
-                                className={styles.businessImage}
-                                src={business.image}
-                                alt={`${business.title} 소개`}
-                              />
-                              {i === 0 && (
-                                <a
-                                  className={styles.businessPlay}
-                                  href={business.href}
-                                  aria-label="SmartX 소개 페이지 보기"
-                                >
-                                  <img src="/assets/sian-b/play.svg" alt="" />
-                                </a>
-                              )}
-                            </div>
-                          ) : (
+                          <a className={styles.pill} href={business.href}>
+                            자세히보기 <Arrow />
+                          </a>
+                        </div>
+                        {variant !== 1 ? (
+                          <div className={styles.businessMedia}>
                             <img
                               className={styles.businessImage}
                               src={business.image}
                               alt={`${business.title} 소개`}
                             />
-                          )}
-                        </div>
-                      </motion.div>
-                    ) : (
-                      <motion.div
-                        key={designRevision ? "business" : "collapsed"}
-                        className={styles.accordionClip}
-                        initial={designRevision ? false : { height: 0, opacity: 0 }}
-                        animate={designRevision ? undefined : { height: "auto", opacity: 1 }}
-                        exit={designRevision ? undefined : { height: 0, opacity: 0 }}
-                        transition={accordionTransition}
+                            {i === 0 && (
+                              <a
+                                className={styles.businessPlay}
+                                href={business.href}
+                                aria-label="SmartX 소개 페이지 보기"
+                              >
+                                <img src="/assets/sian-b/play.svg" alt="" />
+                              </a>
+                            )}
+                          </div>
+                        ) : (
+                          <img
+                            className={styles.businessImage}
+                            src={business.image}
+                            alt={`${business.title} 소개`}
+                          />
+                        )}
+                      </div>
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="collapsed"
+                      className={styles.accordionClip}
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={accordionTransition}
+                    >
+                      <button
+                        className={styles.businessRow}
+                        onMouseDown={(event) => event.preventDefault()}
+                        onClick={() => selectBusiness(i)}
+                        aria-expanded="false"
+                        aria-controls={`business-panel-${i}`}
                       >
-                        <button
-                          className={styles.businessRow}
-                          onMouseDown={(event) => event.preventDefault()}
-                          onClick={() => selectBusiness(i)}
-                          aria-expanded="false"
-                          aria-controls={`business-panel-${i}`}
-                        >
-                          <h3>{business.title}</h3>
-                          <span>{business.summary}</span>
-                          <img src={asset("3306-83996-imgIcon.svg")} alt="" />
-                        </button>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </article>
-              ))}
-            </div>
+                        <h3>{business.title}</h3>
+                        <span>{business.summary}</span>
+                        <img src={asset("3306-83996-imgIcon.svg")} alt="" />
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </article>
+            ))}
           </div>
         </section>
         <motion.section
