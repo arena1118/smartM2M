@@ -428,12 +428,17 @@ export function PrototypeOne({
   copyVariant = 2,
   supportingCopy,
   designRevision = false,
+  heavierExpertiseWheel = false,
 }: {
   variant?: 1 | 2 | 3 | 4;
   copyVariant?: 1 | 2 | 3 | 4;
   supportingCopy?: [string, string];
   designRevision?: boolean;
+  heavierExpertiseWheel?: boolean;
 }) {
+  const expertiseWheelThreshold = heavierExpertiseWheel ? 75 : 48;
+  const expertiseWheelResetMs = heavierExpertiseWheel ? 250 : 180;
+  const expertiseWheelCooldownMs = heavierExpertiseWheel ? 300 : 260;
   const heroImages = designRevision ? revisedHeroImages : defaultHeroImages;
   const newsItems = designRevision
     ? [...officialNews, ...officialNews].map((item) => ({
@@ -547,10 +552,10 @@ export function PrototypeOne({
       if (scrollExpertise && index === null) return;
       if (index !== null) expertiseMotion.current.index = index;
       expertiseMotion.current.until =
-        performance.now() + (designRevision ? 260 : variant === 2 ? 300 : 700);
+        performance.now() + (designRevision ? expertiseWheelCooldownMs : variant === 2 ? 300 : 700);
       setOpen(index);
     },
-    [scrollExpertise, variant, designRevision],
+    [scrollExpertise, variant, designRevision, expertiseWheelCooldownMs],
   );
 
   useEffect(() => {
@@ -617,10 +622,10 @@ export function PrototypeOne({
           return;
         }
         event.preventDefault();
-        if (now - lastWheel > 180) wheelAmount = 0;
+        if (now - lastWheel > expertiseWheelResetMs) wheelAmount = 0;
         lastWheel = now;
         wheelAmount += delta;
-        if (Math.abs(wheelAmount) < 48) return;
+        if (Math.abs(wheelAmount) < expertiseWheelThreshold) return;
         wheelAmount = 0;
         selectBusiness(index + direction);
         return;
@@ -720,7 +725,7 @@ export function PrototypeOne({
       window.removeEventListener("wheel", onWheel, true);
       window.removeEventListener("scroll", onScroll);
     };
-  }, [scrollExpertise, selectBusiness, variant, designRevision]);
+  }, [scrollExpertise, selectBusiness, variant, designRevision, expertiseWheelResetMs, expertiseWheelThreshold]);
 
   useEffect(() => {
     if (
