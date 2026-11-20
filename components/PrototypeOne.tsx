@@ -438,7 +438,7 @@ export function PrototypeOne({
 }) {
   const expertiseWheelThreshold = heavierExpertiseWheel ? 75 : 48;
   const expertiseWheelResetMs = heavierExpertiseWheel ? 250 : 180;
-  const expertiseWheelCooldownMs = heavierExpertiseWheel ? 300 : 260;
+  const expertiseWheelCooldownMs = heavierExpertiseWheel ? 450 : 260;
   const heroImages = designRevision ? revisedHeroImages : defaultHeroImages;
   const newsItems = designRevision
     ? [...officialNews, ...officialNews].map((item) => ({
@@ -580,7 +580,6 @@ export function PrototypeOne({
     let lastInput = 0;
     let previousY = window.scrollY;
     let previousDirection = 0;
-    let gestureLocked = false;
     const onWheel = (event: WheelEvent) => {
       if (
         event.ctrlKey ||
@@ -603,27 +602,13 @@ export function PrototypeOne({
         if (bounds.top > entryTop || bounds.bottom < window.innerHeight * 0.5) {
           wheelAmount = 0;
           previousDirection = 0;
-          gestureLocked = false;
-          lastInput = 0;
           return;
-        }
-        if (heavierExpertiseWheel) {
-          if (now - lastInput >= 150) {
-            gestureLocked = false;
-            wheelAmount = 0;
-          }
-          lastInput = now;
         }
         if (previousDirection && previousDirection !== direction) {
           wheelAmount = 0;
           expertiseMotion.current.until = 0;
-          gestureLocked = false;
         }
         previousDirection = direction;
-        if (heavierExpertiseWheel && gestureLocked) {
-          event.preventDefault();
-          return;
-        }
         if (now < expertiseMotion.current.until) {
           event.preventDefault();
           return;
@@ -642,7 +627,6 @@ export function PrototypeOne({
         wheelAmount += delta;
         if (Math.abs(wheelAmount) < expertiseWheelThreshold) return;
         wheelAmount = 0;
-        if (heavierExpertiseWheel) gestureLocked = true;
         selectBusiness(index + direction);
         return;
       }
@@ -741,7 +725,7 @@ export function PrototypeOne({
       window.removeEventListener("wheel", onWheel, true);
       window.removeEventListener("scroll", onScroll);
     };
-  }, [scrollExpertise, selectBusiness, variant, designRevision, expertiseWheelResetMs, expertiseWheelThreshold, heavierExpertiseWheel]);
+  }, [scrollExpertise, selectBusiness, variant, designRevision, expertiseWheelResetMs, expertiseWheelThreshold]);
 
   useEffect(() => {
     if (
