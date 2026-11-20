@@ -581,6 +581,8 @@ export function PrototypeOne({
     let previousY = window.scrollY;
     let previousDirection = 0;
     let entryHandled = false;
+    let entryAnchor: number | null = null;
+    let entryUntil = 0;
     const onWheel = (event: WheelEvent) => {
       if (
         event.ctrlKey ||
@@ -613,6 +615,8 @@ export function PrototypeOne({
               }
               wheelAmount = 0;
               previousDirection = direction;
+              entryAnchor = window.scrollY;
+              entryUntil = now + 200;
               expertiseMotion.current.until = Math.max(expertiseMotion.current.until, now + 200);
               return;
             }
@@ -626,6 +630,8 @@ export function PrototypeOne({
         if (previousDirection && previousDirection !== direction) {
           wheelAmount = 0;
           expertiseMotion.current.until = 0;
+          entryAnchor = null;
+          entryUntil = 0;
         }
         previousDirection = direction;
         if (now < expertiseMotion.current.until) {
@@ -708,6 +714,39 @@ export function PrototypeOne({
       selectBusiness(index + direction);
     };
     const onScroll = () => {
+      if (designRevision && heavierExpertiseWheel) {
+        const currentY = window.scrollY;
+        const lastY = previousY;
+        previousY = currentY;
+        const now = performance.now();
+        if (entryAnchor !== null && now < entryUntil) {
+          if (currentY > entryAnchor) {
+            previousY = entryAnchor;
+            window.scrollTo({ top: entryAnchor, behavior: "instant" });
+          } else if (currentY < entryAnchor) {
+            entryAnchor = null;
+            entryUntil = 0;
+            expertiseMotion.current.until = 0;
+          }
+          return;
+        }
+        entryAnchor = null;
+        const bounds = section.getBoundingClientRect();
+        if (bounds.top > window.innerHeight) entryHandled = false;
+        const entryTop = Math.max(24, window.innerHeight - bounds.height - 24);
+        const anchor = currentY + bounds.top - entryTop;
+        if (!entryHandled && expertiseMotion.current.index === 0 && lastY < anchor && currentY >= anchor) {
+          entryHandled = true;
+          entryAnchor = anchor;
+          entryUntil = now + 200;
+          wheelAmount = 0;
+          previousDirection = 1;
+          previousY = anchor;
+          expertiseMotion.current.until = Math.max(expertiseMotion.current.until, entryUntil);
+          window.scrollTo({ top: anchor, behavior: "instant" });
+        }
+        return;
+      }
       if (variant === 2) return;
       const currentY = window.scrollY;
       const distance = currentY - previousY;
