@@ -580,6 +580,7 @@ export function PrototypeOne({
     let lastInput = 0;
     let previousY = window.scrollY;
     let previousDirection = 0;
+    let entryHandled = false;
     const onWheel = (event: WheelEvent) => {
       if (
         event.ctrlKey ||
@@ -599,6 +600,24 @@ export function PrototypeOne({
             : 1);
       if (designRevision) {
         const entryTop = Math.max(24, window.innerHeight - bounds.height - 24);
+        if (heavierExpertiseWheel) {
+          if (bounds.top > window.innerHeight || bounds.bottom < 0) entryHandled = false;
+          const crossingEntry = bounds.top > entryTop && bounds.top - delta <= entryTop;
+          const atEntry = bounds.top <= entryTop && bounds.top >= entryTop - 32;
+          if (!entryHandled && direction > 0 && (crossingEntry || atEntry)) {
+            entryHandled = true;
+            if (expertiseMotion.current.index === 0) {
+              event.preventDefault();
+              if (crossingEntry) {
+                window.scrollTo({ top: window.scrollY + bounds.top - entryTop, behavior: "instant" });
+              }
+              wheelAmount = 0;
+              previousDirection = direction;
+              expertiseMotion.current.until = Math.max(expertiseMotion.current.until, now + 200);
+              return;
+            }
+          }
+        }
         if (bounds.top > entryTop || bounds.bottom < window.innerHeight * 0.5) {
           wheelAmount = 0;
           previousDirection = 0;
@@ -725,7 +744,7 @@ export function PrototypeOne({
       window.removeEventListener("wheel", onWheel, true);
       window.removeEventListener("scroll", onScroll);
     };
-  }, [scrollExpertise, selectBusiness, variant, designRevision, expertiseWheelResetMs, expertiseWheelThreshold]);
+  }, [scrollExpertise, selectBusiness, variant, designRevision, expertiseWheelResetMs, expertiseWheelThreshold, heavierExpertiseWheel]);
 
   useEffect(() => {
     if (
